@@ -1,0 +1,64 @@
+.canvas-container {
+  display: block;
+  position: relative;
+  margin-left: 25%;
+}
+.tool-container {
+  display: flex;
+  justify-content: center;
+}
+
+#canvas_3_ID {
+  position: absolute;
+  z-index: 3;
+}
+
+#overlay {
+  z-index: 2;
+  position: absolute;
+}
+
+#images {
+  position: absolute;
+  z-index: 1;
+}
+
+#remoteCanvas {
+  position: absolute;
+  z-index: 1;
+}
+
+canvas {
+  border: 1px solid #000000;
+}
+
+.all-images {
+  margin-top: 50%;
+  position: relative;
+}
+.slide-popover {
+  position: absolute;
+}
+.slides-bar {
+  left: 780px;
+  position: relative;
+}
+
+.slides {
+  height: 10px;
+  width: 10px;
+  position: absolute;
+}
+
+#textbox {
+  z-index: 3;
+  background: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.active {
+  background-color: blue;
+}

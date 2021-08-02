@@ -1,0 +1,35 @@
+.card-block {
+  font-size: 20px;
+}
+
+.card-block--box-shadow-tiny {
+  box-shadow: 0 0 3px #1e282f;
+}
+.card-block--padding-20-20 {
+  padding: 20px 20px;
+}
+
+.card-block__title-main {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.card-block__title-bar {
+  border-bottom: 1px solid #000;
+}
+
+.card-block__content {
+  display: flex;
+  padding-top: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-block__button-wrapper {
+  padding: 10px 10px 10px 10px;
+}
+
+a {
+  padding: 10px 10px 10px 10px;
+}

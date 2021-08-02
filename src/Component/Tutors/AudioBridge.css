@@ -1,0 +1,38 @@
+.darken {
+  opacity: 0.9;
+}
+#microphoneMeter {
+  left: 600px;
+  position: absolute;
+  margin-left: 25%;
+  border-radius: 10px;
+  top: 5px;
+}
+
+.audio-status-symbol {
+  display: inline-block;
+  border-radius: 10px;
+  height: 29px;
+  text-align: center;
+  width: 130px;
+  padding: 2px;
+  margin-top: 0px;
+  margin-left: 25%;
+  color: white;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+#audio-connected-symbol {
+  display: none;
+  background-color: green;
+  left: 745px;
+  opacity: 0.5;
+}
+
+#audio-connecting-symbol {
+  background-color: orange;
+  left: 745px;
+  text-transform: uppercase;
+}
