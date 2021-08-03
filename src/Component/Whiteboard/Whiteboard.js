@@ -314,7 +314,7 @@ const type = (x0,y0,text,color,emit) => {
   //--------------load lessons into slide bar --------------------------------
   const loadLessons = () =>{
     return(
-      <div>
+      <div className = "lesson-container">
         {
           props.lessonSlides.map((user, index) => {
               return(
@@ -398,7 +398,7 @@ const type = (x0,y0,text,color,emit) => {
         />
       </div>
 
-      <div className = "tool-container" style={{width:"800px",height:"auto", display:"block" ,position:"relative", 
+      <div className = "tool-container" style={{width:"auto",height:"auto" ,position:"relative", 
        top:"600px", paddingTop:"10px",left:"0px"
     }} >
       <div className = 'slides-bar'>
