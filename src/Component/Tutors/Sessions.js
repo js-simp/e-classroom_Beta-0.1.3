@@ -63,11 +63,14 @@ function Sessions(props) {
                 data-session-start="1625488200"
                 onClick ={
                     () =>         
-                {window.localStorage.setItem("username",props.username);
-                    window.localStorage.setItem("sessionId", props.SessionId);
-                    window.localStorage.setItem("studentId", props.StudentId);
-                    window.localStorage.setItem("role", "tutor")
-                    window.location.href = `/Classroom`
+                {
+                    props.setLaunched({
+                        'sessionId' : props.SessionId, 
+                        'username' : props.username, 
+                        'studentId': props.StudentId, 
+                        'schoolId' : props.SchoolId, 
+                        'lessons' : props.Lessons
+                });
                 }
                 }
                     

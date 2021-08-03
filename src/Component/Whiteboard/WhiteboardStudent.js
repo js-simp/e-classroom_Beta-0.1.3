@@ -3,21 +3,28 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import './Whiteboard.css';
 
-const WhiteboardStudent = () => {
+const Whiteboard = (props) => {
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [toolName, setToolName] = useState("pen");
   const [emogi, setEmogi] = useState("");
-  const[color,setColor]=useState("");
+  const[color,setColor]= useState("");
+
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
-  const [startPoint, setStartPoint] = useState([])
   const [keyStartPoint, setKeyStartPoint] = useState([0,0])
+
   const [inputBox, setInputBox] = useState("hidden")
   const [disableInput, setDisableInput] = useState("")
 
+  // const socketRef = useRef(); using Reference from props
+  const socketRef = useRef(props.socket);
 
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
+
+  const canvasRef2 = useRef(null);
+  const contextRef2 = useRef(null);
+  
   const canvasRef3 = useRef(null);
   const contextRef3 = useRef(null);
 
@@ -40,7 +47,19 @@ const WhiteboardStudent = () => {
     context.lineWidth = 5;//pointer width
     contextRef.current = context;
 
-    //canvas 3 define for pointer
+    //canvas 2 define for images
+    const canvas2 = canvasRef2.current;
+    canvas2.width = 800;
+    canvas2.height = 600;
+    canvas2.style.width = "800px";
+    canvas2.style.height = "600px";
+
+    const context2 = canvas2.getContext("2d");
+    //style the drawing point
+    context2.scale(1, 1);//pointer size
+    contextRef2.current = context2;
+
+    //canvas 3 define for images
     const canvas3 = canvasRef3.current;
     canvas3.width = 800;
     canvas3.height = 600;
@@ -52,124 +71,109 @@ const WhiteboardStudent = () => {
     context3.scale(1, 1);//pointer size
     contextRef3.current = context3;
 
+    // socketRef.current = io('http://localhost:5000');// initiating this in the classroom and passing via props
+    socketRef.current.emit('join_room', props.sessionId);
+    socketRef.current.on('drawing', onDrawingEvent);
+    socketRef.current.on('text', onTextEvent);
+    socketRef.current.on('image', onImageEvent);
   }, []);
 
-  const startDrawing = ({ nativeEvent }) => {
-    setEmogi("");
-    console.log("Hey you have started now!")
-    const { offsetX, offsetY } = nativeEvent;
-    setStartPoint([offsetX, offsetY])
-    contextRef.current.strokeStyle = color || "black";
-    if(toolName !== "text"){
-      setInputBox("hidden");
-      setDisableInput("none")
-      contextRef.current.beginPath();
-      contextRef.current.moveTo(offsetX, offsetY);
-      setIsDrawing(true);
-      setStartPoint([offsetX, offsetY])
-    }
-    else if(toolName === "line"){
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    }
-    else{
-      setOldStartPoint([startPoint[0], startPoint[1]])
-      setKeyStartPoint([offsetX, offsetY])
-      setStartPoint([offsetX, offsetY])
-    }
 
+useEffect(() => {
+  if (toolName === "text") {
+    
+    current.x = keyStartPoint[0]
+    current.y = keyStartPoint[1]
+  }
+}, [keyStartPoint])
+
+ // ----------------------- socket.io connection ----------------------------
+ const onDrawingEvent = (data) => {
+  draw(data.x0, data.y0, data.x1, data.y1, data.toolName, data.color);
+}
+
+const onTextEvent = (data) => {
+  type(data.x0, data.y0, data.text, data.color);
+}
+
+const onImageEvent = (data) => {
+  // let image = document.createElement('img');
+  // image.src = data.src;
+  // contextRef2.current.drawImage(image, 0, 0, 800, 600)
+  // contextRef.current.putImageData(data.annotation,0,0)
+  console.log(data.src);
+}
+    
+  const current = {
+    color: 'black',
   };
-  const finishDrawing = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    const [startX, startY] = startPoint;
-    contextRef.current.closePath();
-    setIsDrawing(false);
-    contextRef.current.strokeStyle = color || "black";//pointer color
+  let drawing = false;
+  let typing = false;
+   // ------------------------------- create the drawing ----------------------------
 
-    if (toolName === "circle") {
-      const a = (offsetX - startX);
-      const b = (offsetY - startY)
+ const draw = (x0, y0, x1, y1, toolName, color, emit) => {
+   console.log(x0,y0,x1,y1)
+  contextRef.current.globalCompositeOperation = "source-over";
+  contextRef.current.beginPath();
+  contextRef.current.strokeStyle = color;
+  if (toolName === "pen") {
+    contextRef.current.moveTo(x0, y0);
+    contextRef.current.lineTo(x1, y1);
+    contextRef.current.stroke();
+    contextRef.current.closePath()
+  } 
+  else if (toolName === "eraser") {
+    contextRef.current.clearRect(x1, y1, 20,20, Math.PI * 2, false);
+  }
+  else if (toolName === "rect"){
+      contextRef.current.strokeRect(x0, y0, x1-x0, y1-y0);
+      contextRef.current.closePath();
+  }
+  else if (toolName === "circle"){
+    const a = (x1 - x0);
+      const b = (y1 - y0)
       const length = (Math.sqrt((a * a) + (b * b)))
       const radius = length/2
-      contextRef.current.beginPath();
-      contextRef.current.globalCompositeOperation = "source-over";
-      contextRef.current.arc((offsetX + startX)/2, (offsetY+ startY)/2, radius,0, 2 * Math.PI);
+      contextRef.current.arc((x0 + x1)/2, (y0 + y1)/2, radius,0, 2 * Math.PI);
       contextRef.current.stroke();
-    }
-    else if (toolName === "rect") {
-      contextRef.current.globalCompositeOperation = "source-over";
-      contextRef.current.strokeRect(startX, startY, offsetX - startX, offsetY - startY);
-      contextRef.current.closePath();
-      setIsDrawing(false);
-    }
-    else if(toolName === "line"){
-      contextRef.current.lineTo(offsetX, offsetY);
-      contextRef.current.stroke();
-      contextRef.current.closePath();
-    }
-    else if(toolName === "text"){
-    	setInputBox("")
-    }
-    
+      contextRef.current.closePath()
   }
-  const draw = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    // console.log(startX, startY);
-    if (!isDrawing) {
-      contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      contextRef3.current.beginPath();
-      contextRef3.current.moveTo(offsetX, offsetY);
-      contextRef3.current.textAlign = 'left';
-      contextRef3.current.font = "50px sans-serif";
-      contextRef3.current.fillStyle = color || "black" ; 
-      contextRef3.current.fillText( emogi ,offsetX, offsetY);
-      contextRef3.current.closePath();
-      return;
-    }
-     else if (toolName === "pen") {
-      contextRef.current.globalCompositeOperation = "source-over";
-      contextRef.current.lineTo(offsetX, offsetY);
+  else if (toolName === "line"){
+      contextRef.current.moveTo(x0,y0)
+      contextRef.current.lineTo(x1, y1);
       contextRef.current.stroke();
-    } 
-    else if (toolName === "eraser") {
-      contextRef.current.globalCompositeOperation = "source-over";
-      contextRef.current.clearRect(offsetX, offsetY, 20,20, Math.PI * 2, false);
-    }
+      contextRef.current.closePath();
+  }
+  if (!emit) { return; }
 
-  }
-//obtain the text in input onChange event
-  function storeText(event){
-  	/* console.log(event.target.value) */
-    let txt = event.target.value;
-    
-  }
-//draw the text here
-  function drawText(event, blur = false){
-    console.log(event.target.value)
-    	console.log(blur)
-      console.log(event.keyCode);
-      
-    //when Enter is pressed the text is drawn on canvas
-    //and the input field is set to hidden
-    if(event.key === "Enter" || blur === true){
-    
-    				contextRef.current.font = "bold 20px sans-serif"
-    	      contextRef.current.textBaseline = "top"
-            
-    	      if(event.key === "Enter"){
-    					contextRef.current.fillText(event.target.value,
-    	      	keyStartPoint[0], keyStartPoint[1])
-    					event.target.value = ""
-    	        setKeyStartPoint([keyStartPoint[0], keyStartPoint[1]+ 20])
-    	      }
-            else{
-    				contextRef.current.fillText(event.target.value,
-    	      oldStartPoint[0], oldStartPoint[1])
-    					event.target.value = ""
-            }
-    	
-    }
-  }
+  socketRef.current.emit('drawing', {
+    x0: x0,
+    y0: y0,
+    x1: x1,
+    y1: y1,
+    toolName,
+    color,
+  });
+};
+// ------------------------------- create the text ----------------------------
+const type = (x0,y0,text,color,emit) => {
+  console.log("we are typing " + text + "here:" + x0 + y0)
+  contextRef.current.font = "bold 20px sans-serif"
+  contextRef.current.textBaseline = "top"
+  contextRef.current.fillStyle = color;          
+  contextRef.current.fillText(text,x0, y0)
+
+  if (!emit) { return; }
+
+  socketRef.current.emit('text', {
+    x0: x0,
+    y0: y0,
+    text,
+    color,
+  });
+
+}
+
 
   //when click the eraser button set tool name as a "eraser"
   const getEraser = () => {
@@ -186,7 +190,7 @@ const WhiteboardStudent = () => {
   }
   const getText = () => {
   	setToolName("text");
-    setDisableInput("")
+    setDisableInput("");
   }
   const getLine = () => {
   	setToolName("line");
@@ -196,15 +200,91 @@ const WhiteboardStudent = () => {
   }
 
   const getColor = (color) => {
-  	setColor(color);
+  	current.color = color;
   }
+
+
+    // ---------------- mouse movement --------------------------------------
+
+      const onMouseDown = (e) => {
+        if(toolName !== 'text'){
+          drawing = true;
+          if(inputBox !== 'hidden'){
+            setInputBox('hidden');
+          }
+        }
+        else{
+          if(inputBox === 'hidden'){
+            setInputBox('');
+          }
+          setOldStartPoint([keyStartPoint[0], keyStartPoint[1]])
+          setKeyStartPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY])
+        }
+        current.x = e.nativeEvent.offsetX;
+        current.y = e.nativeEvent.offsetY;
+        console.log(current.x, current.y)
+      };
+  
+      const onMouseMove = (e) => {
+        if (!drawing) { return; }
+        //here we  want to trigger draw for pen and eraser
+        if(toolName === "pen" || toolName === "eraser"){
+          draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+          current.x = e.nativeEvent.offsetX;
+          current.y = e.nativeEvent.offsetY;
+        }
+      };
+  
+      const onMouseUp = (e) => {
+        console.log(isDrawing, toolName, current.x, current.y)
+        if (!drawing) { return; }
+        drawing = false;
+        //here we want to trigger draw for rect, circle, and line
+        draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+      };
+
+  // ---------------- keyDown Event --------------------------------------
+  function drawText(event, blur = false){
+      console.log(event.target.value, current.x, current.y)
+    	console.log(blur)
+      console.log(event.keyCode);
+      
+    //when Enter is pressed the text is drawn on canvas
+    //and the input field is set to hidden
+    if(event.key === "Enter" || blur === true){
+      if(event.key === "Enter"){
+        setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
+        type(current.x, current.y, event.target.value, color, true)
+      }
+      else{
+        type(oldStartPoint[0], oldStartPoint[1],event.target.value,color,true)
+      }
+      
+      event.target.value = ""
+    }
+  }
+    				
+  
+  // ----------- limit the number of events per second -----------------------
+
+  const throttle = (callback, delay) => {
+    let previousCall = new Date().getTime();
+    
+    return function() {
+      const time = new Date().getTime();
+      if ((time - previousCall) >= delay) {
+        previousCall = time;
+        callback.apply(null, arguments);
+      }
+    };
+  };
+
   return (
     <div>
       <div className = "tool-container">
         <button onClick={() =>{getEmogi("👆");}} style={{ width:"40px", border:"none" }} id="blue">👆</button>
         <button onClick={() =>{getEmogi("✍");}} style={{ width:"40px", border:"none" }} id="blue">✍</button>
         <button onClick={() =>{getEmogi("👋");}} style={{ width:"40px", border:"none" }} id="black">👋</button>
-        <button onClick={() =>{ getEmogi("😂");}} style={{ width:"40px", border:"none"  }} id="green"><img src="https://www.smileysapp.com/gif-emoji/facepalm.gif" alt="d" /></button>
         <button onClick={() =>{ getEmogi("🐶");}} style={{ width:"40px", border:"none" }} id="red">🐶</button>
        
         <button onClick={() =>{getColor("blue");}} style={{backgroundColor:"blue", width:"40px" , borderRadius:"100%", border:"none" }} id="blue"/>
@@ -223,9 +303,9 @@ const WhiteboardStudent = () => {
       <div className = "canvas-container">
         <canvas id="canvas_3_ID"
           ref={canvasRef3}
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={draw}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseMove={(e) => throttle(onMouseMove(e), 10)}
         />
         <canvas
           id = "overlay"
@@ -234,7 +314,6 @@ const WhiteboardStudent = () => {
         <input 
         type = "text"
         id = "textbox"
-        onChange = {storeText}
         onKeyDown ={drawText}
           style = {{
           	position : "absolute",
@@ -247,13 +326,18 @@ const WhiteboardStudent = () => {
            drawText(e,true)
           }}
         ></input>
-        <canvas id="remoteCanvasStream"
-        width = "800"
-        height = "600"
+        <canvas id="images"
+          ref={canvasRef2}
         />
+      </div>
+
+      <div className = "tool-container" style={{width:"800px",height:"auto", display:"block" ,position:"relative", 
+       top:"600px", paddingTop:"10px",left:"0px"
+    }} >
       </div>
     </div>
   );
 }
 
-export default WhiteboardStudent;
+export default Whiteboard;
+

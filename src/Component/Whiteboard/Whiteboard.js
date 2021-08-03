@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import SlidesBar from './SlidesBar';
 
 
 import './Whiteboard.css';
@@ -13,19 +14,10 @@ const Whiteboard = (props) => {
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
   const [keyStartPoint, setKeyStartPoint] = useState([0,0])
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState();
   const [selected, setSelected] = useState({active : ''});
   const [annotations, setAnnotations] = useState([]);
-  const [lessonSlides, setlessonSlides] = useState([
-    "https://i.picsum.photos/id/1059/800/600.jpg?hmac=vnm2z-u91f7W8_12lTifycQSjv_i-6f7moMZSsIgY8U",
-    "https://i.picsum.photos/id/795/800/600.jpg?hmac=ijiBV8E3aju1BG-FF1y_gJIuighcEnQHNkV8-TKGEpo",
-    "https://i.picsum.photos/id/888/800/600.jpg?hmac=G7f8eYeHyKrKnKXNIBtXgxM-86vi-yvgmQ-Wb4v8T7I",
-    "https://i.picsum.photos/id/680/800/600.jpg?hmac=nihCBRvY34HUDTVoq9UGnMDY09okW-cRC1nvjsX2f2Y",
-    "https://i.picsum.photos/id/125/800/600.jpg?hmac=MAShoROzDHjKXhUAQqqQoAxfGGhqO4v7O4XC04dbNIE",
-    "https://i.picsum.photos/id/852/800/600.jpg?hmac=_7MK8bSHPfRN012F-ENif-8RSl0uPGb261Hi6tIEecE",
-    "https://i.picsum.photos/id/123/800/600.jpg?hmac=H7fNX5YkaQjpc2S2D-IPLq1cGuJjEglRTLNHzkfVP2E",
-    "https://i.picsum.photos/id/334/800/600.jpg?hmac=4HHTj2BR38WTPr9mBP_dhadKrShOC3Swwzh-Sj6ctXA",
-  ]);
+  const [lessonSlides, setlessonSlides] = useState();
 
   const [inputBox, setInputBox] = useState("hidden")
   const [disableInput, setDisableInput] = useState("")
@@ -99,14 +91,20 @@ const Whiteboard = (props) => {
       //image loading canvas
       var image = document.getElementById(`${count}`);
       let src = image.src;
-      let annotation = annotations[count]
+      let annotation = '';
+      if(annotations[count]){
+        let annotation = annotations[count]
+      }
+      console.log(src,annotation);
       contextRef2.current.drawImage(image, 0, 0, 800, 600);
-      socketRef.current.emit('image', {
+      if(annotation){
+        socketRef.current.emit('image', {
         src,
-        annotation,
-      });
+        });
+      }
+      
     }
-}, [count,toolName])
+}, [count])
 
 useEffect(() => {
   if (toolName === "text") {
@@ -242,10 +240,12 @@ const type = (x0,y0,text,color,emit) => {
     setSelected({active : buttonindexID})
     //save annotations
     let new_annotations = annotations;
-    new_annotations[count] = contextRef.current.getImageData(
-      0, 0, canvasRef.current.width, canvasRef.current.height)
-    // new_annotations[count] = canvasRef.current.toDataURL()
-    setAnnotations(new_annotations)
+    if(count && count!== buttonindexID){
+      new_annotations[count] = contextRef.current.getImageData(
+        0, 0, canvasRef.current.width, canvasRef.current.height)
+      // new_annotations[count] = canvasRef.current.toDataURL()
+      setAnnotations(new_annotations)
+    }
     setCount(buttonindexID)
     //load image and annotations to page
     getImage(buttonindexID)
@@ -311,7 +311,24 @@ const type = (x0,y0,text,color,emit) => {
       event.target.value = ""
     }
   }
-    				
+  //--------------load lessons into slide bar --------------------------------
+  const loadLessons = () =>{
+    return(
+      <div>
+        {
+          props.lessonSlides.map((user, index) => {
+              return(
+                <SlidesBar
+                  slidesArr = {props.lessonSlides[index]}
+                  selected = {selected}
+                  getSlide = {getSlide}
+                  />
+              )
+          })
+        }
+        </div>
+    )
+  }
   
   // ----------- limit the number of events per second -----------------------
 
@@ -326,33 +343,7 @@ const type = (x0,y0,text,color,emit) => {
       }
     };
   };
-// ----------- slide selector for pages-----------------------
-  const slidebar = () => {
 
-    return (
-      <div>
-        {
-          lessonSlides.map((user, index) => {
-              return(
-            <button className = {selected.active === index ? 'active' : ''} onClick={() => { getSlide(index) }} style={{ display: "inline", width: "50px", border: "none", height: "50px" }}>
-             📒<p style={{fontSize:"15px"}}>{index + 1}</p>
-             <div className = "slide-popover">
-              <img id = {index} src = {user} alt = "" 
-              style={
-                { display: "inline", 
-                width: "50px", 
-                border: "none", 
-                height: "50px" }}>
-                </img>
-             </div>
-            </button>
-              )
-          })
-        }
-        </div>
-    );
-      
-  };
 
   return (
     <div>
@@ -410,10 +401,11 @@ const type = (x0,y0,text,color,emit) => {
       <div className = "tool-container" style={{width:"800px",height:"auto", display:"block" ,position:"relative", 
        top:"600px", paddingTop:"10px",left:"0px"
     }} >
-        <div className="slides-bar">
-          {slidebar()}
-        </div>
+      <div className = 'slides-bar'>
+        {loadLessons()}
       </div>
+      </div>
+      
     </div>
   );
 }
