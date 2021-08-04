@@ -13,7 +13,7 @@ function Classroom(props) {
     
     useEffect(()=>{
         setSocket(io('http://localhost:5000'))
-        console.log(props.lessons)
+        console.log(props.lessons) // all the titles
         let LessonSlides = []
         let lessons = props.lessons;
         lessons.forEach(item => {
@@ -34,6 +34,12 @@ function Classroom(props) {
                 }
             }).catch((error) => {
                 console.log("Error getting document:", error);
+            });
+        });
+        //initiating array for annotations
+        lessons.forEach(item => {
+            db.collection("Sessions").doc(`${props.sessionId}`).update({
+                [item]: {}
             });
         });
 
@@ -58,6 +64,7 @@ function Classroom(props) {
                 <Whiteboard
                 sessionId = {sessionId}
                 lessonSlides = {slides}
+                lessonTitles = {props.lessons}
                 socket = {socket}/>
             </div>
         )
