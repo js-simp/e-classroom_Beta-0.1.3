@@ -15,7 +15,7 @@ const Whiteboard = (props) => {
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
   const [keyStartPoint, setKeyStartPoint] = useState([0,0])
 
-  const [count, setCount] = useState([]);
+  const count = useRef([]);
   const [selected, setSelected] = useState({active : '', title :''});
   const [annotations, setAnnotations] = useState();
 
@@ -82,29 +82,40 @@ const Whiteboard = (props) => {
     socketRef.current.emit('join_room', props.sessionId);
     socketRef.current.on('drawing', onDrawingEvent);
     socketRef.current.on('text', onTextEvent);
+
+    //realtime listening for annotations and changes
+    db.collection("Sessions").doc(props.sessionId)
+    .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+        setAnnotations(doc.data());
+    });
   }, []);
 
 
 
   useEffect(() => {
-    if (toolName === "Image") {
-      
+    console.log(count.current.length)
+    if (count.current.length !== 0 || toolName === 'Image') {
+      //load image and annotations to page
+      //loading the annotations
+      if(annotations !== undefined){
+        console.log(annotations)
+      }
+      else{
+        // contextRef.current.fillStyle = "rgba(255, 255, 255, 0)"
+        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+      }
       //image loading canvas
-      var image = document.getElementById(`${props.lessonTitles[count[0]]}${count[1]}`);
+      var image = document.getElementById(`${props.lessonTitles[count.current[0]]}${count.current[1]}`);
       let src = image.src;
-      // let annotation = '';
-      // if(annotations[count]){
-      //   let annotation = annotations[count]
-      // }
-      // console.log(src,annotation);
       contextRef2.current.drawImage(image, 0, 0, 800, 600);
       socketRef.current.emit('image', {
         src,
-        page : count[1],
-        title : props.lessonTitles[count[0]],
+        page : count.current[1],
+        title : props.lessonTitles[count.current[0]],
       });
     }
-}, [count])
+}, [annotations,toolName])
 
 useEffect(() => {
   if (toolName === "text") {
@@ -223,50 +234,36 @@ const type = (x0,y0,text,color,emit) => {
   const getColor = (color) => {
   	current.color = color;
   }
-  const getImage = (page) => {
-          //loading the annotations
-          // if(annotations[page[0]][page[1]] !== undefined){
-          //   contextRef.current.putImageData(annotations[page], 0, 0);
-          // }
-          // else{
-          //   // contextRef.current.fillStyle = "rgba(255, 255, 255, 0)"
-          //   contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-          // }
-          setToolName("Image");
-  }
+
+
 //new annotaitons [[], []]
-  const  getSlide = (lessonTitle , buttonindexID) => {
+  const  getSlide = async (lessonTitle , buttonindexID) => {
+
     //change the styling of the button by updating selected state
     setSelected({active : buttonindexID, title : lessonTitle})
     // get the lesson idex
     let lessonIndex = props.lessonTitles.indexOf(lessonTitle);
-    //save annotations
-    let new_annotations;
-    if(annotations){
-      new_annotations = annotations
-    }
-    else{
-      new_annotations = Array.from(Array(props.lessonTitles.length), () => []) //[[], [], []]
-    }
     //ensuring annotation database only updates when page is changed
-    if(count.length !== 0 && (count[0] !== lessonIndex || count[1] !== buttonindexID)){
+    if(count.current.length !== 0 && (count.current[0] !== lessonIndex || count.current[1] !== buttonindexID)){
       // new_annotations[count] = contextRef.current.getImageData(
       //   0, 0, canvasRef.current.width, canvasRef.current.height)
-      new_annotations[count[0]][count[1]] = canvasRef.current.toDataURL()
-      setAnnotations(new_annotations)
-
       db.collection("Sessions").doc(`${props.sessionId}`).update({
         
-      [`${props.lessonTitles[count[0]]}.${count[1]}`] : new_annotations[count[0]][count[1]]
+      [`${props.lessonTitles[count.current[0]]}.${count.current[1]}`] : canvasRef.current.toDataURL()
 
       });
-
+      count.current = [lessonIndex, buttonindexID]
     }
 
-    setCount([lessonIndex, buttonindexID])
-    //load image and annotations to page
-    getImage([lessonIndex, buttonindexID])
+    else if(count.current.length === 0){
+      count.current = [lessonIndex, buttonindexID]
+      setToolName('Image')
+    }
 
+    else{
+      return;
+    }
+    
     //emit the event for loading image and annotations on student side....
   }
 
@@ -383,7 +380,6 @@ const type = (x0,y0,text,color,emit) => {
         <button onClick={getRect} id="rect">Rect</button>
         <button onClick={getCircle} id="circle">Circle</button>
         <button onClick={getLine} id="line">Line</button>
-        <button onClick={getImage} id="img">Image-{count} </button>
         <button onClick={getText} id="text">Text</button>
       </div>
       
