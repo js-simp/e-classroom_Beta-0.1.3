@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import db from '../Firebase/firebase'
 
 import './Whiteboard.css';
 
@@ -16,6 +16,8 @@ const Whiteboard = (props) => {
   const [inputBox, setInputBox] = useState("hidden")
   const [disableInput, setDisableInput] = useState("")
 
+  const annotations = useRef();
+
   // const socketRef = useRef(); using Reference from props
   const socketRef = useRef(props.socket);
 
@@ -30,7 +32,7 @@ const Whiteboard = (props) => {
 
 
 
-  useEffect(() => {
+  useEffect(() =>  {
 
     //canvas define
     const canvas = canvasRef.current;
@@ -76,6 +78,13 @@ const Whiteboard = (props) => {
     socketRef.current.on('drawing', onDrawingEvent);
     socketRef.current.on('text', onTextEvent);
     socketRef.current.on('image', onImageEvent);
+
+    //realtime listening for annotations and changes
+    db.collection("Sessions").doc(props.sessionId)
+    .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+        annotations.current = doc.data();
+    });
   }, []);
 
 
@@ -97,10 +106,27 @@ const onTextEvent = (data) => {
 }
 
 const onImageEvent = (data) => {
-  // let image = document.createElement('img');
-  // image.src = data.src;
+  contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+  let image = document.createElement('img');
+  image.src = data.src;
+  image.onload = function () {
+    contextRef2.current.drawImage(image, 0, 0,800,600)
+  }
   // contextRef2.current.drawImage(image, 0, 0, 800, 600)
   // contextRef.current.putImageData(data.annotation,0,0)
+  console.log(annotations.current)
+  if(annotations.current[data.title][data.page] !== undefined){
+    console.log(`We have annotations for this page: ${data.title} ${data.page}`)
+    let image = document.createElement('img');
+    image.src = annotations.current[data.title][data.page];
+    image.onload = function () {
+      contextRef.current.drawImage(image, 0, 0)
+    }
+    
+  }
+  else{
+    contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+  }
   console.log(data.src);
 }
     

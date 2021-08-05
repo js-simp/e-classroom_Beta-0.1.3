@@ -13,37 +13,38 @@ function Classroom(props) {
     
     useEffect(()=>{
         setSocket(io('http://localhost:5000'))
-        console.log(props.lessons) // all the titles
-        let LessonSlides = []
-        let lessons = props.lessons;
-        lessons.forEach(item => {
-            let docRef = db.collection("Lessons").doc(`${item}`);
-            docRef.get().then((doc) => {
-                if (doc.exists) {
-                    // console.log("Document data:", doc.data().Slides[0]);
-                    const slidesArr = doc.data().Slides;
-                    // console.log("Sessions:", slidesArr)
-                    LessonSlides.push(slidesArr);
-                    if(LessonSlides.length === props.lessons.length){
-                        setSlides(LessonSlides)
+        if(props.role === 'tutor'){
+                console.log(props.lessons) // all the titles
+            let LessonSlides = []
+            let lessons = props.lessons;
+            lessons.forEach(item => {
+                let docRef = db.collection("Lessons").doc(`${item}`);
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        // console.log("Document data:", doc.data().Slides[0]);
+                        const slidesArr = doc.data().Slides;
+                        // console.log("Sessions:", slidesArr)
+                        LessonSlides.push(slidesArr);
+                        if(LessonSlides.length === props.lessons.length){
+                            setSlides(LessonSlides)
+                        }
+                        // console.log(LessonSlides);
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
                     }
-                    // console.log(LessonSlides);
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch((error) => {
-                console.log("Error getting document:", error);
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
             });
-        });
-        //initiating array for annotations
-        lessons.forEach(item => {
-            db.collection("Sessions").doc(`${props.sessionId}`).update({
-                [item]: {}
+            //initiating array for annotations
+            lessons.forEach(item => {
+                db.collection("Sessions").doc(`${props.sessionId}`).update({
+                    [item]: {}
+                });
             });
-        });
-
-
+        }
+        
     }, [])
     // const username = localStorage.getItem('username');
     // const sessionId = localStorage.getItem('sessionId');

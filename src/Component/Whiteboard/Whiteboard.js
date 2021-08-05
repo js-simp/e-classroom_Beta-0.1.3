@@ -94,12 +94,17 @@ const Whiteboard = (props) => {
 
 
   useEffect(() => {
-    console.log(count.current.length)
-    if (count.current.length !== 0 || toolName === 'Image') {
+    if (count.current.length !== 0) {
       //load image and annotations to page
       //loading the annotations
-      if(annotations !== undefined){
-        console.log(annotations)
+      if(annotations[props.lessonTitles[count.current[0]]][count.current[1]]!== undefined){
+        console.log(`We have annotations for this page: ${count.current[0]} ${count.current[1]}`)
+        let image = document.createElement('img');
+        image.src = annotations[props.lessonTitles[count.current[0]]][count.current[1]];
+        image.onload = function () {
+          contextRef.current.drawImage(image, 0, 0)
+        }
+        
       }
       else{
         // contextRef.current.fillStyle = "rgba(255, 255, 255, 0)"
@@ -115,7 +120,7 @@ const Whiteboard = (props) => {
         title : props.lessonTitles[count.current[0]],
       });
     }
-}, [annotations,toolName])
+}, [count.current])
 
 useEffect(() => {
   if (toolName === "text") {
@@ -237,7 +242,7 @@ const type = (x0,y0,text,color,emit) => {
 
 
 //new annotaitons [[], []]
-  const  getSlide = async (lessonTitle , buttonindexID) => {
+  const  getSlide = (lessonTitle , buttonindexID) => {
 
     //change the styling of the button by updating selected state
     setSelected({active : buttonindexID, title : lessonTitle})
@@ -252,10 +257,12 @@ const type = (x0,y0,text,color,emit) => {
       [`${props.lessonTitles[count.current[0]]}.${count.current[1]}`] : canvasRef.current.toDataURL()
 
       });
+      contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
       count.current = [lessonIndex, buttonindexID]
     }
 
     else if(count.current.length === 0){
+      contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
       count.current = [lessonIndex, buttonindexID]
       setToolName('Image')
     }
@@ -263,6 +270,7 @@ const type = (x0,y0,text,color,emit) => {
     else{
       return;
     }
+    
     
     //emit the event for loading image and annotations on student side....
   }

@@ -2,6 +2,7 @@ import {React, useEffect, useState} from 'react'
 import db from '../Firebase/firebase.js'
 import Sessions from './Sessions'
 import './Home.css'
+import Classroom from '../Classroom/Classroom.js';
 
 // the props for Sesssions component:
 // 
@@ -15,6 +16,8 @@ function Home(props) {
     const [name, setName] = useState('');
     const [schoolId, setSchoolId] = useState('')
     const [sessionsInfo, setSessionsInfo] = useState();
+    const [launched, setLaunched] = useState();
+
     const userId = props.user;
     useEffect(() => {
         let docRef = db.collection("Students").doc(`${userId}`);
@@ -37,7 +40,7 @@ function Home(props) {
     }, [])
 
     // console.log(sessionsInfo.StudentId)
-    if(sessionsInfo != undefined && name !== ''){
+    if(sessionsInfo != undefined && name !== '' && launched === undefined){
         return (
             <div id = "session-card">
                 <h1 id="tutor-name">Hi {name}</h1>
@@ -47,6 +50,7 @@ function Home(props) {
                     SchoolId = {schoolId}
                     Date = {session.Date}
                     Time = {session.Time}
+                    setLaunched = {setLaunched}
                     SessionId = {session.SessionId} />
                 ))
                 }
@@ -54,10 +58,21 @@ function Home(props) {
             
         )
     }
+    else if(launched !== undefined){
+        return(
+            <Classroom
+            sessionId = {launched.sessionId}
+            schoolId = {launched.schoolId}
+            lessons = {launched.lessons}
+            username = {launched.username}
+            role = 'student'
+        />
+        )
+    }    
     else{
         return(
             <div id = "session-card">
-                <h1 id="tutor-name">Hi {name}</h1>
+                <h1 id="student-name">Hi {name}</h1>
             </div>
         )
     }

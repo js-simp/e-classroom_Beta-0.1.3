@@ -40,7 +40,7 @@ function Home(props) {
     }, [])
 
     // console.log(sessionsInfo.StudentId)
-    if(sessionsInfo != undefined && name !== '' && launched === undefined){
+    if(sessionsInfo !== undefined && name !== '' && launched === undefined){
         return (
             <div id = "session-card">
                 <h1 id="tutor-name">Hi {name}</h1>
