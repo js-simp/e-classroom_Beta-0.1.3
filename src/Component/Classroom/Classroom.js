@@ -6,6 +6,7 @@ import StudentAudioBridge from '../Students/AudioBridge'
 import db from '../Firebase/firebase.js'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import io from 'socket.io-client';
+import Chatbox from '../Chatbox/Chatbox';
 
 function Classroom(props) {
     const [socket, setSocket] = useState()
@@ -62,11 +63,17 @@ function Classroom(props) {
                 {/* <AudioBridge 
                 username = {username}
                 sessionId = {sessionId}/> */}
-                <Whiteboard
-                sessionId = {sessionId}
-                lessonSlides = {slides}
-                lessonTitles = {props.lessons}
-                socket = {socket}/>
+                <div className = 'interaction-area'>
+                    <Chatbox
+                    username = {username}
+                    sessionId = {sessionId}
+                    socket = {socket}/>
+                    <Whiteboard
+                    sessionId = {sessionId}
+                    lessonSlides = {slides}
+                    lessonTitles = {props.lessons}
+                    socket = {socket}/>
+                </div>
             </div>
         )
     }
@@ -76,9 +83,15 @@ function Classroom(props) {
                 {/* <StudentAudioBridge
                 username = {username}
                 sessionId = {sessionId}/> */}
-                <WhiteboardStudent
-                sessionId = {sessionId}
-                socket = {socket}/>
+                <div className = 'interaction-area'>
+                    <Chatbox
+                    username = {username}
+                    sessionId = {sessionId}
+                    socket = {socket}/>
+                    <WhiteboardStudent
+                    sessionId = {sessionId}
+                    socket = {socket}/>
+                </div>
             </div>
         )
     }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState , useRef } from 'react';
 import './Chatbox.css';
-import io from 'socket.io-client';
+import db from '../Firebase/firebase'
+
 
 /*
  Flow Chart
@@ -13,95 +14,110 @@ import io from 'socket.io-client';
    3-read message
    4-delete message 
 */
-const Chatbox = () => {
-    const [msg,setMsg] = useState("");
-    const [status, setStatus] = useState("");
+const Chatbox = (props) => {
     const [messageArray, setMessageArray] = useState([]);
-    const [count, setCount] = useState(0);
-    const [docId, setDocId] = useState(0);
-    const socket = useRef();
+    const socket = useRef(props.socket);
 
     useEffect(() => {
-        socket.current = io("http://localhost:5000",{ withCredentials: true, extraHeaders: { "my-custom-header": "abcd" }  }); 
-    }, [count]);
+        // socket.current = io("http://localhost:5000",{ withCredentials: true, extraHeaders: { "my-custom-header": "abcd" }  });
+        //we are importing socket from property in classroom
+
+        //restoring previous message upon refresh by checking if old messages are there
+        let docRef = db.collection("Sessions").doc(props.sessionId);
+                docRef.get().then((doc) => {
+                    //if there is a messages doc created then retrieve the messages history
+                    if (doc.exists) {
+                        if(doc.data().Messages){
+                            setMessageArray(doc.data().Messages)
+                        };
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                    }
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+    }, []);
+
+    function inputMsg(msg, emit){
+        setMessageArray([...messageArray, msg])
+        if(emit){
+            socket.current.emit('chat-message', {
+                'message': msg.message,
+                'sender': props.username,
+                'time': msg.time
+            });
+        }
+        else{
+            return;
+        }
+    }
 
     const chatlist = messageArray.map((item, index) => {
-        if (!item.sender) {
             return (
-                <li className="row" key={index}>
+                <li className='irc-message message-highlight' key={index}>
                     <div>
-                        <div key={index} style={{ float: "left", padding: "5px" }}>
-                            <p style={{ borderRadius: "10px", padding: "5px", backgroundColor: "black", color: "white", fontWeight: "bolder" }}>{item.message}</p>
-                            <p style={{ color: "red", fontWeight: "200", fontSize: "10px" }}>{"from : " + item.sender}</p>
-                            <p style={{ color: "black", fontWeight: "200" }}>
-                                <span style={{ color: "black", fontWeight: "bolder", fontSize: "8px" }}>
-                                    {item.date + "   "}</span>
-                                <span style={{ color: "black", fontWeight: "bolder" }}>
-                                    {item.time}</span></p>
+                        <div style={{ float: "left", padding: "5px" }}>
+                            <p>{item.message}</p>
+                            <p>{"from : " + item.sender}</p>
+                            <span>{item.time}</span>
                         </div>
                     </div>
                 </li>
             );
-        }
       });
 
-    
-
-    const readMessage = () => {
+    const catchMessage = () => {
         socket.current.on('chat-message', (res) => {
             console.log(res); var x = []; x.push(res);
-             setMessageArray(...x); console.log(messageArray)
+             inputMsg(res,false) 
+            //  setMessageArray([...messageArray, res]);
         });
     }
-    const sendMessage =  () => {
-        var d = new Date();
-        var time = d.getHours() + " : " + d.getMinutes() + " : " + d.getSeconds();
-        var date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-        var senderId = window.localStorage.getItem("userId");
-        socket.current.emit('chat-message', {
-        'message': msg,
-        'time': time,
-        'date': date,
-        'sender': senderId,
-        'reciver': "Teacher"
-    });
 
-    readMessage();
+    function sendMessage(event, type) {
+        let msg = {};
+        if(type === 'key'){
+            if(event.key === 'Enter'){
+                console.log(event.target.value)
+                msg.message = event.target.value;
+            }
+        }
+        else if(type === 'button'){
+            let txt = document.getElementById('irc-Entrybox')
+            console.log(txt.value);
+            msg.message = txt.value;
+        }
+        else{
+            return;
+        }
+        if(msg.message){
+            msg.sender = props.username;
+            msg.time = 
+            inputMsg(msg, true)
+        }
+    
  }
-    const getMsg = (e) => {setMsg(e.target.value);}
+
+ catchMessage();
+
 
     return (
-        <div style={{width:"320px", height:"auto" , border:"1px solid black" ,backgroundColor:"none", padding:"0px"}}>
-            <div className="overflowCss ">
+        <div id = "helper-section">
+            <div id="irc-section">
                 <ul>
+                    <li className = 'irc-message'>Welcome to your session!</li>
                     {chatlist}
                 </ul>
+                <textarea 
+                        id="irc-Entrybox"
+                        onKeyPress={(e) => {sendMessage(e,'key')}} 
+                        placeholder="Enter your message here..."
+                />
+                <button id = "irc-sendButton" onClick={(e) => {sendMessage(e, 'button')}}>
+                    Send
+                </button>
             </div>
-            <form 
-            style={{width:"320px", height:"auto"}}
-            onSubmit={(e) => { e.preventDefault(); }}>
-                <div className="field">
-                    <div className="control p-3">
-                        <textarea onChange={getMsg} 
-                         value={msg}
-                         className="textarea is-small"
-                         placeholder="Small textarea"
-                         style={{
-                             borderRadius:"20px",}}
-                        />
-                    </div>
-                </div>
-                <div
-                 className="buttons"
-                 style={{paddingLeft:"8%",paddingBottom:"10px"
-                  }}>
-                    <button onClick={() => {sendMessage("savindu"); }} className="button is-warning">
-                        <p>Send {status}</p>
-                    </button>
-                  
-                </div>
-            </form>
-
         </div>
     );
 };
