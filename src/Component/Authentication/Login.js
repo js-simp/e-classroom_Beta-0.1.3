@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LockIcon from '@material-ui/icons/Lock';
 import AuthLogin from "./Authentication";
+import './Login.css'
 
 
 const Login = () => {
@@ -38,30 +41,47 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={(e)=>{e.preventDefault();}}>
-                <div className="mb-3">
-                    <label  className="form-label">Email address</label>
-                    <input onChange={ (e) => {
-                        setLoginData({
-                            ...loginData, user : e.target.value
-                        });}
-                    } type="text" className="form-control" id="exampleFormControlInput1" placeholder="Username" />
-              <p style={{color:"red"}}>{err}</p>
+        <div className = 'container'>
+            <div className = 'card-block'>
+                <div className= 'logo-container'>
+                    <img className = 'icon-logo' src ="" alt='logo'></img>
                 </div>
-                <div className="mb-3 ">
-                    <label  className="form-label">Password</label>
-                    <input onChange={ (e) => {
-                        setLoginData({
-                            ...loginData, pass : e.target.value
-                        });
-                    }
-                    }  type={type} className="form-control" id="inputPassword" />
-                     <p style={{color:"red"}}>{err}</p>
-                    <Checkbox onChange={showPassword}>show</Checkbox> 
+                <hr className = 'hr-line'></hr>
+                <div className = 'wrapper'>
+                    <p className = 'welcome-text'>Welcome to GoodWill Learning Platform</p>
                 </div>
-                <Button onClick={submitBtn} type="submit" style={{ color: "white", backgroundColor: "black" }} >Login</Button>
-            </form>
+                <form onSubmit={(e)=>{e.preventDefault();}}>
+                    <div className="wrapper wrapper-form">
+                        {/* <label  className="form-label">Username</label> */}
+                        <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                        <input onChange={ (e) => {
+                            setLoginData({
+                                ...loginData, user : e.target.value
+                            });}
+                        } type="text" className="form-control" id="exampleFormControlInput1" placeholder="Username" />
+                <p style={{color:"red"}}>{err}</p>
+                    </div>
+                    <div className="wrapper wrapper-form">
+                        {/* <label  className="form-label">Password</label> */}
+                        <LockIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                        <input onChange={ (e) => {
+                            setLoginData({
+                                ...loginData, pass : e.target.value
+                            });
+                        }
+                        }  type={type} className="form-control" id="inputPassword" placeholder = 'Password'/>
+                        <p style={{color:"red"}}>{err}</p>
+                    </div>
+                    <div className = 'wrapper wrapper-form'>
+                        <Checkbox onChange={showPassword}>
+                        </Checkbox> 
+                        <p>Show password</p>
+                    </div>
+                    <div className = 'wrapper wrapper-form'>
+                        <Button id = "submit-button" onClick={submitBtn} type="submit" style={{ color: "white", backgroundColor: '#1a237e' }} >Login</Button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

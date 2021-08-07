@@ -39,6 +39,28 @@ const Chatbox = (props) => {
                 });
     }, []);
 
+
+    const chatlist = messageArray.map((item, index) => {
+            return (
+                <li className='irc-message message-highlight' key={index}>
+                    <div>
+                        <div style={{ float: "left", padding: "5px" }}>
+                            <p>{item.message}</p>
+                            <p>{item.sender}</p>
+                            <span>{item.time}</span>
+                        </div>
+                    </div>
+                </li>
+            );
+      });
+
+    const catchMessage = () => {
+        socket.current.on('chat-message', (res) => {
+             inputMsg(res,false) 
+            //  setMessageArray([...messageArray, res]);
+        });
+    }
+
     function inputMsg(msg, emit){
         setMessageArray([...messageArray, msg])
         if(emit){
@@ -51,28 +73,6 @@ const Chatbox = (props) => {
         else{
             return;
         }
-    }
-
-    const chatlist = messageArray.map((item, index) => {
-            return (
-                <li className='irc-message message-highlight' key={index}>
-                    <div>
-                        <div style={{ float: "left", padding: "5px" }}>
-                            <p>{item.message}</p>
-                            <p>{"from : " + item.sender}</p>
-                            <span>{item.time}</span>
-                        </div>
-                    </div>
-                </li>
-            );
-      });
-
-    const catchMessage = () => {
-        socket.current.on('chat-message', (res) => {
-            console.log(res); var x = []; x.push(res);
-             inputMsg(res,false) 
-            //  setMessageArray([...messageArray, res]);
-        });
     }
 
     function sendMessage(event, type) {

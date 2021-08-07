@@ -1,0 +1,82 @@
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 5%;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 40%;
+  height: 153px;
+}
+
+.card-block {
+  background: #fff;
+  color: black;
+  box-shadow: 0 0 3px #1e282f;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  padding: 20px 20px;
+}
+
+.logo-container {
+  padding: 10px 10px;
+}
+
+.wrapper {
+  padding: 10px 10px;
+}
+
+.hr-line {
+  margin-left: 15%;
+  margin-right: 15%;
+  border: 0;
+  border-top: 1px solid #bbc2c6;
+}
+
+.welcome-text {
+  font-family: "Architects Daughter", cursive;
+  text-align: center;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.wrapper-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-icon {
+  margin-left: 5%;
+}
+.form-control {
+  display: block;
+  margin: 0 5%;
+  width: 50%;
+  height: 10%;
+  border: 2px solid #bac2c3;
+  color: #1e282f;
+  background: #fff;
+  font-size: 20px;
+  height: 36px;
+  min-width: 80px;
+  border-radius: 8px;
+  padding: 9px 15px 9px;
+  outline: 0;
+}
+
+#submit-button {
+  width: 25%;
+}
+
+div {
+  display: block;
+}
