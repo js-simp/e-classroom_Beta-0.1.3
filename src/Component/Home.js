@@ -3,21 +3,21 @@ import Login from './Authentication/Login'
 import Tutor from '../Component/Tutors/Home'
 import Student from '../Component/Students/Home'
 
-const Home = () => {
-  const role = localStorage.getItem('role');
-  const userId = localStorage.getItem('UserId');
-  console.log(role);
-  if(role === "tutor"){
+const Home = (props) => {
+  // const role = localStorage.getItem('role');
+  // const userId = localStorage.getItem('UserId');
+  // console.log(role);
+  if(props.role === "tutor"){
     return (
       <div>
-        <Tutor user = {userId}/>
+        <Tutor user = {props.userId}/>
       </div>   
     )
   }
-  else if(role === "student"){
+  else if(props.role === "student"){
     return(
       <div>
-        <Student user = {userId}/>
+        <Student user = {props.userId}/>
       </div>
     )
   }

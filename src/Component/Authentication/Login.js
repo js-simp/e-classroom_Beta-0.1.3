@@ -4,11 +4,13 @@ import Checkbox from '@material-ui/core/Checkbox'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import AuthLogin from "./Authentication";
+import Home from '../Home';
 import './Login.css'
 
 
 const Login = () => {
     const [type, setType] = useState("password");
+    const [logged, setLogged] = useState({'loggedIn' : false});
     const [err, setErr] = useState("");
    
     const [loginData, setLoginData] = useState({
@@ -34,12 +36,14 @@ const Login = () => {
         { 
        console.log(loginData.user,loginData.pass);
         var obj =  new  AuthLogin();
-        obj.userLoginFunction(username,password);
+        obj.userLoginFunction(username,password, setLogged);
     }else{
         setErr("Error !");  
     }
     }
 
+
+    if(!logged.loggedIn){
     return (
         <div className = 'container'>
             <div className = 'card-block'>
@@ -84,6 +88,15 @@ const Login = () => {
             </div>
         </div>
     );
+    }
+    else{
+        return(
+            <Home
+            role = {logged.role}
+            userId = {logged.UserId}
+            />
+        )
+    }
 }
 
 export default Login;

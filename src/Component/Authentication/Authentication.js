@@ -10,7 +10,7 @@ export default class Authentication {
     */
 
     //Login
-    async userLoginFunction(userName,userPassword) {
+    async userLoginFunction(userName,userPassword, setLogged) {
       //  console.log(userName,userPassword);
 
         try{
@@ -24,9 +24,10 @@ export default class Authentication {
             //console.log("Login data",d[id].password);//get specific values by search
              if(d.password === userPassword){
                  alert("Login Success");
-                 window.localStorage.setItem("UserId",d.Id);
-                 window.localStorage.setItem("role", d.role);
-                 window.location.href = `/home`;
+                 setLogged({'loggedIn': true, 'role' : d.role, 'UserId' : d.Id })
+                //  window.localStorage.setItem("UserId",d.Id);
+                //  window.localStorage.setItem("role", d.role);
+                //  window.location.href = `/home`;
              }else{
                 alert("Login Failed");
              }
