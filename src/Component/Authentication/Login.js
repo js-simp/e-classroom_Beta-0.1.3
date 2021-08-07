@@ -43,7 +43,7 @@ const Login = () => {
     }
 
 
-    if(!logged.loggedIn){
+    if(!logged.loggedIn && window.sessionStorage.getItem('role') === null){
     return (
         <div className = 'container'>
             <div className = 'card-block'>
@@ -88,6 +88,17 @@ const Login = () => {
             </div>
         </div>
     );
+    }
+    //this is for loading homepage when page is refreshed once user has logged in
+    else if(window.sessionStorage.getItem('role') !== null){
+        let role = window.sessionStorage.getItem('role');
+        let UserId = window.sessionStorage.getItem('UserId')
+        return(
+            <Home
+            role = {role}
+            userId = {UserId}
+            />
+        )
     }
     else{
         return(

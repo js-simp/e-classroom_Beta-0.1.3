@@ -25,9 +25,8 @@ export default class Authentication {
              if(d.password === userPassword){
                  alert("Login Success");
                  setLogged({'loggedIn': true, 'role' : d.role, 'UserId' : d.Id })
-                //  window.localStorage.setItem("UserId",d.Id);
-                //  window.localStorage.setItem("role", d.role);
-                //  window.location.href = `/home`;
+                 window.sessionStorage.setItem("UserId",d.Id);
+                 window.sessionStorage.setItem("role", d.role);
              }else{
                 alert("Login Failed");
              }
