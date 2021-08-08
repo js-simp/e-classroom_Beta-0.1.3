@@ -1,4 +1,6 @@
-import {React, useState} from 'react'
+import { Button, LinearProgress } from '@material-ui/core';
+import {React, useState, useEffect} from 'react'
+import db from '../Firebase/firebase'
 import './Sessions.css';
 
 // the props will be:
@@ -12,85 +14,104 @@ import './Sessions.css';
 
 function Sessions(props) {
 
+    const [studentInfo, setStudentInfo] = useState();
+
+
+    useEffect(() => {
+        let docRef = db.collection('Students').doc(`${props.StudentId}`)
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                // console.log("Document data:", doc.data().Info);
+                const info = doc.data().Info;
+                setStudentInfo({'Name' : info.Name, 'SchoolId' : info.SchoolId, 'Year' : info.Year})
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+    }, [])
+
+    if(studentInfo){
         return (
-    <div className =  "card-block card-block--box-shadow-tiny card-block--padding-20-20">
-    
-        {/* ----------------------------------------This is is the title bar section ----------------------------------------------------------------------------------- */}
-        <div className="card-block__title-bar">
-            <div className="card-block__title-main">
-                    <div className="card-block__timestamp">
-                        <div className="card-block__time-box">
-                        <div className="card-block__time">
-                            {props.Time}
-                        </div>
-                        </div>
+            <div className =  "session-card-block">
+            
+                {/* ----------------------------------------This is is the title bar section ----------------------------------------------------------------------------------- */}
+                <div className="title-bar">
+                    <div className="card-block__time">
+                        {props.Time}
                     </div>
                     <div className="card-block__name">
-                        <a className="card-block__title card-block__title--link" href="/students/102588#profile">{props.Name}  {props.StudentId}</a>
-                            {props.Year}
-                        <div className="card-block__title-pill-section">
-                        </div>
+                        <a className="student-profile" href="#">{studentInfo.Name}  {props.StudentId}</a>
+                        {studentInfo.Year}
                     </div>
                     <div className="card-block__school-name">
-                        School {props.SchoolId}
+                        School {studentInfo.SchoolId}
                     </div>
-            </div>
-        </div>  
-        {/* ---------------------------------------------------Start of card content-------------------------------------------------------------------------------    */}
-        <div className="card-block__content">
-            <div className="card-block__table">
-                <div className="card-block__section-row">
-                        <div className="card-block__section-title">
-                        Now:
+                </div>  
+                {/* ---------------------------------------------------Start of card content-------------------------------------------------------------------------------    */}
+                <div className="card-block__content">
+                        <div className="card-block__section-row">
+                                <div className="card-block__section-title">
+                                Now:
+                                </div>
+                                <div className="card-block__section-content ">
+                                    <a className="" data-href="#" data-lesson="990" href="#">
+                                    {props.Lessons[0]}
+                                    </a>
+                                    <a className="#" data-href="" data-lesson="651" href="#">
+                                    {props.Lessons[1]}
+                                    </a>
+                                    <a className="" data-href="/curriculum/668/lesson_overlay" data-lesson="668" href="#">
+                                    {props.Lessons[2]}
+                                    </a>
+                                </div>
+                    </div>
+             {/*--------------------------------------------------- The buttons section------------------------------------------------------------------------------------- */}
+                    <div className="card-block__button-section">
+                    <div className="card-block__button-wrapper">
+                        <div id="learning-session-1857904-button" className="with-tooltip" title="You are currently not able to launch this session as no student has been assigned
+                            yet or the session is not within 10 minutes of the start time">
+                        <Button className="button button--small button--rewards-board button--hard-disable" variant="contained" color="primary"
+                        data-session-start="1625488200"
+                        onClick ={
+                            () =>         
+                        {
+                            props.setLaunched({
+                                'sessionId' : props.SessionId, 
+                                'lessons' : props.Lessons
+                        });
+                        }
+                        }
+                            
+                        >Start Session</Button>
+                        {/* <div class="meeting-number" style="clear: both;">
+                        <!-- Meeting number: <br/><strong></strong> -->
+                        </div> */}
                         </div>
-                        <div className="card-block__section-content ">
-                            <a className="overlay customOverlayEvent card-block__section-link" data-href="/curriculum/990/lesson_overlay" data-lesson="990" href="#">
-                            {props.Lessons[0]}
-                            </a><br/><a className="overlay customOverlayEvent card-block__section-link" data-href="/curriculum/651/lesson_overlay" data-lesson="651" href="#">
-                            {props.Lessons[1]}
-                            </a><br/><a className="overlay customOverlayEvent card-block__section-link" data-href="/curriculum/668/lesson_overlay" data-lesson="668" href="#">
-                            {props.Lessons[2]}
-                            </a>
-                        </div>
+                    </div>
+                    <div className="card-block__button-wrapper">
+                        <Button className="button button--small button--rewards-board" variant="contained" color="primary" href="#">Add feedback</Button>
+                    </div>
+                    <div className="card-block__button-wrapper">
+                        <Button variant="contained" color="primary" href="#" className="button button--small button--rewards-board overlay" data-href="/learning_sessions/1857904/cancel_session">Cancel</Button>
+                    </div>
+                    </div>
                 </div>
+             
             </div>
-     {/*--------------------------------------------------- The buttons section------------------------------------------------------------------------------------- */}
-            <div className="card-block__button-section">
-            <div className="card-block__button-wrapper">
-                <div id="learning-session-1857904-button" className="with-tooltip" title="You are currently not able to launch this session as no student has been assigned
-                    yet or the session is not within 10 minutes of the start time">
-                <button className="button button--small button--rewards-board button--hard-disable" 
-                data-session-start="1625488200"
-                onClick ={
-                    () =>         
-                {
-                    props.setLaunched({
-                        'sessionId' : props.SessionId, 
-                        'username' : props.username, 
-                        'studentId': props.StudentId, 
-                        'schoolId' : props.SchoolId, 
-                        'lessons' : props.Lessons
-                });
-                }
-                }
-                    
-                >Start Session</button>
-                {/* <div class="meeting-number" style="clear: both;">
-                <!-- Meeting number: <br/><strong></strong> -->
-                </div> */}
-                </div>
+                )
+    }
+    else{
+        return(
+            <div>
+                <LinearProgress/>
             </div>
-            <div className="card-block__button-wrapper">
-                <button className="button button--small button--rewards-board" href="#">Add feedback</button>
-            </div>
-            <div className="card-block__button-wrapper">
-                <button href="#" className="button button--small button--rewards-board overlay" data-href="/learning_sessions/1857904/cancel_session">Cancel</button>
-            </div>
-            </div>
-        </div>
-     
-    </div>
         )
+    }
+        
     }
 
     

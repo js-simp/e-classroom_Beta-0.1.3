@@ -21,7 +21,7 @@ function Home(props) {
     
     useEffect(() => {
         let docRef = db.collection("Tutors").doc(`${userId}`);
-
+        //query the sessions that are on that particular day
         docRef.get().then((doc) => {
             if (doc.exists) {
                 // console.log("Document data:", doc.data().Info);
@@ -46,28 +46,29 @@ function Home(props) {
                 <h1 id="tutor-name">Hi {name}</h1>
                 {sessionsInfo.map( session => (
                     <Sessions 
-                    Name = "helen"
-                    username = {name}
-                    StudentId = {session.StudentId} 
-                    SchoolId = {session.SchoolId}
-                    SessionId = {session.SessionId}
                     setLaunched = {setLaunched}
-                    Year = "Y4" 
-                    Lessons = {session.Lesson} 
-                    Time = {session.Time} />
+                    StudentId = {session.StudentId}
+                    Lessons = {session.Lesson}
+                    epoch = {session.epochTime}
+                    SessionId = {session.SessionId}
+                    Time = {session.Time} 
+                    //-----------all student details below are obtained from Sessions.js using the StudentId-------------  
+                    // SchoolId = {session.SchoolId}
+                    // Name = {session.StudentName}
+                    // Year = "Y4" 
+                    
+                    />
                 ))
                 }
-            </div>
-            
+            </div> 
         )
     }
     else if(launched !== undefined){
         return(
             <Classroom
             sessionId = {launched.sessionId}
-            schoolId = {launched.schoolId}
             lessons = {launched.lessons}
-            username = {launched.username}
+            username = {name}
             role = 'tutor'
         />
         )

@@ -1,22 +1,26 @@
-.card-block {
+.session-card-block {
   font-size: 20px;
-}
-
-.card-block--box-shadow-tiny {
+  font-family: "Roboto", sans-serif;
   box-shadow: 0 0 3px #1e282f;
-}
-.card-block--padding-20-20 {
   padding: 20px 20px;
+  margin-bottom: 5%;
 }
 
-.card-block__title-main {
+a {
+  text-decoration: none !important;
+  padding: 10px 10px 10px 10px;
+  font-size: 24px;
+}
+
+.title-bar {
+  border-bottom: 1px solid #000;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
-
-.card-block__title-bar {
-  border-bottom: 1px solid #000;
+.card-block__time {
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .card-block__table {
@@ -27,19 +31,35 @@
   display: flex;
   justify-content: space-evenly;
   margin-right: 10%;
+  margin-left: 15%;
+  max-width: 600px;
 }
 
 .card-block__content {
   display: flex;
   padding-top: 10px;
-  justify-content: center;
   align-items: center;
 }
 
-.card-block__button-wrapper {
+.card-block__section-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 24px;
+}
+.card-block__section-title {
+  font-size: 24px;
+  display: flex;
+  flex-direction: row;
   padding: 10px 10px 10px 10px;
+  align-items: flex-start;
 }
 
-a {
+.card-block__button-section {
+  margin-left: auto;
+  padding-right: 5%;
+}
+
+.card-block__button-wrapper {
   padding: 10px 10px 10px 10px;
 }

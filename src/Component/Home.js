@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Login from './Authentication/Login'
 import Tutor from '../Component/Tutors/Home'
 import Student from '../Component/Students/Home'
 

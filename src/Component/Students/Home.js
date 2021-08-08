@@ -62,9 +62,7 @@ function Home(props) {
         return(
             <Classroom
             sessionId = {launched.sessionId}
-            schoolId = {launched.schoolId}
-            lessons = {launched.lessons}
-            username = {launched.username}
+            username = {name}
             role = 'student'
         />
         )
