@@ -1,4 +1,10 @@
 .interaction-area {
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.whiteboard {
+  position: relative;
+  margin: 0 auto;
 }

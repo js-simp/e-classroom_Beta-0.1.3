@@ -7,6 +7,7 @@ import db from '../Firebase/firebase.js'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import io from 'socket.io-client';
 import Chatbox from '../Chatbox/Chatbox';
+import './Classroom.css'
 
 function Classroom(props) {
     const [socket, setSocket] = useState()
@@ -65,15 +66,19 @@ function Classroom(props) {
                 username = {username}
                 sessionId = {sessionId}/> */}
                 <div className = 'interaction-area'>
+                    <div className = 'chatbox'>
                     <Chatbox
-                    username = {username}
-                    sessionId = {sessionId}
-                    socket = {socket}/>
-                    <Whiteboard
-                    sessionId = {sessionId}
-                    lessonSlides = {slides}
-                    lessonTitles = {props.lessons}
-                    socket = {socket}/>
+                        username = {username}
+                        sessionId = {sessionId}
+                        socket = {socket}/>
+                    </div>
+                    <div className = 'whiteboard'>
+                        <Whiteboard
+                        sessionId = {sessionId}
+                        lessonSlides = {slides}
+                        lessonTitles = {props.lessons}
+                        socket = {socket}/>
+                    </div>
                 </div>
             </div>
         )
@@ -84,11 +89,13 @@ function Classroom(props) {
                 {/* <StudentAudioBridge
                 username = {username}
                 sessionId = {sessionId}/> */}
-                <div className = 'interaction-area'>
+                <div className = 'chatbox'>
                     <Chatbox
-                    username = {username}
-                    sessionId = {sessionId}
-                    socket = {socket}/>
+                        username = {username}
+                        sessionId = {sessionId}
+                        socket = {socket}/>
+                </div>
+                <div className = 'whiteboard'>
                     <WhiteboardStudent
                     sessionId = {sessionId}
                     socket = {socket}/>

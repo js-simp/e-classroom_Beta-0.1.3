@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import db from '../Firebase/firebase'
+//icons for the whiteboard
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardIcon from '@material-ui/icons/Keyboard';
+import CreateIcon from '@material-ui/icons/Create';
+import CropDinIcon from '@material-ui/icons/CropDin';
+import StopIcon from '@material-ui/icons/Stop';
+import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
+import Brightness1Icon from '@material-ui/icons/Brightness1';
+import TimelineIcon from '@material-ui/icons/Timeline';
+
 
 import './Whiteboard.css';
 
@@ -309,21 +319,38 @@ const type = (x0,y0,text,color,emit) => {
     <div>
       <div className = "tool-container">
         <button onClick={() =>{getEmogi("👆");}} style={{ width:"40px", border:"none" }} id="blue">👆</button>
-        <button onClick={() =>{getEmogi("✍");}} style={{ width:"40px", border:"none" }} id="blue">✍</button>
-        <button onClick={() =>{getEmogi("👋");}} style={{ width:"40px", border:"none" }} id="black">👋</button>
-        <button onClick={() =>{ getEmogi("🐶");}} style={{ width:"40px", border:"none" }} id="red">🐶</button>
        
-        <button onClick={() =>{getColor("blue");}} style={{backgroundColor:"blue", width:"40px" , borderRadius:"100%", border:"none" }} id="blue"/>
-        <button onClick={() =>{getColor("black");}} style={{backgroundColor:"black" ,  width:"40px" , borderRadius:"100%", border:"none" }} id="black"/>
-        <button onClick={() =>{ getColor("green");}} style={{backgroundColor:"green", width:"40px" , borderRadius:"100%", border:"none" }} id="green"/>
-        <button onClick={() =>{ getColor("red");}} style={{backgroundColor:"red", width:"40px" , borderRadius:"100%", border:"none" }} id="red"/>
+        <IconButton>
+          <Brightness1Icon onClick={() => {getColor('blue')}} id="blue" aria-label = 'color' style = {{'font-size': '40px', 'color': '#4885ed'}}/>
+        </IconButton>
+        <IconButton>
+          <Brightness1Icon onClick={() => {getColor('black')}} id="black" aria-label = 'color'  style = {{'font-size': '40px', 'color': '#000000'}}/>
+        </IconButton>
+        <IconButton>
+          <Brightness1Icon onClick={() => {getColor('green')}} id="green" aria-label = 'color' style = {{'font-size': '40px', 'color': '#3cba54'}}/>
+        </IconButton>
+        <IconButton>
+          <Brightness1Icon onClick={() => {getColor('red')}} id="red" aria-label = 'color' style = {{'font-size': '40px', 'color': '#db3236'}}/>
+        </IconButton>
 
-        <button onClick={getEraser} id="eraser">Eraser</button>
-        <button onClick={getPen} id="pen">Pen</button>
-        <button onClick={getRect} id="rect">Rect</button>
-        <button onClick={getCircle} id="circle">Circle</button>
-        <button onClick={getLine} id="line">Line</button>
-        <button onClick={getText} id="text">Text</button>
+        <IconButton>
+          <KeyboardIcon onClick={getText} id="text" aria-label = 'text' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        <IconButton>
+          <CreateIcon onClick={getPen} id="pen" aria-label = 'pen' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        <IconButton>
+          <RadioButtonUncheckedOutlinedIcon  onClick={getCircle} id="circle" aria-label = 'circle' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        <IconButton>
+          <CropDinIcon onClick={getRect} id="rect" aria-label = 'rect' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        <IconButton>
+          <TimelineIcon onClick={getLine} id="line" aria-label = 'line' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        <IconButton>
+          <StopIcon onClick={getEraser} id="eraser" aria-label = 'eraser' style = {{'font-size': '40px'}}/>
+        </IconButton>
       </div>
       
       <div className = "canvas-container">

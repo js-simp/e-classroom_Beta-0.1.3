@@ -1,12 +1,12 @@
 .canvas-container {
   display: block;
   position: relative;
-  margin-left: 25%;
 }
 
 .tool-container {
   display: flex;
   justify-content: center;
+  height: 40px;
 }
 
 #canvas_3_ID {
