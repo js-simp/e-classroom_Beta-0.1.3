@@ -1,5 +1,6 @@
 import React, { useEffect, useState , useRef } from 'react';
 import './Chatbox.css';
+import Button from '@material-ui/core/Button';
 import db from '../Firebase/firebase'
 
 
@@ -18,10 +19,18 @@ const Chatbox = (props) => {
     const [messageArray, setMessageArray] = useState([]);
     const socket = useRef(props.socket);
 
+    useEffect(()=> {
+        if(messageArray.length !== 0){
+            // document.getElementsByClassName('irc-message').lastChild.scrollIntoView({ behavior: "smooth" });
+            document.getElementsByClassName('irc-message')[messageArray.length].scrollIntoView({behavior: 'smooth'})
+            console.log(document.getElementsByClassName('irc-message')[messageArray.length])
+        }
+        
+    }, [messageArray])
+
     useEffect(() => {
         // socket.current = io("http://localhost:5000",{ withCredentials: true, extraHeaders: { "my-custom-header": "abcd" }  });
         //we are importing socket from property in classroom
-
         //restoring previous message upon refresh by checking if old messages are there
         let docRef = db.collection("Sessions").doc(props.sessionId);
                 docRef.get().then((doc) => {
@@ -42,15 +51,10 @@ const Chatbox = (props) => {
 
     const chatlist = messageArray.map((item, index) => {
             return (
-                <li className='irc-message message-highlight' key={index}>
-                    <div>
-                        <div style={{ float: "left", padding: "5px" }}>
-                            <p>{item.message}</p>
-                            <p>{item.sender}</p>
-                            <span>{item.time}</span>
-                        </div>
-                    </div>
-                </li>
+                <span className='irc-message message-highlight' style = {{'font-size' : '18px'}} key={index}>
+                    <div className = 'irc-time'>{item.time}</div>
+                            {item.sender} : {item.message}
+                </span>
             );
       });
 
@@ -81,6 +85,7 @@ const Chatbox = (props) => {
             if(event.key === 'Enter'){
                 console.log(event.target.value)
                 msg.message = event.target.value;
+                event.target.value = null;
             }
         }
         else if(type === 'button'){
@@ -92,8 +97,8 @@ const Chatbox = (props) => {
             return;
         }
         if(msg.message){
-            msg.sender = props.username;
-            msg.time = 
+            msg.sender = props.username.split(' ')[0];
+            // msg.time = 
             inputMsg(msg, true)
         }
     
@@ -105,18 +110,18 @@ const Chatbox = (props) => {
     return (
         <div id = "helper-section">
             <div id="irc-section">
-                <ul>
-                    <li className = 'irc-message'>Welcome to your session!</li>
-                    {chatlist}
-                </ul>
-                <textarea 
+                <div id = 'irc-message-container'>
+                    <span className = 'irc-message'>Welcome to your session!</span>
+                        {chatlist}
+                </div>
+                <input 
                         id="irc-Entrybox"
                         onKeyPress={(e) => {sendMessage(e,'key')}} 
                         placeholder="Enter your message here..."
                 />
-                <button id = "irc-sendButton" onClick={(e) => {sendMessage(e, 'button')}}>
+                <Button id = "irc-sendButton" variant="contained" style = {{'margin' : '0 auto', 'width': '100px'}} onClick={(e) => {sendMessage(e, 'button')}}>
                     Send
-                </button>
+                </Button>
             </div>
         </div>
     );

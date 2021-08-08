@@ -450,7 +450,7 @@ const type = (x0,y0,text,color,emit) => {
       </div>
 
       <div className = "tool-container" style={{width:"auto",height:"auto" ,position:"relative", 
-       top:"600px", paddingTop:"10px",left:"0px"
+       top:"600px", paddingTop:"10px"
     }} >
       <div className = 'slides-bar'>
         {loadLessons()}

@@ -5,7 +5,7 @@
 
 .tool-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   height: 40px;
 }
 
@@ -45,7 +45,8 @@ canvas {
   position: absolute;
 }
 .slides-bar {
-  position: relative;
+  display: block;
+  margin: 0 auto;
 }
 
 .slides {
@@ -65,4 +66,8 @@ canvas {
 
 .active {
   background-color: blue;
+}
+
+.slides-container {
+  padding: 10px 10px;
 }
