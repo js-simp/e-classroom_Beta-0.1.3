@@ -62,9 +62,9 @@ function Classroom(props) {
         console.log(slides, typeof(slides), slides.length);
         return (
             <div>
-                {/* <AudioBridge 
+                <AudioBridge 
                 username = {username}
-                sessionId = {sessionId}/> */}
+                sessionId = {sessionId}/>
                 <div className = 'interaction-area'>
                     <div className = 'chatbox'>
                     <Chatbox
@@ -86,19 +86,21 @@ function Classroom(props) {
     else if(role === "student" && socket !== undefined){
         return(
             <div>
-                {/* <StudentAudioBridge
+                <StudentAudioBridge
                 username = {username}
-                sessionId = {sessionId}/> */}
-                <div className = 'chatbox'>
-                    <Chatbox
-                        username = {username}
+                sessionId = {sessionId}/>
+                <div className = 'interaction-area'>
+                    <div className = 'chatbox'>
+                        <Chatbox
+                            username = {username}
+                            sessionId = {sessionId}
+                            socket = {socket}/>
+                    </div>
+                    <div className = 'whiteboard'>
+                        <WhiteboardStudent
                         sessionId = {sessionId}
                         socket = {socket}/>
-                </div>
-                <div className = 'whiteboard'>
-                    <WhiteboardStudent
-                    sessionId = {sessionId}
-                    socket = {socket}/>
+                    </div>
                 </div>
             </div>
         )

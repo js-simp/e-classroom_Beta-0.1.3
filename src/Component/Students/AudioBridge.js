@@ -1,9 +1,16 @@
 //this is where we want the classroom to start and janus to get us started!
-import {React, useEffect} from 'react'
+import {React, useEffect, useState} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css'
 
 let audioBridge = null;
+let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let analyser = audioCtx.createAnalyser();
+
+let source = null;
+let canvasMeter = null;
+let canvasMeterCtx = null;
+let drawVisual;
 
 function isRoom(room, username){
 	//first we conver the string of roomId to an integer
@@ -49,9 +56,58 @@ function attachremote(stream) {
 	Janus.attachMediaStream(remoteAudio, stream);
 }
 
+//The microphone meter
+function microphoneMeter(stream){
+	source = audioCtx.createMediaStreamSource(stream);
+	source.connect(analyser);
+
+	analyser.fftSize = 2048;
+	let bufferLength = analyser.frequencyBinCount;
+	console.log(bufferLength);
+	let dataArray = new Uint8Array(bufferLength);
+	
+
+	//drawing the dataArry onto the canvas
+	canvasMeter = document.getElementById("microphoneMeter");
+	canvasMeterCtx = canvasMeter.getContext('2d');
+	const WIDTH = canvasMeter.width;
+	const HEIGHT = canvasMeter.height;
+
+	let draw = function(){
+		drawVisual = requestAnimationFrame(draw);
+		analyser.getByteTimeDomainData(dataArray);
+
+        canvasMeterCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+		canvasMeterCtx.lineWidth = 2;
+		canvasMeterCtx.strokeStyle = 'rgb(0, 0, 0)';
+		canvasMeterCtx.beginPath();
+		let sliceWidth = WIDTH * 1.0 / bufferLength;
+		let x = 0;
+
+		for(var i = 0; i < bufferLength; i++) {
+
+			var v = dataArray[i] / 128.0;
+			var y = v * HEIGHT/2;
+	
+			if(i === 0) {
+			  canvasMeterCtx.moveTo(x, y);
+			} else {
+			  canvasMeterCtx.lineTo(x, y);
+			}
+	
+			x += sliceWidth;
+		}
+		canvasMeterCtx.lineTo(WIDTH, HEIGHT/2);
+		canvasMeterCtx.stroke();
+	}
+	draw();
+}
+
 function StudentAudioBridge(props) {
 	const roomId = props.sessionId;
 	const username = props.username;
+	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
 
 	let webrtcUp = false;
 	useEffect(() => {
@@ -99,6 +155,12 @@ function StudentAudioBridge(props) {
 												},
 												webrtcState: function(on){
 													Janus.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
+													if(on){
+														setConnectionStatus(['none', 1,'block']);
+													}
+													else if(!on){
+														setConnectionStatus(['block', 0.5, 'none'])
+													}
 												},
 												onmessage: function(msg, jsep) {
 														// We got a message/event (msg) from the plugin
@@ -140,6 +202,7 @@ function StudentAudioBridge(props) {
 												},
 												onlocalstream: function(stream) {
 														// local stream available to attach to an element
+														microphoneMeter(stream);
 												},
 												onremotestream: function(stream) {
 														// A remote track (working PeerConnection!) with a specific mid has just been added or removed
@@ -173,7 +236,25 @@ function StudentAudioBridge(props) {
 	
 	return(
 		<div>
-			<h1>Here is the classroom</h1>
+			<canvas id = "microphoneMeter" width = "100" height = "33"/>
+			<div class="audio-status-symbol" id="audio-connected-symbol"
+			style = {
+				{
+					display : `${connectionStatus[2]}`,
+            		opacity :`${connectionStatus[1]}`,
+				}
+			} >
+  			<p>CONNECTED</p>
+			</div>
+			<div class="audio-status-symbol" id="audio-connecting-symbol"
+			style = {
+				{
+					display : `${connectionStatus[0]}`,
+            		opacity :`${connectionStatus[1]}`,
+				}
+			} >
+  			<p>CONNECTING</p>
+			</div>
 		</div>
 	)
 }
