@@ -19,7 +19,7 @@ const Whiteboard = (props) => {
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [toolName, setToolName] = useState("pen");
-  const [emogi, setEmogi] = useState("");
+  const [emogi, setEmogi] = useState("👆");
   const[color,setColor]= useState("");
 
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
@@ -154,10 +154,7 @@ const onTextEvent = (data) => {
   const current = {
     color: 'black',
   };
-  const start = {
-  };
   let drawing = false;
-  let typing = false;
    // ------------------------------- create the drawing ----------------------------
 
  const draw = (x0, y0, x1, y1, toolName, color, emit) => {
@@ -244,8 +241,8 @@ const type = (x0,y0,text,color,emit) => {
   const getLine = () => {
   	setToolName("line");
   }
-  const getEmogi = (emogiType) => {
-  	setEmogi(emogiType);
+  const getEmogi = () => {
+  	setToolName("pointer");
   }
 
   const getColor = (color) => {
@@ -306,26 +303,26 @@ const type = (x0,y0,text,color,emit) => {
         }
         current.x = e.nativeEvent.offsetX;
         current.y = e.nativeEvent.offsetY;
-        start.x = e.nativeEvent.offsetX;
-        start.y = e.nativeEvent.offsetY;
         console.log(current.x, current.y)
       };
   
       const onMouseMove = (e) => {
-        if (!drawing) { return; }
+        if (!drawing) { 
+          return; 
+        }
         //here we  want to trigger draw for pen and eraser
         if(toolName === "pen" || toolName === "eraser"){
           draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
           current.x = e.nativeEvent.offsetX;
           current.y = e.nativeEvent.offsetY;
         }
-        else if(toolName === 'rect' || toolName === 'line' || toolName === 'circle'){
+        else if(toolName === 'rect' || toolName === 'line' || toolName === 'circle' || toolName === 'pointer'){
           contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
           contextRef3.current.globalCompositeOperation = "source-over";
           contextRef3.current.beginPath();
           contextRef3.current.strokeStyle = color;
           if(toolName === 'rect'){
-            contextRef3.current.strokeRect(current.x, current.y, e.nativeEvent.offsetX-start.x, e.nativeEvent.offsetY-start.y);
+            contextRef3.current.strokeRect(current.x, current.y, e.nativeEvent.offsetX-current.x, e.nativeEvent.offsetY-current.y);
           }
           else if(toolName === 'circle'){
             const a = (e.nativeEvent.offsetX - current.x);
@@ -335,10 +332,20 @@ const type = (x0,y0,text,color,emit) => {
             contextRef3.current.arc((current.x + e.nativeEvent.offsetX)/2, (current.y + e.nativeEvent.offsetY)/2, radius,0, 2 * Math.PI);
             contextRef3.current.stroke();
           }
-          else{
+          else if (toolName === 'line'){
             contextRef3.current.moveTo(current.x,current.y)
             contextRef3.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
             contextRef3.current.stroke();
+          }
+          else{
+            contextRef3.current.moveTo(e.nativeEvent.offsetX,e.nativeEvent.offsetY);
+            contextRef3.current.textAlign = 'left';
+            contextRef3.current.font = "50px sans-serif";
+            contextRef3.current.fillStyle = "red"; 
+            contextRef3.current.fillText( emogi ,e.nativeEvent.offsetX - 20, e.nativeEvent.offsetY - 20);
+            contextRef3.current.textAlign = 'left';
+            contextRef3.current.font = "10px sans-serif";
+            contextRef3.current.fillText(props.username.split(' ')[0], e.nativeEvent.offsetX,e.nativeEvent.offsetY)
           }
           
         }
@@ -411,7 +418,7 @@ const type = (x0,y0,text,color,emit) => {
   return (
     <div>
       <div className = "tool-container">
-        <button onClick={() =>{getEmogi("👆");}} style={{ width:"40px", border:"none" }}>👆</button>
+        <button onClick={() =>{getEmogi();}} style={{ width:"40px", border:"none" }}>👆</button>
        
         <IconButton>
           <Brightness1Icon onClick={() => {getColor('blue')}} id="blue" aria-label = 'color' style = {{'font-size': '40px', 'color': '#4885ed'}}/>

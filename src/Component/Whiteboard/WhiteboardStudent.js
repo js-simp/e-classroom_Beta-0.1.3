@@ -269,6 +269,38 @@ const type = (x0,y0,text,color,emit) => {
           current.x = e.nativeEvent.offsetX;
           current.y = e.nativeEvent.offsetY;
         }
+        else if(toolName === 'rect' || toolName === 'line' || toolName === 'circle' || toolName === 'pointer'){
+          contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+          contextRef3.current.globalCompositeOperation = "source-over";
+          contextRef3.current.beginPath();
+          contextRef3.current.strokeStyle = color;
+          if(toolName === 'rect'){
+            contextRef3.current.strokeRect(current.x, current.y, e.nativeEvent.offsetX-current.x, e.nativeEvent.offsetY-current.y);
+          }
+          else if(toolName === 'circle'){
+            const a = (e.nativeEvent.offsetX - current.x);
+            const b = (e.nativeEvent.offsetY - current.y)
+            const length = (Math.sqrt((a * a) + (b * b)))
+            const radius = length/2
+            contextRef3.current.arc((current.x + e.nativeEvent.offsetX)/2, (current.y + e.nativeEvent.offsetY)/2, radius,0, 2 * Math.PI);
+            contextRef3.current.stroke();
+          }
+          else if (toolName === 'line'){
+            contextRef3.current.moveTo(current.x,current.y)
+            contextRef3.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+            contextRef3.current.stroke();
+          }
+          else{
+            contextRef3.current.moveTo(e.nativeEvent.offsetX,e.nativeEvent.offsetY);
+            contextRef3.current.textAlign = 'center';
+            contextRef3.current.font = "50px sans-serif";
+            // contextRef3.current.fillStyle = color || "black"; 
+            contextRef3.current.fillText( emogi ,e.nativeEvent.offsetX, e.nativeEvent.offsetY - 15);
+            contextRef3.current.font = "10px sans-serif";
+            contextRef3.current.fillText(props.username.split(' ')[0], e.nativeEvent.offsetX,e.nativeEvent.offsetY)
+          }
+          
+        }
       };
   
       const onMouseUp = (e) => {

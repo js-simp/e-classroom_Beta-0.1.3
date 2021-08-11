@@ -75,6 +75,7 @@ function Classroom(props) {
                     <div className = 'whiteboard'>
                         <Whiteboard
                         sessionId = {sessionId}
+                        username = {username}
                         lessonSlides = {slides}
                         lessonTitles = {props.lessons}
                         socket = {socket}/>
@@ -98,6 +99,7 @@ function Classroom(props) {
                     </div> */}
                     <div className = 'whiteboard'>
                         <WhiteboardStudent
+                        username = {username}
                         sessionId = {sessionId}
                         socket = {socket}/>
                     </div>
