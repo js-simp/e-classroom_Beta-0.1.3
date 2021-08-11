@@ -154,6 +154,8 @@ const onTextEvent = (data) => {
   const current = {
     color: 'black',
   };
+  const start = {
+  };
   let drawing = false;
   let typing = false;
    // ------------------------------- create the drawing ----------------------------
@@ -304,6 +306,8 @@ const type = (x0,y0,text,color,emit) => {
         }
         current.x = e.nativeEvent.offsetX;
         current.y = e.nativeEvent.offsetY;
+        start.x = e.nativeEvent.offsetX;
+        start.y = e.nativeEvent.offsetY;
         console.log(current.x, current.y)
       };
   
@@ -315,11 +319,35 @@ const type = (x0,y0,text,color,emit) => {
           current.x = e.nativeEvent.offsetX;
           current.y = e.nativeEvent.offsetY;
         }
+        else if(toolName === 'rect' || toolName === 'line' || toolName === 'circle'){
+          contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+          contextRef3.current.globalCompositeOperation = "source-over";
+          contextRef3.current.beginPath();
+          contextRef3.current.strokeStyle = color;
+          if(toolName === 'rect'){
+            contextRef3.current.strokeRect(current.x, current.y, e.nativeEvent.offsetX-start.x, e.nativeEvent.offsetY-start.y);
+          }
+          else if(toolName === 'circle'){
+            const a = (e.nativeEvent.offsetX - current.x);
+            const b = (e.nativeEvent.offsetY - current.y)
+            const length = (Math.sqrt((a * a) + (b * b)))
+            const radius = length/2
+            contextRef3.current.arc((current.x + e.nativeEvent.offsetX)/2, (current.y + e.nativeEvent.offsetY)/2, radius,0, 2 * Math.PI);
+            contextRef3.current.stroke();
+          }
+          else{
+            contextRef3.current.moveTo(current.x,current.y)
+            contextRef3.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+            contextRef3.current.stroke();
+          }
+          
+        }
       };
   
       const onMouseUp = (e) => {
         console.log(isDrawing, toolName, current.x, current.y)
         if (!drawing) { return; }
+        contextRef3.current.clearRect(0,0,canvasRef.current.width, canvasRef.current.height)
         drawing = false;
         //here we want to trigger draw for rect, circle, and line
         draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);

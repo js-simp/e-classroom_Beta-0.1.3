@@ -1,4 +1,5 @@
 //this is where we want the classroom to start and janus to get us started!
+//server: 'https://18.216.138.59/janus/'
 import {React, useEffect, useState} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css'
@@ -119,7 +120,7 @@ function StudentAudioBridge(props) {
 				console.log("Initialized Janus")
 				let janus = new Janus(
 					{
-							server: 'https://18.216.138.59/janus/',
+							server: 'https://thovile.com/janus/',
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
 								{ urls: 'turn:18.217.79.41:3478?transport=tcp', credential: 'pass1', username: 'user1' }
