@@ -17,7 +17,7 @@ const Whiteboard = (props) => {
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [toolName, setToolName] = useState("pen");
-  const [emogi, setEmogi] = useState("");
+  const [emogi, setEmogi] = useState("👆");
   const[color,setColor]= useState("");
 
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
@@ -149,6 +149,7 @@ const onImageEvent = (data) => {
 
  const draw = (x0, y0, x1, y1, toolName, color, emit) => {
    console.log(x0,y0,x1,y1)
+  contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   contextRef.current.globalCompositeOperation = "source-over";
   contextRef.current.beginPath();
   contextRef.current.strokeStyle = color;
@@ -179,6 +180,17 @@ const onImageEvent = (data) => {
       contextRef.current.lineTo(x1, y1);
       contextRef.current.stroke();
       contextRef.current.closePath();
+  }
+  else if (toolName === "pointer"){
+      contextRef3.current.moveTo(x0,y0);
+      contextRef3.current.textAlign = 'left';
+      contextRef3.current.font = "50px sans-serif";
+      contextRef3.current.fillText( emogi ,x0, y0);
+      contextRef3.current.fillStyle = "red"; 
+      contextRef3.current.font = "10px sans-serif";
+      contextRef3.current.textAlign = 'left';
+      contextRef3.current.fillText(x1, x0,y0);
+      
   }
   if (!emit) { return; }
 
@@ -231,8 +243,8 @@ const type = (x0,y0,text,color,emit) => {
   const getLine = () => {
   	setToolName("line");
   }
-  const getEmogi = (emogiType) => {
-  	setEmogi(emogiType);
+  const getEmogi = () => {
+  	setToolName('pointer');
   }
 
   const getColor = (color) => {
@@ -291,13 +303,7 @@ const type = (x0,y0,text,color,emit) => {
             contextRef3.current.stroke();
           }
           else{
-            contextRef3.current.moveTo(e.nativeEvent.offsetX,e.nativeEvent.offsetY);
-            contextRef3.current.textAlign = 'center';
-            contextRef3.current.font = "50px sans-serif";
-            // contextRef3.current.fillStyle = color || "black"; 
-            contextRef3.current.fillText( emogi ,e.nativeEvent.offsetX, e.nativeEvent.offsetY - 15);
-            contextRef3.current.font = "10px sans-serif";
-            contextRef3.current.fillText(props.username.split(' ')[0], e.nativeEvent.offsetX,e.nativeEvent.offsetY)
+            draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY, props.username.split(' ')[0] , 0, toolName, current.color, true)
           }
           
         }
@@ -308,7 +314,12 @@ const type = (x0,y0,text,color,emit) => {
         if (!drawing) { return; }
         drawing = false;
         //here we want to trigger draw for rect, circle, and line
-        draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+        if(toolName !== 'pointer'){
+          draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+        }
+        else{
+          contextRef3.current.clearRect(0,0,canvasRef.current.width, canvasRef.current.height)
+        }
       };
 
   // ---------------- keyDown Event --------------------------------------

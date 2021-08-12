@@ -159,6 +159,7 @@ const onTextEvent = (data) => {
 
  const draw = (x0, y0, x1, y1, toolName, color, emit) => {
    console.log(x0,y0,x1,y1)
+  contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   contextRef.current.globalCompositeOperation = "source-over";
   contextRef.current.beginPath();
   contextRef.current.strokeStyle = color;
@@ -189,6 +190,17 @@ const onTextEvent = (data) => {
       contextRef.current.lineTo(x1, y1);
       contextRef.current.stroke();
       contextRef.current.closePath();
+  }
+  else if (toolName === "pointer"){
+      contextRef3.current.moveTo(x0,y0);
+      contextRef3.current.textAlign = 'left';
+      contextRef3.current.font = "50px sans-serif";
+      contextRef3.current.fillText( emogi ,x0, y0);
+      contextRef3.current.fillStyle = "red"; 
+      contextRef3.current.font = "10px sans-serif";
+      contextRef3.current.textAlign = 'left';
+      contextRef3.current.fillText(x1, x0,y0);
+      
   }
   if (!emit) { return; }
 
@@ -303,7 +315,7 @@ const type = (x0,y0,text,color,emit) => {
         }
         current.x = e.nativeEvent.offsetX;
         current.y = e.nativeEvent.offsetY;
-        console.log(current.x, current.y)
+        // console.log(current.x, current.y)
       };
   
       const onMouseMove = (e) => {
@@ -338,26 +350,24 @@ const type = (x0,y0,text,color,emit) => {
             contextRef3.current.stroke();
           }
           else{
-            contextRef3.current.moveTo(e.nativeEvent.offsetX,e.nativeEvent.offsetY);
-            contextRef3.current.textAlign = 'left';
-            contextRef3.current.font = "50px sans-serif";
-            contextRef3.current.fillStyle = "red"; 
-            contextRef3.current.fillText( emogi ,e.nativeEvent.offsetX - 20, e.nativeEvent.offsetY - 20);
-            contextRef3.current.textAlign = 'left';
-            contextRef3.current.font = "10px sans-serif";
-            contextRef3.current.fillText(props.username.split(' ')[0], e.nativeEvent.offsetX,e.nativeEvent.offsetY)
+            draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY, props.username.split(' ')[0] , 0, toolName, current.color, true)
           }
           
         }
       };
   
       const onMouseUp = (e) => {
-        console.log(isDrawing, toolName, current.x, current.y)
+        console.log(drawing, toolName, current.x, current.y)
         if (!drawing) { return; }
-        contextRef3.current.clearRect(0,0,canvasRef.current.width, canvasRef.current.height)
+         //here we want to trigger draw for rect, circle, and line
+          if(toolName !== 'pointer'){
+            draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+          }
+          else{
+            contextRef3.current.clearRect(0,0,canvasRef.current.width, canvasRef.current.height)
+          }
         drawing = false;
-        //here we want to trigger draw for rect, circle, and line
-        draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+       
       };
 
   // ---------------- keyDown Event --------------------------------------
