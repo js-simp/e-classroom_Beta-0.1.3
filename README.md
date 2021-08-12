@@ -1,10 +1,10 @@
 **Sample profile information for login**
-tutor
-username: naveend1
-password: 123654789*q
-student
-username: sampleStudent
-password: passwordS1
+tutor<br>
+username: naveend1<br>
+password: 123654789*q<br>
+student<br>
+username: sampleStudent<br>
+password: passwordS1<br>
 
 **Updates to be done**
 1)passing pointer as socket event
