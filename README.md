@@ -1,12 +1,12 @@
 <h1>Sample profile information for login<br></h1>
-**Tutor**<br>
+<h2>Tutor</h2><br>
 username: naveend1<br>
 password: 123654789*q<br>
-**Student**<br>
+<h2>Student</h2><br>
 username: sampleStudent<br>
 password: passwordS1<br>
 <br>
-**Updates to be done**<br>
+<h2>Updates to be done</h2><br>
 1)passing pointer as socket event<br>
 2)Highlighting the tool selection<br>
 3)setting up a timer in session (1 hour from session launch--- both student and tutor side)<br>
