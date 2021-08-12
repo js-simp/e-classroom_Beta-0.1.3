@@ -362,7 +362,7 @@ const type = (x0,y0,text,color,emit) => {
   return (
     <div>
       <div className = "tool-container">
-      <IconButton>
+        <IconButton>
           <TouchAppIcon onClick={() => {getPointer()}} id="pointer" aria-label = 'pointer' color = 'primary' style = {{'font-size': '40px'}}/>
         </IconButton>
        
