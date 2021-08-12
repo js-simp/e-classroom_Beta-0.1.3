@@ -1,8 +1,8 @@
 **Sample profile information for login**<br>
-tutor<br>
+**Tutor**<br>
 username: naveend1<br>
 password: 123654789*q<br>
-student<br>
+**Student**<br>
 username: sampleStudent<br>
 password: passwordS1<br>
 <br>
