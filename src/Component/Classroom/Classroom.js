@@ -14,8 +14,8 @@ function Classroom(props) {
     const [slides, setSlides] = useState([])
     
     useEffect(()=>{
-        // setSocket(io('http://localhost:5000'))
-        setSocket(io('https://bcend.herokuapp.com'))
+        setSocket(io('http://localhost:5000'))
+        // setSocket(io('https://bcend.herokuapp.com'))
         if(props.role === 'tutor'){
                 console.log(props.lessons) // all the titles
             let LessonSlides = []
