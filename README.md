@@ -1,4 +1,4 @@
-**###Sample profile information for login**
+**Sample profile information for login**
 tutor
 username: naveend1
 password: 123654789*q
