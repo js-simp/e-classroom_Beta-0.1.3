@@ -1,17 +1,17 @@
-**Sample profile information for login**
+**Sample profile information for login**<br>
 tutor<br>
 username: naveend1<br>
 password: 123654789*q<br>
 student<br>
 username: sampleStudent<br>
 password: passwordS1<br>
-
-**Updates to be done**
-1)passing pointer as socket event
-2)Highlighting the tool selection
-3)setting up a timer in session (1 hour from session launch--- both student and tutor side)
-4)Using popover for page slides, to preview the slide when hovered over page button
-5)textbox dynamic length (increasing with text length instead of having a fixed length)
+<br>
+**Updates to be done**<br>
+1)passing pointer as socket event<br>
+2)Highlighting the tool selection<br>
+3)setting up a timer in session (1 hour from session launch--- both student and tutor side)<br>
+4)Using popover for page slides, to preview the slide when hovered over page button<br>
+5)textbox dynamic length (increasing with text length instead of having a fixed length)<br>
 
 # Getting Started with Create React App
 
