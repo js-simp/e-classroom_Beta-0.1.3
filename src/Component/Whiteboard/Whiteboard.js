@@ -3,6 +3,7 @@ import SlidesBar from './SlidesBar';
 import db from '../Firebase/firebase';
 //icons for the whiteboard
 import IconButton from '@material-ui/core/IconButton';
+import TouchAppIcon from '@material-ui/icons/TouchApp';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 import CreateIcon from '@material-ui/icons/Create';
 import CropDinIcon from '@material-ui/icons/CropDin';
@@ -253,7 +254,7 @@ const type = (x0,y0,text,color,emit) => {
   const getLine = () => {
   	setToolName("line");
   }
-  const getEmogi = () => {
+  const getPointer = () => {
   	setToolName("pointer");
   }
 
@@ -428,8 +429,10 @@ const type = (x0,y0,text,color,emit) => {
   return (
     <div>
       <div className = "tool-container">
-        <button onClick={() =>{getEmogi();}} style={{ width:"40px", border:"none" }}>👆</button>
-       
+        <IconButton>
+          <TouchAppIcon onClick={() => {getPointer()}} id="pointer" aria-label = 'pointer' color = 'primary' style = {{'font-size': '40px'}}/>
+        </IconButton>
+        
         <IconButton>
           <Brightness1Icon onClick={() => {getColor('blue')}} id="blue" aria-label = 'color' style = {{'font-size': '40px', 'color': '#4885ed'}}/>
         </IconButton>
