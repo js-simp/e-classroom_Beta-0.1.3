@@ -7,7 +7,7 @@ username: sampleStudent<br>
 password: passwordS1<br>
 <br>
 <h2>Updates to be done</h2><br>
-1)passing pointer as socket event <p style = {{"font-size": "24px"}}>✔️</p><br>
+1)passing pointer as socket event<p style = {{display : "inline","font-size": "24px"}}>✔️</p><br>
 2)Highlighting the tool selection<br>
 3)setting up a timer in session (1 hour from session launch--- both student and tutor side)<br>
 4)Using popover for page slides, to preview the slide when hovered over page button✅<<br>
