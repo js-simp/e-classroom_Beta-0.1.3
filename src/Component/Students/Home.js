@@ -3,6 +3,7 @@ import db from '../Firebase/firebase.js'
 import Sessions from './Sessions'
 import './Home.css'
 import Classroom from '../Classroom/Classroom.js';
+import { DriveEtaTwoTone } from '@material-ui/icons';
 
 // the props for Sesssions component:
 // 
@@ -15,7 +16,7 @@ import Classroom from '../Classroom/Classroom.js';
 function Home(props) {
     const [name, setName] = useState('');
     const [schoolId, setSchoolId] = useState('')
-    const [sessionsInfo, setSessionsInfo] = useState();
+    const [sessionsInfo, setSessionsInfo] = useState([]);
     const [launched, setLaunched] = useState();
 
     const userId = props.user;
@@ -40,7 +41,7 @@ function Home(props) {
     }, [])
 
     // console.log(sessionsInfo.StudentId)
-    if(sessionsInfo != undefined && name !== '' && launched === undefined){
+    if(sessionsInfo.length !== 0 && name !== '' && launched === undefined){
         return (
             <div id = "session-card">
                 <h1 id="tutor-name">Hi {name}</h1>
@@ -58,6 +59,16 @@ function Home(props) {
             
         )
     }
+
+    else if(sessionsInfo.length === 0 && name !== '' && launched === undefined){
+        return(
+            <div id = "session-card">
+                <h1 id = 'tutor-name'>Hi {name}</h1>
+            <h2 id = "no-session-notification">No sessions booked for today</h2>
+            </div>
+        )
+    }
+
     else if(launched !== undefined){
         return(
             <Classroom
