@@ -11,3 +11,11 @@
   margin: 0 auto;
   position: relative;
 }
+
+#no-session-notification {
+  font-family: "Architects Daughter", cursive;
+  font-weight: lighter;
+  margin-top: 15%;
+  text-align: center;
+  font-size: 48px;
+}
