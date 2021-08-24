@@ -12,6 +12,9 @@ password: passwordS1<br>
 3)setting up a timer in session (1 hour from session launch--- both student and tutor side)<br>
 4)Using popover for page slides, to preview the slide when hovered over page button✅<<br>
 5)textbox dynamic length (increasing with text length instead of having a fixed length)<br>
+6)Firebase Authentication for login<br>
+7)Using firebase storage for saving lesson slides and managing access/so that only users can access slides.<br>
+8)admin dashboard for booking sessions, uploading lessons, cancelling sessions and assigning sessions to students<br>
 
 # Getting Started with Create React App
 
