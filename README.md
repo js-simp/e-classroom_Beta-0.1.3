@@ -1,4 +1,4 @@
-<h1>Sample profile information for login<br></h1>
+<h1>Sample Profile information for login<br></h1>
 <h2>Tutor</h2><br>
 username: naveend1<br>
 password: 123654789*q<br>
