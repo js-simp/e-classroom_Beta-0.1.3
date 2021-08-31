@@ -48,7 +48,7 @@ function Classroom(props) {
             });
         }
         
-    })
+    },[])
 
     const username = props.username;
     const sessionId = props.sessionId;

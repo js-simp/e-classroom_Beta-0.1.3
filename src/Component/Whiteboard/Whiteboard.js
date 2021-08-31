@@ -99,7 +99,7 @@ const Whiteboard = (props) => {
         console.log("Current data: ", doc.data());
         setAnnotations(doc.data());
     });
-  });
+  },[]);
 
 
 
