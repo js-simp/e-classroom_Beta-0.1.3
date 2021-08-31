@@ -26,7 +26,6 @@ function Home(props) {
             if (doc.exists) {
                 // console.log("Document data:", doc.data().Info);
                 const info = doc.data().Info;
-                console.log("Sessions:", info.Sessions[0])
                 setSessionsInfo(info.Sessions)
                 setName(info.Name);
             } else {
