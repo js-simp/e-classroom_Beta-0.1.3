@@ -4,6 +4,7 @@ import Whiteboard from '../Whiteboard/Whiteboard';
 import WhiteboardStudent from '../Whiteboard/WhiteboardStudent';
 import StudentAudioBridge from '../Students/AudioBridge'
 import db from '../Firebase/firebase.js'
+import firebase from 'firebase';
 import LinearProgress from '@material-ui/core/LinearProgress'
 import io from 'socket.io-client';
 import Chatbox from '../Chatbox/Chatbox';
@@ -17,7 +18,6 @@ function Classroom(props) {
         // setSocket(io('http://localhost:5000'))
         setSocket(io('https://bcend.herokuapp.com'))
         if(props.role === 'tutor'){
-                console.log(props.lessons) // all the titles
             let LessonSlides = []
             let lessons = props.lessons;
             lessons.forEach(item => {
@@ -49,17 +49,14 @@ function Classroom(props) {
         }
         
     }, [])
-    // const username = localStorage.getItem('username');
-    // const sessionId = localStorage.getItem('sessionId');
-    // const role = localStorage.getItem('role');
 
     const username = props.username;
     const sessionId = props.sessionId;
     const role = props.role;
+    const startTime = props.epoch;
+    const launchTime = firebase.firestore.Timestamp.now().seconds;
     
-    console.log(`You are ${username} and you have started session ${sessionId}`)
     if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
-        console.log(slides, typeof(slides), slides.length);
         return (
             <div>
                 <AudioBridge 
@@ -71,7 +68,7 @@ function Classroom(props) {
                         username = {username}
                         sessionId = {sessionId}
                         socket = {socket}/>
-                    </div>
+                    </div> 
                     <div className = 'whiteboard'>
                         <Whiteboard
                         sessionId = {sessionId}

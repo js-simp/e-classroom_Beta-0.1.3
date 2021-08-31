@@ -3,9 +3,6 @@ import Tutor from '../Component/Tutors/Home'
 import Student from '../Component/Students/Home'
 
 const Home = (props) => {
-  // const role = localStorage.getItem('role');
-  // const userId = localStorage.getItem('UserId');
-  // console.log(role);
   if(props.role === "tutor"){
     return (
       <div>

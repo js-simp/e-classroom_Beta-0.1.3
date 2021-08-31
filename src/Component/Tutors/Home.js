@@ -69,6 +69,7 @@ function Home(props) {
             sessionId = {launched.sessionId}
             lessons = {launched.lessons}
             username = {name}
+            epoch = {launched.startTime}
             role = 'tutor'
         />
         )
