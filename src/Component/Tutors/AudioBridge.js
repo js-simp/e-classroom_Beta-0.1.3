@@ -63,7 +63,6 @@ function createRoom(roomId, username){
 function joinRoom(roomId, username){
 	let names = username.split(' ');
 	let firstname = names[0];
-	console.log("Ready to join room " + roomId + 'baby!!')
 	//creating the request to join the room
 	const joinReq = {
         "request" : "join",
@@ -89,7 +88,6 @@ function microphoneMeter(stream){
 
 	analyser.fftSize = 2048;
 	let bufferLength = analyser.frequencyBinCount;
-	console.log(bufferLength);
 	let dataArray = new Uint8Array(bufferLength);
 	
 
@@ -141,7 +139,6 @@ function AudioBridge(props) {
 
 	let webrtcUp = false;
 	useEffect(() => {
-		console.log(`Hi ${props.username} you are ready to launch ${props.sessionId} for student ${props.studentId}` )
 	Janus.init({
 		debug: true,
 		callback: function() {
@@ -282,7 +279,6 @@ function AudioBridge(props) {
 	
 	return(
 		<div>
-			<h1>Here is the classroom</h1>
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {

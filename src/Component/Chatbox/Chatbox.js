@@ -23,7 +23,6 @@ const Chatbox = (props) => {
         if(messageArray.length !== 0){
             // document.getElementsByClassName('irc-message').lastChild.scrollIntoView({ behavior: "smooth" });
             document.getElementsByClassName('irc-message')[messageArray.length].scrollIntoView({behavior: 'smooth'})
-            console.log(document.getElementsByClassName('irc-message')[messageArray.length])
         }
         
     }, [messageArray])
@@ -83,14 +82,12 @@ const Chatbox = (props) => {
         let msg = {};
         if(type === 'key'){
             if(event.key === 'Enter'){
-                console.log(event.target.value)
                 msg.message = event.target.value;
                 event.target.value = null;
             }
         }
         else if(type === 'button'){
             let txt = document.getElementById('irc-Entrybox')
-            console.log(txt.value);
             msg.message = txt.value;
         }
         else{
