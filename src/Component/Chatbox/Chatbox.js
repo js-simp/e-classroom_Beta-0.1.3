@@ -45,7 +45,7 @@ const Chatbox = (props) => {
                 }).catch((error) => {
                     console.log("Error getting document:", error);
                 });
-    }, []);
+    },[]);
 
 
     const chatlist = messageArray.map((item, index) => {
