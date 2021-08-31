@@ -51,7 +51,7 @@ const Login = () => {
                 </div>
                 <hr className = 'hr-line'></hr>
                 <div className = 'wrapper'>
-                    <p className = 'welcome-text'>Welcome to Cloud LearnX Platform</p>
+                    <p className = 'welcome-text'>Welcome to Cloud LearnX</p>
                 </div>
                 <form onSubmit={(e)=>{e.preventDefault();}}>
                     <div className="wrapper wrapper-form">
