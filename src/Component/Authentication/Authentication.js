@@ -11,7 +11,6 @@ export default class Authentication {
 
     //Login
     async userLoginFunction(userName,userPassword, setLogged) {
-      //  console.log(userName,userPassword);
 
         try{
         var docRef = await db.collection("Logins").doc(`${userName}`);
