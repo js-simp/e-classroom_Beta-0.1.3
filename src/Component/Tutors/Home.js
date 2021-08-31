@@ -36,7 +36,7 @@ function Home(props) {
             console.log("Error getting document:", error);
         });
 
-    }, [])
+    })
 
     // console.log(sessionsInfo.StudentId)
     if(sessionsInfo !== undefined && name !== '' && launched === undefined){

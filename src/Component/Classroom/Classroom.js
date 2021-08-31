@@ -48,13 +48,11 @@ function Classroom(props) {
             });
         }
         
-    }, [])
+    })
 
     const username = props.username;
     const sessionId = props.sessionId;
     const role = props.role;
-    const startTime = props.epoch;
-    const launchTime = firebase.firestore.Timestamp.now().seconds;
     
     if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
         return (
