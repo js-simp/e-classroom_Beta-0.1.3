@@ -18,10 +18,9 @@ import './Whiteboard.css';
 
 const Whiteboard = (props) => {
 
-  const [isDrawing, setIsDrawing] = useState(false);
   const [toolName, setToolName] = useState("pen");
-  const [emogi, setEmogi] = useState("👆");
-  const[color,setColor]= useState("");
+  const emogi = "👆";
+  const color = "";
 
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
   const [keyStartPoint, setKeyStartPoint] = useState([0,0])
@@ -100,7 +99,7 @@ const Whiteboard = (props) => {
         console.log("Current data: ", doc.data());
         setAnnotations(doc.data());
     });
-  }, []);
+  });
 
 
 

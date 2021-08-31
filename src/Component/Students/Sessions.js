@@ -19,7 +19,7 @@ function Sessions(props) {
                         {props.Time}
                     </div>
                     <div className="card-block__name">
-                        <a className="student-profile" href="#">{props.Name}  {props.StudentId}</a>
+                        <a className="student-profile" href = "#">{props.Name}  {props.StudentId}</a>
                         {props.Date}
                     </div>
                     <div className="card-block__school-name">
