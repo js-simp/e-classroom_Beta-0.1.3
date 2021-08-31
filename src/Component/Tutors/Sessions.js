@@ -32,7 +32,7 @@ function Sessions(props) {
             console.log("Error getting document:", error);
         });
 
-    }, [])
+    })
 
     if(studentInfo){
         return (

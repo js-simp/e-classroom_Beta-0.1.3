@@ -3,7 +3,6 @@ import db from '../Firebase/firebase.js'
 import Sessions from './Sessions'
 import './Home.css'
 import Classroom from '../Classroom/Classroom.js';
-import { DriveEtaTwoTone } from '@material-ui/icons';
 
 // the props for Sesssions component:
 // 
@@ -38,7 +37,7 @@ function Home(props) {
             console.log("Error getting document:", error);
         });
 
-    }, [])
+    })
 
     // console.log(sessionsInfo.StudentId)
     if(sessionsInfo.length !== 0 && name !== '' && launched === undefined){
