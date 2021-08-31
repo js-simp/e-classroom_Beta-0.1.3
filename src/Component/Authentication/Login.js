@@ -34,7 +34,6 @@ const Login = () => {
        // console.log("isgmail",isgmail);
         if(lenUser !== 0 && lenPass!== 0)
         { 
-       console.log(loginData.user,loginData.pass);
         var obj =  new  AuthLogin();
         obj.userLoginFunction(username,password, setLogged);
     }else{
