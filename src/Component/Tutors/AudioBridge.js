@@ -3,10 +3,19 @@ import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
 
+let server = null;
+if(window.location.protocol === 'http:'){
+	server = "http://" + '3.19.219.16' + ":8088/janus";
+}
+        
+else{
+	server = "https://" + '3.19.219.16' + ":8088/janus/";
+}
 
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let analyser = audioCtx.createAnalyser();
+
 
 let source = null;
 let canvasMeter = null;
@@ -146,7 +155,7 @@ function AudioBridge(props) {
 				console.log("Initialized Janus")
 				let janus = new Janus(
 					{
-							server: 'https://thovile.com/janus/',
+							server: server,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
 								{ urls: 'turn:18.217.79.41:3478?transport=tcp', credential: 'pass1', username: 'user1' }
