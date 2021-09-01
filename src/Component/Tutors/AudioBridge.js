@@ -9,7 +9,7 @@ if(window.location.protocol === 'http:'){
 }
         
 else{
-	server = "https://" + '3.19.219.16' + ":8088/janus/";
+	server = "https://" + '3.19.219.16' + "/janus/";
 }
 
 let audioBridge = null;
