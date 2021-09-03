@@ -3,10 +3,10 @@ import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
 
-
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let analyser = audioCtx.createAnalyser();
+
 
 let source = null;
 let canvasMeter = null;
