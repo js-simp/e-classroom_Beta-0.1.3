@@ -162,6 +162,7 @@ const onTextEvent = (data) => {
   contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   contextRef.current.globalCompositeOperation = "source-over";
   contextRef.current.beginPath();
+  contextRef.current.lineWidth = 1;
   contextRef.current.strokeStyle = color;
   if (toolName === "pen") {
     contextRef.current.moveTo(x0, y0);
