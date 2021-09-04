@@ -1,11 +1,3 @@
-<h1>Sample profile information for login<br></h1>
-<h2>Tutor</h2><br>
-username: naveend1<br>
-password: 123654789*q<br>
-<h2>Student</h2><br>
-username: sampleStudent<br>
-password: passwordS1<br>
-<br>
 <h2>Updates to be done</h2><br>
 1)passing pointer as socket event✅<br>
 2)Highlighting the tool selection<br>
@@ -61,7 +53,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ### Code Splitting
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
 ### Analyzing the Bundle Size
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
