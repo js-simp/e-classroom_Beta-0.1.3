@@ -41,7 +41,6 @@ const Login = () => {
     }
     }
 
-
     if(!logged.loggedIn && window.sessionStorage.getItem('role') === null){
     return (
         <div className = 'container'>
