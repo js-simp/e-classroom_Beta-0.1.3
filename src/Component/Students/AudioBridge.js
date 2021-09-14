@@ -117,7 +117,7 @@ function StudentAudioBridge(props) {
 				console.log("Initialized Janus")
 				let janus = new Janus(
 					{
-							server: 'https://thovile.com/janus/',
+							server: process.env.REACT_APP_JANUS_SERVER,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
 								{ urls: 'turn:18.217.79.41:3478?transport=tcp', credential: 'pass1', username: 'user1' }
