@@ -477,6 +477,25 @@ const type = (x0,y0,text,color,emit) => {
           id = "overlay"
           ref={canvasRef}
         />
+        <TextareaAutosize
+           minRows={1}
+           maxRows={6}
+           aria-label="empty textarea" 
+           placeholder=""
+           id="textbox"
+           onKeyDown={drawText}
+           style = {{
+             position : "absolute",
+             visibility :`${inputBox}`,
+             left:`${keyStartPoint[0]}px`,
+             top:`${keyStartPoint[1]}px`,
+             pointerEvents: `${disableInput}`
+           }}
+           onBlur = {(e) => {
+            drawText(e,true)
+           }}
+        />
+        {/*
         <input 
         type = "text"
         id = "textbox"
@@ -491,7 +510,7 @@ const type = (x0,y0,text,color,emit) => {
         onBlur = {(e) => {
            drawText(e,true)
           }}
-        ></input>
+        ></input>*/}
         <canvas id="images"
           ref={canvasRef2}
         />
