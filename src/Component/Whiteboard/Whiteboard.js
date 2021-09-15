@@ -234,6 +234,27 @@ const type = (x0,y0,text,color,emit) => {
 
 }
 
+// ---------------- keyDown Event --------------------------------------
+function drawText(event, blur = false){
+  console.log(event.target.value, current.x, current.y)
+  console.log(blur)
+  console.log(event.keyCode);
+  
+//when Enter is pressed the text is drawn on canvas
+//and the input field is set to hidden
+if(event.key === "Enter" || blur === true){
+  if(event.key === "Enter"){
+    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
+    type(current.x, current.y, event.target.value, color, true)
+  }
+  else{
+    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
+    type(oldStartPoint[0], oldStartPoint[1],event.target.value,color,true)
+  }
+  
+  event.target.value = ""
+}
+}
 
   //when click the eraser button set tool name as a "eraser"
   const getEraser = () => {
@@ -262,29 +283,34 @@ const type = (x0,y0,text,color,emit) => {
   const getColor = (color) => {
   	current.color = color;
   }
+  
   const GrowingInput = () => {
-    const [width, setWidth] = useState(0);
+    const [width, setWidth] = useState(1);
     
     const changeHandler = evt => {
       setWidth(evt.target.value.length);
     };
    
-    return (
-      <input 
+    return (  
+    <input 
+      id="textbox"
       type="text" 
-      autoFocus onChange={changeHandler}
+      onChange={changeHandler}
+      autoFocus
       onKeyDown ={drawText}
-          style = {{
-            width: width + 'ch',
-          	position : "absolute",
-            visibility :`${inputBox}`,
-            left:`${keyStartPoint[0]}px`,
-    				top:`${keyStartPoint[1]}px`,
-            pointerEvents: `${disableInput}`
-          }}
-        onBlur = {(e) => {
-           drawText(e,true)
-          }} />
+        style = {{
+          width: width + 'ch',
+          position : "absolute",
+          visibility :`${inputBox}`,
+          left:`${keyStartPoint[0]}px`,
+          top:`${keyStartPoint[1]}px`,
+          pointerEvents: `${disableInput}`
+        }}
+    onBlur = {(e) => {
+      drawText(e,true)
+      //console.log('blue event')
+    }}
+    />
     )
   }
 
@@ -400,26 +426,31 @@ const type = (x0,y0,text,color,emit) => {
        
       };
 
-  // ---------------- keyDown Event --------------------------------------
-  function drawText(event, blur = false){
-      console.log(event.target.value, current.x, current.y)
-    	console.log(blur)
-      console.log(event.keyCode);
-      
-    //when Enter is pressed the text is drawn on canvas
-    //and the input field is set to hidden
-    if(event.key === "Enter" || blur === true){
-      if(event.key === "Enter"){
-        setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
-        type(current.x, current.y, event.target.value, color, true)
-      }
-      else{
-        type(oldStartPoint[0], oldStartPoint[1],event.target.value,color,true)
-      }
-      
-      event.target.value = ""
-    }
-  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //--------------load lessons into slide bar --------------------------------
   const loadLessons = () =>{
     return(
