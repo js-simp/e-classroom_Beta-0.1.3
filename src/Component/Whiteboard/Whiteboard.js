@@ -12,10 +12,10 @@ import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUnch
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import TextareaAutosize from 'react-textarea-autosize';
-
-
+import AutowidthInput from "react-autowidth-input";
 
 import './Whiteboard.css';
+
 
 const Whiteboard = (props) => {
 
@@ -46,7 +46,7 @@ const Whiteboard = (props) => {
   const canvasRef3 = useRef(null);
   const contextRef3 = useRef(null);
 
-
+  //const { useState, useRef, useEffect } = React;
 
   useEffect(() => {
 
@@ -262,6 +262,34 @@ const type = (x0,y0,text,color,emit) => {
   const getColor = (color) => {
   	current.color = color;
   }
+  const GrowingInput = () => {
+    const [width, setWidth] = useState(0);
+    
+    const changeHandler = evt => {
+      setWidth(evt.target.value.length);
+    };
+   
+    return (
+      <input 
+      type="text" 
+      autoFocus onChange={changeHandler}
+      onKeyDown ={drawText}
+          style = {{
+            width: width + 'ch',
+          	position : "absolute",
+            visibility :`${inputBox}`,
+            left:`${keyStartPoint[0]}px`,
+    				top:`${keyStartPoint[1]}px`,
+            pointerEvents: `${disableInput}`
+          }}
+        onBlur = {(e) => {
+           drawText(e,true)
+          }} />
+    )
+  }
+
+
+  
 
 
 //new annotaitons [[], []]
@@ -426,7 +454,6 @@ const type = (x0,y0,text,color,emit) => {
     };
   };
 
-
   return (
     <div>
       <div className = "tool-container">
@@ -478,24 +505,7 @@ const type = (x0,y0,text,color,emit) => {
           id = "overlay"
           ref={canvasRef}
         />
-        <TextareaAutosize
-           minRows={1}
-           maxRows={6}
-           aria-label="empty textarea" 
-           placeholder=""
-           id="textbox"
-           onKeyDown={drawText}
-           style = {{
-             position : "absolute",
-             visibility :`${inputBox}`,
-             left:`${keyStartPoint[0]}px`,
-             top:`${keyStartPoint[1]}px`,
-             pointerEvents: `${disableInput}`
-           }}
-           onBlur = {(e) => {
-            drawText(e,true)
-           }}
-        />
+        <GrowingInput />
         {/*
         <input 
         type = "text"
@@ -529,5 +539,7 @@ const type = (x0,y0,text,color,emit) => {
   );
 }
 
+
 export default Whiteboard;
+
 
