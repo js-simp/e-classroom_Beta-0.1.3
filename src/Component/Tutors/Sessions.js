@@ -1,6 +1,10 @@
 import { Button, LinearProgress } from '@material-ui/core';
-import {React, useState, useEffect} from 'react'
+import { PinDropSharp } from '@material-ui/icons';
+import { render } from '@testing-library/react';
+import {React, useState, useEffect, Component} from 'react'
 import db from '../Firebase/firebase'
+import CountDown from '../Timer/timer';
+import Whiteboard from '../Whiteboard/Whiteboard';
 import './Sessions.css';
 
 // the props will be:
@@ -15,8 +19,9 @@ import './Sessions.css';
 function Sessions(props) {
 
     const [studentInfo, setStudentInfo] = useState();
-
-
+    var today = Math.round((new Date()).getTime() / 1000);
+    //const ref = db.collection('Tutors').doc('000423');
+    <Whiteboard textn="thevan"/>
     useEffect(() => {
         let docRef = db.collection('Students').doc(`${props.StudentId}`)
         docRef.get().then((doc) => {
@@ -31,13 +36,11 @@ function Sessions(props) {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-
     },[])
 
     if(studentInfo){
         return (
             <div className =  "session-card-block">
-            
                 {/* ----------------------------------------This is is the title bar section ----------------------------------------------------------------------------------- */}
                 <div className="title-bar">
                     <div className="card-block__time">
@@ -74,7 +77,7 @@ function Sessions(props) {
                     <div className="card-block__button-wrapper">
                         <div id="learning-session-1857904-button" className="with-tooltip" title="You are currently not able to launch this session as no student has been assigned
                             yet or the session is not within 10 minutes of the start time">
-                        <Button className="button button--small button--rewards-board button--hard-disable" variant="contained" color="primary"
+                        <Button id="buttonses" className="button button--small button--rewards-board button--hard-disable" variant="contained" color="primary"
                         data-session-start="1625488200"
                         onClick ={
                             () =>         
@@ -84,6 +87,14 @@ function Sessions(props) {
                                 'lessons' : props.Lessons,
                                 'startTime' : props.epoch
                         });
+                        console.log(today);
+                        console.log(props.epoch);
+                        let final = today - props.epoch
+                        const final2 = final - (2*final)
+                        
+                        console.log(final);
+                        console.log(final2);
+                        
                         }
                         }
                             
@@ -113,8 +124,6 @@ function Sessions(props) {
         )
     }
         
-    }
-
-    
+}
 
 export default Sessions
