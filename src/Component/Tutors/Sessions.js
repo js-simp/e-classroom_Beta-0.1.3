@@ -91,9 +91,11 @@ function Sessions(props) {
                         console.log(props.epoch);
                         let final = today - props.epoch
                         const final2 = final - (2*final)
+                        const final3 = final2/60
                         
                         console.log(final);
                         console.log(final2);
+                        console.log(final3);
                         
                         }
                         }
