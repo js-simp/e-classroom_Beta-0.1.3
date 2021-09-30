@@ -11,11 +11,9 @@ import StopIcon from '@material-ui/icons/Stop';
 import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import TextareaAutosize from 'react-textarea-autosize';
-import AutowidthInput from "react-autowidth-input";
 
 import './Whiteboard.css';
-
+import CountDown from '../Timer/timer';
 
 const Whiteboard = (props) => {
 
@@ -83,7 +81,7 @@ const Whiteboard = (props) => {
     canvas3.height = 600;
     canvas3.style.width = "800px";
     canvas3.style.height = "600px";
-    
+  
     const context3 = canvas3.getContext("2d");
     //style the drawing point
     context3.scale(1, 1);//pointer size
@@ -427,6 +425,10 @@ if(event.key === "Enter" || blur === true){
       }
     };
   };
+
+  let onTimesup = () => {
+    alert(`Time's up!`)
+  }
 
   return (
     <div>
