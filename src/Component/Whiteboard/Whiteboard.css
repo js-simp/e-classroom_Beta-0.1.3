@@ -58,7 +58,7 @@ canvas {
 #textbox {
   z-index: 3;
   background: transparent;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: bold;
   line-height: 30px;
   font-size: 20px;
@@ -75,11 +75,10 @@ canvas {
   justify-content: space-evenly;
 }
 
-
 input {
   z-index: 3;
   background: transparent;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: bold;
   line-height: 20px;
   font-size: 20px;
