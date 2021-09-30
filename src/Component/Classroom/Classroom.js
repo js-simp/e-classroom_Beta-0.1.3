@@ -17,7 +17,7 @@ function Classroom(props) {
     useEffect(()=>{
         // setSocket(io('http://localhost:5000'))
         // setSocket(io('https://bcend.herokuapp.com'))
-        setSocket(io('https://cloudlearnx-socket-server.herokuapp.com/'))
+        setSocket(io(process.env.REACT_APP_SOCKET_SERVER))
         if(props.role === 'tutor'){
             let LessonSlides = []
             let lessons = props.lessons;
