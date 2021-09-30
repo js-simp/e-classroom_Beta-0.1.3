@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@material-ui/core';
 
-// the props will be:
+// the props will be :
 // props.Name : students name
 // props.StudentId : students id
 //props.SessionId : session Id for the call
