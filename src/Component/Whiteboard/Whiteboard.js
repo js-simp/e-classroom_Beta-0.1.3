@@ -136,8 +136,8 @@ const Whiteboard = (props) => {
 useEffect(() => {
   if (toolName === "text") {
     
-    wbData.current.x = keyStartPoint[0]
-    wbData.current.y = keyStartPoint[1]
+    current.x = keyStartPoint[0]
+    current.y = keyStartPoint[1]
   }
 }, [keyStartPoint])
 
@@ -151,10 +151,10 @@ const onTextEvent = (data) => {
 }
   
 
-  const wbData = useRef({color : "black"});
-  // const current = {
-  //   color: 'black',
-  // };
+  
+  const current = {
+    color: 'black',
+  };
   let drawing = false;
    // ------------------------------- create the drawing ----------------------------
 
@@ -218,7 +218,7 @@ const onTextEvent = (data) => {
 // ------------------------------- create the text ----------------------------
 const type = (x0,y0,text,color,emit) => {
   console.log("we are typing " + text + "here:" + x0 + y0)
-  contextRef.current.font = "25px sans-serif"
+  contextRef.current.font = "bold 20px sans-serif"
   contextRef.current.textBaseline = "top"
   contextRef.current.fillStyle = color;          
   contextRef.current.fillText(text,x0, y0)
@@ -236,7 +236,7 @@ const type = (x0,y0,text,color,emit) => {
 
 // ---------------- keyDown Event --------------------------------------
 function drawText(event, blur = false){
-  console.log(event.target.value, wbData.current.x, wbData.current.y)
+  console.log(event.target.value, current.x, current.y)
   console.log(blur)
   console.log(event.keyCode);
   
@@ -244,13 +244,12 @@ function drawText(event, blur = false){
 //and the input field is set to hidden
 if(event.key === "Enter" || blur === true){
   if(event.key === "Enter"){
-    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 25]);
-    // type(current.x, current.y, event.target.value, current.color, true)
-    type(wbData.current.x, wbData.current.y, event.target.value, wbData.current.color, true)
+    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
+    type(current.x, current.y, event.target.value, color, true)
   }
   else{
-    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 25]);
-    type(oldStartPoint[0], oldStartPoint[1],event.target.value,wbData.current.color,true)
+    setKeyStartPoint([keyStartPoint[0], keyStartPoint[1] + 20]);
+    type(oldStartPoint[0], oldStartPoint[1],event.target.value,color,true)
   }
   
   event.target.value = ""
@@ -282,9 +281,42 @@ if(event.key === "Enter" || blur === true){
   }
 
   const getColor = (color) => {
-  	wbData.current.color = color;
+  	current.color = color;
   }
   
+  const GrowingInput = () => {
+    const [width, setWidth] = useState(1);
+    
+    const changeHandler = evt => {
+      setWidth(evt.target.value.length);
+    };
+   
+    return (  
+    <input 
+      id="textbox"
+      type="text" 
+      onChange={changeHandler}
+      autoFocus
+      onKeyDown ={drawText}
+        style = {{
+          width: width + 'ch',
+          position : "absolute",
+          visibility :`${inputBox}`,
+          left:`${keyStartPoint[0]}px`,
+          top:`${keyStartPoint[1]}px`,
+          pointerEvents: `${disableInput}`
+        }}
+    onBlur = {(e) => {
+      drawText(e,true)
+      //console.log('blue event')
+    }}
+    />
+    )
+  }
+
+
+  
+
 
 //new annotaitons [[], []]
   const  getSlide = (lessonTitle , buttonindexID) => {
@@ -337,8 +369,8 @@ if(event.key === "Enter" || blur === true){
           setOldStartPoint([keyStartPoint[0], keyStartPoint[1]])
           setKeyStartPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY])
         }
-        wbData.current.x = e.nativeEvent.offsetX;
-        wbData.current.y = e.nativeEvent.offsetY;
+        current.x = e.nativeEvent.offsetX;
+        current.y = e.nativeEvent.offsetY;
         // console.log(current.x, current.y)
       };
   
@@ -348,9 +380,9 @@ if(event.key === "Enter" || blur === true){
         }
         //here we  want to trigger draw for pen and eraser
         if(toolName === "pen" || toolName === "eraser"){
-          draw(wbData.current.x, wbData.current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, wbData.current.color, true);
-          wbData.current.x = e.nativeEvent.offsetX;
-          wbData.current.y = e.nativeEvent.offsetY;
+          draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
+          current.x = e.nativeEvent.offsetX;
+          current.y = e.nativeEvent.offsetY;
         }
         else if(toolName === 'rect' || toolName === 'line' || toolName === 'circle' || toolName === 'pointer'){
           contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
@@ -358,34 +390,34 @@ if(event.key === "Enter" || blur === true){
           contextRef3.current.beginPath();
           contextRef3.current.strokeStyle = color;
           if(toolName === 'rect'){
-            contextRef3.current.strokeRect(wbData.current.x, wbData.current.y, e.nativeEvent.offsetX-wbData.current.x, e.nativeEvent.offsetY-wbData.current.y);
+            contextRef3.current.strokeRect(current.x, current.y, e.nativeEvent.offsetX-current.x, e.nativeEvent.offsetY-current.y);
           }
           else if(toolName === 'circle'){
-            const a = (e.nativeEvent.offsetX - wbData.current.x);
-            const b = (e.nativeEvent.offsetY - wbData.current.y)
+            const a = (e.nativeEvent.offsetX - current.x);
+            const b = (e.nativeEvent.offsetY - current.y)
             const length = (Math.sqrt((a * a) + (b * b)))
             const radius = length/2
-            contextRef3.current.arc((wbData.current.x + e.nativeEvent.offsetX)/2, (wbData.current.y + e.nativeEvent.offsetY)/2, radius,0, 2 * Math.PI);
+            contextRef3.current.arc((current.x + e.nativeEvent.offsetX)/2, (current.y + e.nativeEvent.offsetY)/2, radius,0, 2 * Math.PI);
             contextRef3.current.stroke();
           }
           else if (toolName === 'line'){
-            contextRef3.current.moveTo(wbData.current.x,wbData.current.y)
+            contextRef3.current.moveTo(current.x,current.y)
             contextRef3.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
             contextRef3.current.stroke();
           }
           else{
-            draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY, props.username.split(' ')[0] , 0, toolName, wbData.current.color, true)
+            draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY, props.username.split(' ')[0] , 0, toolName, current.color, true)
           }
           
         }
       };
   
       const onMouseUp = (e) => {
-        console.log(drawing, toolName, wbData.current.x, wbData.current.y)
+        console.log(drawing, toolName, current.x, current.y)
         if (!drawing) { return; }
          //here we want to trigger draw for rect, circle, and line
           if(toolName !== 'pointer'){
-            draw(wbData.current.x, wbData.current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, wbData.current.color, true);
+            draw(current.x, current.y, e.nativeEvent.offsetX, e.nativeEvent.offsetY, toolName, current.color, true);
           }
           else{
             contextRef3.current.clearRect(0,0,canvasRef.current.width, canvasRef.current.height)
@@ -393,6 +425,31 @@ if(event.key === "Enter" || blur === true){
         drawing = false;
        
       };
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //--------------load lessons into slide bar --------------------------------
   const loadLessons = () =>{
@@ -479,17 +536,14 @@ if(event.key === "Enter" || blur === true){
           id = "overlay"
           ref={canvasRef}
         />
-        {/* <GrowingInput /> */}
-        
+        <GrowingInput />
+        {/*
         <input 
         type = "text"
         id = "textbox"
-        onKeyPress= {(e) =>
-          {e.target.style.width = (e.target.value.length + 1) + 'ch'}}
         onKeyDown ={drawText}
           style = {{
           	position : "absolute",
-            width : "1" + 'ch',
             visibility :`${inputBox}`,
             left:`${keyStartPoint[0]}px`,
     				top:`${keyStartPoint[1]}px`,
@@ -498,7 +552,7 @@ if(event.key === "Enter" || blur === true){
         onBlur = {(e) => {
            drawText(e,true)
           }}
-        ></input>
+        ></input>*/}
         <canvas id="images"
           ref={canvasRef2}
         />
