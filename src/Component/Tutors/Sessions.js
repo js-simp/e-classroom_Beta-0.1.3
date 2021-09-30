@@ -5,6 +5,7 @@ import {React, useState, useEffect, Component} from 'react'
 import db from '../Firebase/firebase'
 import CountDown from '../Timer/timer';
 import Whiteboard from '../Whiteboard/Whiteboard';
+import Classroom from '../Classroom/Classroom.js';
 import './Sessions.css';
 
 // the props will be:
@@ -19,7 +20,7 @@ import './Sessions.css';
 function Sessions(props) {
 
     const [studentInfo, setStudentInfo] = useState();
-    var today = Math.round((new Date()).getTime() / 1000);
+    //var today = Math.round((new Date()).getTime() / 1000);
     //const ref = db.collection('Tutors').doc('000423');
     <Whiteboard textn="thevan"/>
     useEffect(() => {
@@ -87,16 +88,15 @@ function Sessions(props) {
                                 'lessons' : props.Lessons,
                                 'startTime' : props.epoch
                         });
-                        console.log(today);
-                        console.log(props.epoch);
-                        let final = today - props.epoch
-                        const final2 = final - (2*final)
-                        const final3 = final2/60
+                        //console.log(today);
+                        //console.log(props.epoch);
+                        //let final = today - props.epoch
+                        //const final2 = final - (2*final)
+                        //const final3 = final2/60
                         
-                        console.log(final);
-                        console.log(final2);
-                        console.log(final3);
-                        
+                        //console.log(final);
+                        //console.log(final2);
+                        //console.log(final3);
                         }
                         }
                             
@@ -114,7 +114,6 @@ function Sessions(props) {
                     </div>
                     </div>
                 </div>
-             
             </div>
                 )
     }

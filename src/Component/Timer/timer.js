@@ -1,39 +1,37 @@
-import React from 'react';
+import React from 'react'
+import { useState, useEffect } from 'react';
 
-export default class CountDown extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: props.duration ? props.duration : 5,
-        }
-    }
-    componentDidMount() {
-        this.timer = setInterval(() => {
-            let { count } = this.state;
-            this.setState({
-                count: count - 1
-            })
-        }, 1000)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.count !== this.state.count && this.state.count === 0) {
-            clearInterval(this.timer);
-            if (this.props.onTimesup) {
-                this.props.onTimesup();
+const Timer = (props) => {
+    const {initialMinute = 0,initialSeconds = 0} = props;
+    const [ minutes, setMinutes ] = useState(initialMinute);
+    const [seconds, setSeconds ] =  useState(initialSeconds);
+    useEffect(()=>{
+    let myInterval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
             }
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(myInterval)
+                } else {
+                    setMinutes(minutes - 1);
+                    setSeconds(59);
+                }
+            } 
+        }, 1000)
+        return ()=> {
+            clearInterval(myInterval);
+          };
+    });
+
+    return (
+        <div>
+        { minutes === 0 && seconds === 0
+            ? null
+            : <h1> {minutes}:{seconds < 10 ?  `0${seconds}` : seconds}</h1> 
         }
-    }
-
-    fmtMSS(s) { return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s }
-
-
-    render() {
-        let { count } = this.state;
-        return (
-            <>
-                {this.fmtMSS(count)}
-            </>
-        )
-    }
+        </div>
+    )
 }
+
+export default Timer;

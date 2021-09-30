@@ -542,9 +542,6 @@ if(event.key === "Enter" || blur === true){
       <div className = 'slides-bar'>
         {loadLessons()}
       </div>
-      
-
-      
       </div>
       
     </div>
