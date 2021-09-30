@@ -518,5 +518,3 @@ if(event.key === "Enter" || blur === true){
 
 
 export default Whiteboard;
-
-

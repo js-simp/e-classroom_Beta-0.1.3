@@ -18,7 +18,7 @@ function Home(props) {
     const [sessionsInfo, setSessionsInfo] = useState();
     const userId = props.user;
     const [launched, setLaunched] = useState();
-    
+
     useEffect(() => {
         let docRef = db.collection("Tutors").doc(`${userId}`);
         //query the sessions that are on that particular day

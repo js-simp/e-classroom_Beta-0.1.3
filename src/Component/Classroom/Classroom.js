@@ -13,7 +13,7 @@ import './Classroom.css'
 function Classroom(props) {
     const [socket, setSocket] = useState()
     const [slides, setSlides] = useState([])
-    
+      
     useEffect(()=>{
         // setSocket(io('http://localhost:5000'))
         // setSocket(io('https://bcend.herokuapp.com'))
@@ -54,6 +54,24 @@ function Classroom(props) {
     const username = props.username;
     const sessionId = props.sessionId;
     const role = props.role;
+    const epoch = props.epoch;
+    var today = Math.round((new Date()).getTime() / 1000);
+
+    console.log(today);
+    console.log(epoch);
+    let final = today - epoch
+    const final2 = final - (2*final)
+    const final3 = Math.floor(final2/60);
+                        
+    console.log(final);
+    console.log(final2);
+    console.log(final3);
+
+    const [counter, setCounter] = useState(final2);
+
+    useEffect(() => {
+        counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+      }, [counter]);
     
     if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
         return (
@@ -76,6 +94,10 @@ function Classroom(props) {
                         lessonTitles = {props.lessons}
                         socket = {socket}/>
                     </div>
+                    
+                    <h1>{final3}</h1>
+
+                    {/*<div>Countdown: {counter}</div>*/}
                 </div>
             </div>
         )
