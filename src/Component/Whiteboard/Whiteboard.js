@@ -281,7 +281,7 @@ if(event.key === "Enter" || blur === true){
   const getColor = (color) => {
   	current.color = color;
   }
-  
+  {/*
   const GrowingInput = () => {
     const [width, setWidth] = useState(1);
     
@@ -310,7 +310,7 @@ if(event.key === "Enter" || blur === true){
     }}
     />
     )
-  }
+  }*/}
 
 
   
@@ -514,7 +514,25 @@ if(event.key === "Enter" || blur === true){
           id = "overlay"
           ref={canvasRef}
         />
-        <GrowingInput />
+        {/*<GrowingInput />*/}
+        <input 
+        type = "text"
+        id = "textbox"
+        onKeyPress= {(e) =>
+          {e.target.style.width = (e.target.value.length + 1) + 'ch'}}
+        onKeyDown ={drawText}
+          style = {{
+          	position : "absolute",
+            width : "1" + 'ch',
+            visibility :`${inputBox}`,
+            left:`${keyStartPoint[0]}px`,
+    				top:`${keyStartPoint[1]}px`,
+            pointerEvents: `${disableInput}`
+          }}
+        onBlur = {(e) => {
+           drawText(e,true)
+          }}
+        ></input>
         {/*
         <input 
         type = "text"
