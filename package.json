@@ -46,6 +46,5 @@
     ]
   },
   "devDependencies": {
-    "react-auto-width": "^0.1.0"
   }
 }
