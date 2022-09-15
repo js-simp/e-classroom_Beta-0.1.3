@@ -106,6 +106,7 @@ function microphoneMeter(stream){
 function StudentAudioBridge(props) {
 	const roomId = props.sessionId;
 	const username = props.username;
+	let isMute = false;
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
 
 	let webrtcUp = false;
@@ -234,6 +235,13 @@ function StudentAudioBridge(props) {
 	
 	return(
 		<div>
+			<button onClick = {() => {
+				isMute = !isMute;
+				audioBridge.send({ message: { request: "configure", muted: isMute }}
+				)
+				console.log(audioBridge.isAudioMuted())
+			} 
+				}>Mute</button>
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {
