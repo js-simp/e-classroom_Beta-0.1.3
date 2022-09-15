@@ -48,8 +48,9 @@ function createRoom(roomId, username){
         "sampling_rate" : 16000,
         "audiolevel_ext" : true,
         "audiolevel_event" : false,
-		"recording" : true,
-		"record_file" : "1234.wav"
+		"record" : true,
+		"record_file" : roomId + ".wav",
+		"record_dir" : "/opt/janus/share/janus/recordings/"
 		
 }
 	//send the create request as a message to the plugin (audioBridge)
@@ -233,7 +234,8 @@ function AudioBridge(props) {
 																			media: { audio: true, video: false },	// This is an audio only room
 																			success: function(jsep) {
 																				Janus.debug("Got SDP!", jsep);
-																				var publish = { request: "configure", muted: false };
+																				// var t = roomId + username + Date.now();
+																				var publish = { request: "configure",  muted: false };
 																				audioBridge.send({ message: publish, jsep: jsep });
 																			},
 																			error: function(error) {
