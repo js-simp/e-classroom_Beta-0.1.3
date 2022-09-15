@@ -165,10 +165,6 @@ function AudioBridge(props) {
 														if(sessionStatus === 'end'){
 															janus.destroy()
 														}
-														if(isMute){
-															audioBridge.muteAudio()
-															console.log(`The mute status of audio is : ${audioBridge.isAudioMuted()}`)
-														}
 														
 														/*We are going to check if the room with roomId is available
 														if not we create the room using createRoom(), if the room
