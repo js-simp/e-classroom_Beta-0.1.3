@@ -120,7 +120,7 @@ function StudentAudioBridge(props) {
 							server: process.env.REACT_APP_JANUS_SERVER,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
-								{ urls: 'turn:18.217.79.41:3478?transport=tcp', credential: 'pass1', username: 'user1' }
+								{ urls: 'turn:34.82.146.117:3478?transport=tcp', credential: 'turnclx', username: 'turnuser' }
 							],
 							success: function() {
 									// Done! attach to plugin XYZ
