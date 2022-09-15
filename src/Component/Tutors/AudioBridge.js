@@ -1,4 +1,5 @@
 //this is where we want the classroom to start and janus to get us started!
+import { SystemUpdateTwoTone } from '@material-ui/icons';
 import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
@@ -133,6 +134,7 @@ function microphoneMeter(stream){
 function AudioBridge(props) {
 	const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
+	let isMute = false;
 	const roomId = props.sessionId;
 	const username = props.username;
 	const studentId = props.studentId;
@@ -163,6 +165,11 @@ function AudioBridge(props) {
 														if(sessionStatus === 'end'){
 															janus.destroy()
 														}
+														if(isMute){
+															audioBridge.muteAudio()
+															console.log(`The mute status of audio is : ${audioBridge.isAudioMuted()}`)
+														}
+														
 														/*We are going to check if the room with roomId is available
 														if not we create the room using createRoom(), if the room
 														exists we'll simply join the room
@@ -279,6 +286,13 @@ function AudioBridge(props) {
 	
 	return(
 		<div>
+			<button onClick = {() => {
+				isMute = !isMute;
+				audioBridge.send({ message: { request: "configure", muted: isMute }}
+				)
+				console.log(audioBridge.isAudioMuted())
+			} 
+				}>Mute</button>
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {
