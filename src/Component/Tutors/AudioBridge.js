@@ -47,7 +47,10 @@ function createRoom(roomId, username){
         "is_private" : true,
         "sampling_rate" : 16000,
         "audiolevel_ext" : true,
-        "audiolevel_event" : false
+        "audiolevel_event" : false,
+		"recording" : true,
+		"record_file" : "1234.wav"
+		
 }
 	//send the create request as a message to the plugin (audioBridge)
 	audioBridge.send({
@@ -60,6 +63,21 @@ function createRoom(roomId, username){
 
 }
 
+function destroyRoom(roomId){
+	let room = parseInt(roomId)
+	const destroyReq = {
+		"request" : "destroy",
+        "room" : room,
+	}
+
+	audioBridge.send({
+		message : destroyReq,
+		success : function(response) {
+			// alert("Destroyed the room");
+			console.log(response);
+		}
+	})
+}
 
 function joinRoom(roomId, username){
 	let names = username.split(' ');
@@ -282,7 +300,7 @@ function AudioBridge(props) {
 	
 	return(
 		<div>
-			<button onClick = {() => {
+			<button class="speaker" onClick = {() => {
 				isMute = !isMute;
 				audioBridge.send({ message: { request: "configure", muted: isMute }}
 				)
@@ -310,7 +328,10 @@ function AudioBridge(props) {
 			</div>
 			<button
 			onClick = {
-				()=> setSessionStatus('end')
+				()=> {
+					destroyRoom(roomId);
+					// setSessionStatus('end')
+				}
 			}
 			>
 			End Session
