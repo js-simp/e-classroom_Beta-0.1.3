@@ -121,7 +121,8 @@ function StudentAudioBridge(props) {
 							server: process.env.REACT_APP_JANUS_SERVER,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
-								{ urls: 'turn:34.82.146.117:3478?transport=tcp', credential: 'turnclx', username: 'turnuser' }
+								{ urls: 'turn:openrelay.metered.ca:443?transport=tcp', credential: 'openrelayproject', username: 'openrelayproject' },
+								{ urls: 'turn:openrelay.metered.ca:443', credential: 'openrelayproject', username: 'openrelayproject' }
 							],
 							success: function() {
 									// Done! attach to plugin XYZ
