@@ -50,7 +50,7 @@ function createRoom(roomId, username){
         "audiolevel_event" : false,
 		"record" : true,
 		"record_file" : roomId + ".wav",
-		"record_dir" : "/opt/janus/share/janus/recordings/"
+		"record_dir" : "/home/noobimplementsjs/clx-assets/"
 		
 }
 	//send the create request as a message to the plugin (audioBridge)
