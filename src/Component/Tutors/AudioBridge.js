@@ -49,7 +49,7 @@ function createRoom(roomId, username){
         "audiolevel_ext" : true,
         "audiolevel_event" : false,
 		"record" : true,
-		"record_file" :  "1234.wav",
+		"record_file" :  roomId + ".wav",
 		"record_dir" : "/home/noobimplementsjs/clx-assets/"
 		
 }
