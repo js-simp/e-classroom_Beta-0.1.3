@@ -163,9 +163,9 @@ function AudioBridge(props) {
 														// Plugin attached! 'pluginHandle' is our handle
 														console.log(`We've succesfully attached ${pluginHandle.getPlugin()}`)
 														audioBridge = pluginHandle;
-														if(sessionStatus === 'end'){
-															janus.destroy()
-														}
+														// if(sessionStatus === 'end'){
+														// 	janus.destroy()
+														// }
 														
 														/*We are going to check if the room with roomId is available
 														if not we create the room using createRoom(), if the room
@@ -237,6 +237,7 @@ function AudioBridge(props) {
 															else if(event === "destroyed") {
 																// The room has been destroyed
 																Janus.warn("The room has been destroyed!");
+																janus.destroy();
 															}
 														}
 
@@ -279,7 +280,7 @@ function AudioBridge(props) {
 					});
 		}
 		});
-	}, [sessionStatus])
+	}, [])
 	
 	return(
 		<div>
