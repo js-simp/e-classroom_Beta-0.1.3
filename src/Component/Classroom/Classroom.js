@@ -41,12 +41,28 @@ function Classroom(props) {
                     console.log("Error getting document:", error);
                 });
             });
-            //initiating array for annotations
-            lessons.forEach(item => {
-                db.collection("Sessions").doc(`${props.sessionId}`).update({
-                    [item]: {}
-                });
+
+            //Getting the sessions doc, and checking whether annotations are available
+            db.collection('Sessions').get(`${props.sessionId}`).then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    console.log(docSnapshot);
+                } else {
+                    console.log("Session not launched before!");
+                    //initiating array for annotations
+                    lessons.forEach(item => {
+                        db.collection("Sessions").doc(`${props.sessionId}`).update({
+                            [item]: {}
+                        });
+                    });
+                    //adding session to launched
+                    const res = db.collection('Launched').doc(`${props.sessionId}`).set({
+                        Launched: true,
+                      });
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
             });
+            
         }
         
     },[])
