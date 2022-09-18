@@ -60,6 +60,22 @@ function createRoom(roomId, username){
 
 }
 
+function destroyRoom(roomId){
+	let room = parseInt(roomId)
+	const destroyReq = {
+		"request" : "destroy",
+        "room" : room,
+	}
+
+	audioBridge.send({
+		message : destroyReq,
+		success : function(response) {
+			// alert("Destroyed the room");
+			console.log(response);
+		}
+	})
+}
+
 
 function joinRoom(roomId, username){
 	let names = username.split(' ');
@@ -312,7 +328,7 @@ function AudioBridge(props) {
 			</div>
 			<button
 			onClick = {
-				()=> setSessionStatus('end')
+				()=> destroyRoom(roomId)
 			}
 			>
 			End Session
