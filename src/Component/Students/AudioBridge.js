@@ -241,11 +241,11 @@ function StudentAudioBridge(props) {
 	let button;
 	if (isMute) {
 		button = <IconButton>
-					<MicOffOutlined onClick={() => {toggleMute();}} />
+					<MicOffOutlined onClick={() => {toggleMute();}} style = {{'font-size': '35px', 'color': '#db3236'}}  />
 				</IconButton>
 	  } else {
-		button = <IconButton>
-					<MicOutlined onClick={() => {toggleMute();}} />
+		button = <IconButton color = 'primary'>
+					<MicOutlined onClick={() => {toggleMute();}} style = {{'font-size': '35px'}} />
 				</IconButton>
 	  }
 
