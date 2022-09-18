@@ -71,62 +71,61 @@ function Classroom(props) {
     const sessionId = props.sessionId;
     const role = props.role;
     
-    // if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
-    //     return (
-    //         <div>
-    //             <AudioBridge 
-    //             username = {username}
-    //             sessionId = {sessionId}/>
-    //             <div className = 'interaction-area'>
-    //                 <div className = 'chatbox'>
-    //                 <Chatbox
-    //                     username = {username}
-    //                     sessionId = {sessionId}
-    //                     socket = {socket}/>
-    //                 </div> 
-    //                 <div className = 'whiteboard'>
-    //                     <Whiteboard
-    //                     sessionId = {sessionId}
-    //                     username = {username}
-    //                     lessonSlides = {slides}
-    //                     lessonTitles = {props.lessons}
-    //                     socket = {socket}/>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     )
-    // }
-    // else if(role === "student" && socket !== undefined){
-    //     return(
-    //         <div>
-    //             <StudentAudioBridge
-    //             username = {username}
-    //             sessionId = {sessionId}/>
-    //             <div className = 'interaction-area'>
-    //                 <div className = 'chatbox'>
-    //                     <Chatbox
-    //                         username = {username}
-    //                         sessionId = {sessionId}
-    //                         socket = {socket}/>
-    //                 </div>
-    //                 <div className = 'whiteboard'>
-    //                     <WhiteboardStudent
-    //                     username = {username}
-    //                     sessionId = {sessionId}
-    //                     socket = {socket}/>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     )
-    // }
-    // else{
-        return(
+    if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
+        return (
             <div>
-                {/* <LinearProgress /> */}
-                <p>Testing</p>
+                <AudioBridge 
+                username = {username}
+                sessionId = {sessionId}/>
+                <div className = 'interaction-area'>
+                    <div className = 'chatbox'>
+                    <Chatbox
+                        username = {username}
+                        sessionId = {sessionId}
+                        socket = {socket}/>
+                    </div> 
+                    <div className = 'whiteboard'>
+                        <Whiteboard
+                        sessionId = {sessionId}
+                        username = {username}
+                        lessonSlides = {slides}
+                        lessonTitles = {props.lessons}
+                        socket = {socket}/>
+                    </div>
+                </div>
             </div>
         )
-    // }
+    }
+    else if(role === "student" && socket !== undefined){
+        return(
+            <div>
+                <StudentAudioBridge
+                username = {username}
+                sessionId = {sessionId}/>
+                <div className = 'interaction-area'>
+                    <div className = 'chatbox'>
+                        <Chatbox
+                            username = {username}
+                            sessionId = {sessionId}
+                            socket = {socket}/>
+                    </div>
+                    <div className = 'whiteboard'>
+                        <WhiteboardStudent
+                        username = {username}
+                        sessionId = {sessionId}
+                        socket = {socket}/>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    else{
+        return(
+            <div>
+                <LinearProgress />
+            </div>
+        )
+    }
     
 }
 
