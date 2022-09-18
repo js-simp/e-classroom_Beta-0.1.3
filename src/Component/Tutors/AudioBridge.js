@@ -1,8 +1,11 @@
 //this is where we want the classroom to start and janus to get us started!
 import { SystemUpdateTwoTone } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import { MicOutlined, MicOffOutlined } from '@material-ui/icons';
 import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
+import { red } from '@material-ui/core/colors';
 
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -150,7 +153,7 @@ function microphoneMeter(stream){
 function AudioBridge(props) {
 	// const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
-	let isMute = false;
+	const [isMute,setIsMute] = useState(false);
 	const roomId = props.sessionId;
 	const username = props.username;
 	const studentId = props.studentId;
@@ -297,16 +300,27 @@ function AudioBridge(props) {
 		}
 		});
 	}, [])
+
+	//implementing mic button conditional rendering
+	let button;
+	if (isMute) {
+		button = <IconButton>
+					<MicOffOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px', 'color': '#db3236'}}  />
+				</IconButton>
+	  } else {
+		button = <IconButton color = 'primary'>
+					<MicOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px'}}  />
+				</IconButton>
+	  }
+
+	function toggleMute() {
+		audioBridge.send({ message: { request: "configure", muted: !isMute }}); //sending message that mic has been unmuted
+		setIsMute(!isMute);
+	}
 	
 	return(
 		<div>
-			<button onClick = {() => {
-				isMute = !isMute;
-				audioBridge.send({ message: { request: "configure", muted: isMute }}
-				)
-				console.log(audioBridge.isAudioMuted())
-			} 
-				}>Mute</button>
+			{button}
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {
