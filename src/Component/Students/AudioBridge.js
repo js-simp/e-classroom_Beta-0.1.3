@@ -192,6 +192,7 @@ function StudentAudioBridge(props) {
 															else if(event === "destroyed") {
 																// The room has been destroyed
 																Janus.warn("The room has been destroyed!");
+																janus.destroy();
 															}
 														}
 

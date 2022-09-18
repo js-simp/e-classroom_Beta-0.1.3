@@ -60,6 +60,22 @@ function createRoom(roomId, username){
 
 }
 
+function destroyRoom(roomId){
+	let room = parseInt(roomId)
+	const destroyReq = {
+		"request" : "destroy",
+        "room" : room,
+	}
+
+	audioBridge.send({
+		message : destroyReq,
+		success : function(response) {
+			// alert("Destroyed the room");
+			console.log(response);
+		}
+	})
+}
+
 
 function joinRoom(roomId, username){
 	let names = username.split(' ');
@@ -132,7 +148,7 @@ function microphoneMeter(stream){
 
 //The main audiobridge component
 function AudioBridge(props) {
-	const [sessionStatus, setSessionStatus] = useState('running')
+	// const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
 	let isMute = false;
 	const roomId = props.sessionId;
@@ -163,9 +179,9 @@ function AudioBridge(props) {
 														// Plugin attached! 'pluginHandle' is our handle
 														console.log(`We've succesfully attached ${pluginHandle.getPlugin()}`)
 														audioBridge = pluginHandle;
-														if(sessionStatus === 'end'){
-															janus.destroy()
-														}
+														// if(sessionStatus === 'end'){
+														// 	janus.destroy()
+														// }
 														
 														/*We are going to check if the room with roomId is available
 														if not we create the room using createRoom(), if the room
@@ -237,6 +253,7 @@ function AudioBridge(props) {
 															else if(event === "destroyed") {
 																// The room has been destroyed
 																Janus.warn("The room has been destroyed!");
+																janus.destroy();
 															}
 														}
 
@@ -279,7 +296,7 @@ function AudioBridge(props) {
 					});
 		}
 		});
-	}, [sessionStatus])
+	}, [])
 	
 	return(
 		<div>
@@ -311,7 +328,7 @@ function AudioBridge(props) {
 			</div>
 			<button
 			onClick = {
-				()=> setSessionStatus('end')
+				()=> destroyRoom(roomId)
 			}
 			>
 			End Session
