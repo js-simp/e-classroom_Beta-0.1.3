@@ -41,12 +41,28 @@ function Classroom(props) {
                     console.log("Error getting document:", error);
                 });
             });
-            //initiating array for annotations
-            lessons.forEach(item => {
-                db.collection("Sessions").doc(`${props.sessionId}`).update({
-                    [item]: {}
-                });
+
+            //Getting the sessions doc, and checking whether annotations are available
+            db.collection('Sessions').get(`${props.sessionId}`).then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    console.log(docSnapshot);
+                } else {
+                    console.log("Session not launched before!");
+                    //initiating array for annotations
+                    lessons.forEach(item => {
+                        db.collection("Sessions").doc(`${props.sessionId}`).update({
+                            [item]: {}
+                        });
+                    });
+                    //adding session to launched
+                    const res = db.collection('Launched').doc(`${props.sessionId}`).set({
+                        Launched: true,
+                      });
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
             });
+            
         }
         
     },[])
@@ -55,61 +71,62 @@ function Classroom(props) {
     const sessionId = props.sessionId;
     const role = props.role;
     
-    if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
-        return (
-            <div>
-                <AudioBridge 
-                username = {username}
-                sessionId = {sessionId}/>
-                <div className = 'interaction-area'>
-                    <div className = 'chatbox'>
-                    <Chatbox
-                        username = {username}
-                        sessionId = {sessionId}
-                        socket = {socket}/>
-                    </div> 
-                    <div className = 'whiteboard'>
-                        <Whiteboard
-                        sessionId = {sessionId}
-                        username = {username}
-                        lessonSlides = {slides}
-                        lessonTitles = {props.lessons}
-                        socket = {socket}/>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-    else if(role === "student" && socket !== undefined){
+    // if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
+    //     return (
+    //         <div>
+    //             <AudioBridge 
+    //             username = {username}
+    //             sessionId = {sessionId}/>
+    //             <div className = 'interaction-area'>
+    //                 <div className = 'chatbox'>
+    //                 <Chatbox
+    //                     username = {username}
+    //                     sessionId = {sessionId}
+    //                     socket = {socket}/>
+    //                 </div> 
+    //                 <div className = 'whiteboard'>
+    //                     <Whiteboard
+    //                     sessionId = {sessionId}
+    //                     username = {username}
+    //                     lessonSlides = {slides}
+    //                     lessonTitles = {props.lessons}
+    //                     socket = {socket}/>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
+    // else if(role === "student" && socket !== undefined){
+    //     return(
+    //         <div>
+    //             <StudentAudioBridge
+    //             username = {username}
+    //             sessionId = {sessionId}/>
+    //             <div className = 'interaction-area'>
+    //                 <div className = 'chatbox'>
+    //                     <Chatbox
+    //                         username = {username}
+    //                         sessionId = {sessionId}
+    //                         socket = {socket}/>
+    //                 </div>
+    //                 <div className = 'whiteboard'>
+    //                     <WhiteboardStudent
+    //                     username = {username}
+    //                     sessionId = {sessionId}
+    //                     socket = {socket}/>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
+    // else{
         return(
             <div>
-                <StudentAudioBridge
-                username = {username}
-                sessionId = {sessionId}/>
-                <div className = 'interaction-area'>
-                    <div className = 'chatbox'>
-                        <Chatbox
-                            username = {username}
-                            sessionId = {sessionId}
-                            socket = {socket}/>
-                    </div>
-                    <div className = 'whiteboard'>
-                        <WhiteboardStudent
-                        username = {username}
-                        sessionId = {sessionId}
-                        socket = {socket}/>
-                    </div>
-                </div>
+                {/* <LinearProgress /> */}
+                <p>Testing</p>
             </div>
         )
-    }
-    else{
-        return(
-            <div>
-                <LinearProgress />
-            </div>
-        )
-    }
+    // }
     
 }
 
