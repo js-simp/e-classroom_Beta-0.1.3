@@ -5,6 +5,7 @@ import { MicOutlined, MicOffOutlined } from '@material-ui/icons';
 import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
+import { red } from '@material-ui/core/colors';
 
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -304,11 +305,11 @@ function AudioBridge(props) {
 	let button;
 	if (isMute) {
 		button = <IconButton>
-					<MicOffOutlined onClick={() => {toggleMute();}} />
+					<MicOffOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px', 'color': '#db3236'}}  />
 				</IconButton>
 	  } else {
-		button = <IconButton>
-					<MicOutlined onClick={() => {toggleMute();}} />
+		button = <IconButton color = 'primary'>
+					<MicOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px'}}  />
 				</IconButton>
 	  }
 
