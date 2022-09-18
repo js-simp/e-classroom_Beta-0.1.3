@@ -150,7 +150,7 @@ function microphoneMeter(stream){
 function AudioBridge(props) {
 	// const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
-	let isMute = false;
+	const [isMute,setIsMute] = useState(false);
 	const roomId = props.sessionId;
 	const username = props.username;
 	const studentId = props.studentId;
@@ -301,7 +301,7 @@ function AudioBridge(props) {
 	return(
 		<div>
 			<button onClick = {() => {
-				isMute = !isMute;
+				setIsMute(!isMute)
 				audioBridge.send({ message: { request: "configure", muted: isMute }}
 				)
 				console.log(audioBridge.isAudioMuted())
