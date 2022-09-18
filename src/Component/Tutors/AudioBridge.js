@@ -132,7 +132,7 @@ function microphoneMeter(stream){
 
 //The main audiobridge component
 function AudioBridge(props) {
-	const [sessionStatus, setSessionStatus] = useState('running')
+	// const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
 	let isMute = false;
 	const roomId = props.sessionId;
