@@ -10,7 +10,9 @@ import './Login.css'
 
 const Login = () => {
     const [type, setType] = useState("password");
-    const [logged, setLogged] = useState({'loggedIn' : false});
+    const [logged, setLogged] = useState({loggedIn : false, role: 'tutor'});
+    // const [auth, setAuth] = useState(false);
+    const [user, setUser] = useState('')
     const [err, setErr] = useState("");
    
     const [loginData, setLoginData] = useState({
@@ -35,13 +37,13 @@ const Login = () => {
         if(lenUser !== 0 && lenPass!== 0)
         { 
         var obj =  new  AuthLogin();
-        obj.userLoginFunction(username,password, setLogged);
+        obj.userLoginFunction(username,password, setLogged, setUser);
     }else{
         setErr("Error !");  
     }
     }
 
-    if(!logged.loggedIn && window.sessionStorage.getItem('role') === null){
+    if(!logged.loggedIn){
     return (
         <div className = 'container'>
             <div className = 'card-block'>
@@ -88,22 +90,23 @@ const Login = () => {
     );
     }
     //this is for loading homepage when page is refreshed once user has logged in
-    else if(window.sessionStorage.getItem('role') !== null){
-        let role = window.sessionStorage.getItem('role');
-        let UserId = window.sessionStorage.getItem('UserId')
-        return(
-            <Home
-            role = {role}
-            userId = {UserId}
-            />
-        )
-    }
+    // else if(window.sessionStorage.getItem('role') !== null){
+    //     let role = window.sessionStorage.getItem('role');
+    //     let UserId = window.sessionStorage.getItem('UserId')
+    //     return(
+    //         <Home
+    //         role = {role}
+    //         userId = {UserId}
+    //         />
+    //     )
+    // }
     else{
         return(
-            <Home
-            role = {logged.role}
-            userId = {logged.UserId}
-            />
+            // <Home
+            // role = {logged.role}
+            // userId = {logged.UserId}
+            // />
+            <p>Hello `${user}`</p>
         )
     }
 }
