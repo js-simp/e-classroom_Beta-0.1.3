@@ -1,7 +1,11 @@
 //this is where we want the classroom to start and janus to get us started!
+import { SystemUpdateTwoTone } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import { MicOutlined, MicOffOutlined } from '@material-ui/icons';
 import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
+import { red } from '@material-ui/core/colors';
 
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -57,6 +61,22 @@ function createRoom(roomId, username){
 		}
 	})
 
+}
+
+function destroyRoom(roomId){
+	let room = parseInt(roomId)
+	const destroyReq = {
+		"request" : "destroy",
+        "room" : room,
+	}
+
+	audioBridge.send({
+		message : destroyReq,
+		success : function(response) {
+			// alert("Destroyed the room");
+			console.log(response);
+		}
+	})
 }
 
 
@@ -131,8 +151,9 @@ function microphoneMeter(stream){
 
 //The main audiobridge component
 function AudioBridge(props) {
-	const [sessionStatus, setSessionStatus] = useState('running')
+	// const [sessionStatus, setSessionStatus] = useState('running')
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
+	const [isMute,setIsMute] = useState(false);
 	const roomId = props.sessionId;
 	const username = props.username;
 	const studentId = props.studentId;
@@ -149,7 +170,8 @@ function AudioBridge(props) {
 							server: process.env.REACT_APP_JANUS_SERVER,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
-								{ urls: 'turn:34.82.146.117:3478?transport=tcp', credential: 'turnclx', username: 'turnuser' }
+								{ urls: 'turn:openrelay.metered.ca:443?transport=tcp', credential: 'openrelayproject', username: 'openrelayproject' },
+								{ urls: 'turn:openrelay.metered.ca:443', credential: 'openrelayproject', username: 'openrelayproject' }
 							],
 							success: function() {
 									// Done! attach to plugin XYZ
@@ -160,9 +182,10 @@ function AudioBridge(props) {
 														// Plugin attached! 'pluginHandle' is our handle
 														console.log(`We've succesfully attached ${pluginHandle.getPlugin()}`)
 														audioBridge = pluginHandle;
-														if(sessionStatus === 'end'){
-															janus.destroy()
-														}
+														// if(sessionStatus === 'end'){
+														// 	janus.destroy()
+														// }
+														
 														/*We are going to check if the room with roomId is available
 														if not we create the room using createRoom(), if the room
 														exists we'll simply join the room
@@ -233,6 +256,7 @@ function AudioBridge(props) {
 															else if(event === "destroyed") {
 																// The room has been destroyed
 																Janus.warn("The room has been destroyed!");
+																janus.destroy();
 															}
 														}
 
@@ -275,10 +299,28 @@ function AudioBridge(props) {
 					});
 		}
 		});
-	}, [sessionStatus])
+	}, [])
+
+	//implementing mic button conditional rendering
+	let button;
+	if (isMute) {
+		button = <IconButton>
+					<MicOffOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px', 'color': '#db3236'}}  />
+				</IconButton>
+	  } else {
+		button = <IconButton color = 'primary'>
+					<MicOutlined onClick={() => {toggleMute();}}  style = {{'font-size': '35px'}}  />
+				</IconButton>
+	  }
+
+	function toggleMute() {
+		audioBridge.send({ message: { request: "configure", muted: !isMute }}); //sending message that mic has been unmuted
+		setIsMute(!isMute);
+	}
 	
 	return(
 		<div>
+			{button}
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {
@@ -300,7 +342,7 @@ function AudioBridge(props) {
 			</div>
 			<button
 			onClick = {
-				()=> setSessionStatus('end')
+				()=> destroyRoom(roomId)
 			}
 			>
 			End Session

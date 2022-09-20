@@ -1,6 +1,8 @@
 //this is where we want the classroom to start and janus to get us started!
 //server: 'https://18.216.138.59/janus/'
 import {React, useEffect, useState} from 'react'
+import IconButton from '@material-ui/core/IconButton';
+import { MicOutlined, MicOffOutlined } from '@material-ui/icons';
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css'
 
@@ -106,6 +108,7 @@ function microphoneMeter(stream){
 function StudentAudioBridge(props) {
 	const roomId = props.sessionId;
 	const username = props.username;
+	const [isMute,setIsMute] = useState(false);
 	const [connectionStatus, setConnectionStatus] = useState(['block', 0.5, 'none'])
 
 	let webrtcUp = false;
@@ -120,7 +123,8 @@ function StudentAudioBridge(props) {
 							server: process.env.REACT_APP_JANUS_SERVER,
 							iceServers: [
 								{ urls: 'stun:stun.l.google.com:19302' },
-								{ urls: 'turn:34.82.146.117:3478?transport=tcp', credential: 'turnclx', username: 'turnuser' }
+								{ urls: 'turn:openrelay.metered.ca:443?transport=tcp', credential: 'openrelayproject', username: 'openrelayproject' },
+								{ urls: 'turn:openrelay.metered.ca:443', credential: 'openrelayproject', username: 'openrelayproject' }
 							],
 							success: function() {
 									// Done! attach to plugin XYZ
@@ -190,6 +194,7 @@ function StudentAudioBridge(props) {
 															else if(event === "destroyed") {
 																// The room has been destroyed
 																Janus.warn("The room has been destroyed!");
+																janus.destroy();
 															}
 														}
 
@@ -232,8 +237,27 @@ function StudentAudioBridge(props) {
 		});
 	}, [])
 	
+	//implementing mic button conditional rendering
+	let button;
+	if (isMute) {
+		button = <IconButton>
+					<MicOffOutlined onClick={() => {toggleMute();}} style = {{'font-size': '35px', 'color': '#db3236'}}  />
+				</IconButton>
+	  } else {
+		button = <IconButton color = 'primary'>
+					<MicOutlined onClick={() => {toggleMute();}} style = {{'font-size': '35px'}} />
+				</IconButton>
+	  }
+
+	function toggleMute() {
+		audioBridge.send({ message: { request: "configure", muted: !isMute }}); //sending message that mic has been unmuted
+		setIsMute(!isMute);
+	}
+
+
 	return(
 		<div>
+			{button}
 			<canvas id = "microphoneMeter" width = "100" height = "33"/>
 			<div class="audio-status-symbol" id="audio-connected-symbol"
 			style = {
