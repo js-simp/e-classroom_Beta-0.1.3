@@ -61,7 +61,7 @@ userLoginFunction(username, password, logInStatus, setUser) {
       //set logInStatus hook in App.js to true and render Summary page
       if(response.data.success){
         // props.logInStatus(true)
-        logInStatus({'loggedIn': true, 'role' : response.data.role})
+        logInStatus({'loggedIn': true, 'role' : response.data.role, 'UserId' : response.data.userId})
         setUser(username)
       }
     });
@@ -76,7 +76,7 @@ userGetFunction(logInStatus, setUser) {
     .then(function (response){
       if(response.data){
         console.log(response.data);
-      logInStatus({'loggedIn' : true, 'role' : response.data.role})
+      logInStatus({'loggedIn' : true, 'role' : response.data.role, 'UserId' : response.data.userId})
       setUser(response.data.username)
       }
       else{
