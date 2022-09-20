@@ -1,3 +1,4 @@
+import { responsiveFontSizes } from '@material-ui/core';
 import axios from 'axios'
 import db from "../Firebase/firebase";
 
@@ -60,12 +61,44 @@ userLoginFunction(username, password, logInStatus, setUser) {
       //set logInStatus hook in App.js to true and render Summary page
       if(response.data.success){
         // props.logInStatus(true)
-        logInStatus({'loggedIn': true, 'role' : 'tutor'})
+        logInStatus({'loggedIn': true, 'role' : response.data.role})
         setUser(username)
       }
     });
 }
 
+userGetFunction(logInStatus, setUser) {
+  axios({
+    method : 'get',
+    url : 'http://localhost:5000/getuser',
+    withCredentials: true
+  })
+    .then(function (response){
+      if(response.data){
+        console.log(response.data);
+      logInStatus({'loggedIn' : true, 'role' : response.data.role})
+      setUser(response.data.username)
+      }
+      else{
+      logInStatus({'loggedIn' : false})
+      }
+    })
 }
+
+userLogoutFunction(logInStatus) {
+  axios({
+    method : 'post',
+    url : 'http://localhost:5000/logout',
+    withCredentials : true
+  })
+  .then(function (response){
+    console.log('Successfully logged out');
+    logInStatus({'loggedIn' : false});
+    window.location.reload()
+  })
+}
+
+}
+
 
 

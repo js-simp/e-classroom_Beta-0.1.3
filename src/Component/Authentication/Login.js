@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -10,7 +10,7 @@ import './Login.css'
 
 const Login = () => {
     const [type, setType] = useState("password");
-    const [logged, setLogged] = useState({loggedIn : false, role: 'tutor'});
+    const [logged, setLogged] = useState({loggedIn : false});
     // const [auth, setAuth] = useState(false);
     const [user, setUser] = useState('')
     const [err, setErr] = useState("");
@@ -18,6 +18,11 @@ const Login = () => {
     const [loginData, setLoginData] = useState({
     user :"",pass:""
     });
+
+    useEffect(()=> {
+        let sess = new AuthLogin();
+        sess.userGetFunction(setLogged, setUser);
+    }, [])
    
     const showPassword = (e) => {
         setErr("");  
@@ -36,11 +41,16 @@ const Login = () => {
        // console.log("isgmail",isgmail);
         if(lenUser !== 0 && lenPass!== 0)
         { 
-        var obj =  new  AuthLogin();
+        let obj =  new  AuthLogin();
         obj.userLoginFunction(username,password, setLogged, setUser);
     }else{
         setErr("Error !");  
     }
+    }
+
+    const logOut=()=>{
+        let log = new AuthLogin();
+        log.userLogoutFunction(setLogged);
     }
 
     if(!logged.loggedIn){
@@ -89,24 +99,17 @@ const Login = () => {
         </div>
     );
     }
-    //this is for loading homepage when page is refreshed once user has logged in
-    // else if(window.sessionStorage.getItem('role') !== null){
-    //     let role = window.sessionStorage.getItem('role');
-    //     let UserId = window.sessionStorage.getItem('UserId')
-    //     return(
-    //         <Home
-    //         role = {role}
-    //         userId = {UserId}
-    //         />
-    //     )
-    // }
     else{
         return(
-            // <Home
-            // role = {logged.role}
-            // userId = {logged.UserId}
-            // />
-            <p>Hello `${user}`</p>
+            <div>
+                 <Button onClick={logOut}>LogOut</Button>
+                 <Home
+                    role = {logged.role}
+                    userId = {logged.UserId}
+                />
+            </div>
+            
+           
         )
     }
 }
