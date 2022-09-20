@@ -11,7 +11,7 @@ userLoginFunction(username, password, logInStatus, setUser) {
   console.log(username, password)
   axios({
     method: 'post',
-    url: 'http://localhost:5000/login',
+    url: `${process.env.REACT_APP_AUTH_SERVER}/login`,
     data: {
       username: username,
       password: password
@@ -33,7 +33,7 @@ userLoginFunction(username, password, logInStatus, setUser) {
 userGetFunction(logInStatus, setUser) {
   axios({
     method : 'get',
-    url : 'http://localhost:5000/getuser',
+    url : `${process.env.REACT_APP_AUTH_SERVER}/getuser`,
     withCredentials: true
   })
     .then(function (response){
@@ -51,7 +51,7 @@ userGetFunction(logInStatus, setUser) {
 userLogoutFunction(logInStatus) {
   axios({
     method : 'post',
-    url : 'http://localhost:5000/logout',
+    url : `${process.env.REACT_APP_AUTH_SERVER}/logout`,
     withCredentials : true
   })
   .then(function (response){
