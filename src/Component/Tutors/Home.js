@@ -66,6 +66,7 @@ function Home(props) {
         return(
             <Classroom
             sessionId = {launched.sessionId}
+            studentId = {launched.studentId}
             lessons = {launched.lessons}
             username = {name}
             epoch = {launched.startTime}
