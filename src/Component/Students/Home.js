@@ -51,7 +51,9 @@ function Home(props) {
                     Date = {session.Date}
                     Time = {session.Time}
                     setLaunched = {setLaunched}
-                    SessionId = {session.SessionId} />
+                    SessionId = {session.SessionId}
+                    StudentId = {session.StudentId} 
+                    />
                 ))
                 }
             </div>

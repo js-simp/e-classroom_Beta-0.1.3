@@ -39,7 +39,8 @@ function Sessions(props) {
                             () =>         
                         {
                             props.setLaunched({
-                                'sessionId' : props.SessionId 
+                                'sessionId' : props.SessionId,
+                                'studentId' : props.StudentId
                         });
                         }
                         }
