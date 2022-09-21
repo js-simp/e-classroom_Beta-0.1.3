@@ -159,7 +159,7 @@ function AudioBridge(props) {
 	const [isMute,setIsMute] = useState(false);
 	const roomId = props.sessionId;
 	const username = props.username;
-	const studentId = props.studentId; // there is no studentID
+	const studentId = props.studentId;
 	const role = props.role;
 
 	let webrtcUp = false;
