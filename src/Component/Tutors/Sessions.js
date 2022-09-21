@@ -82,7 +82,8 @@ function Sessions(props) {
                             props.setLaunched({
                                 'sessionId' : props.SessionId, 
                                 'lessons' : props.Lessons,
-                                'startTime' : props.epoch
+                                'startTime' : props.epoch,
+                                'studentId' : props.StudentId
                         });
                         }
                         }

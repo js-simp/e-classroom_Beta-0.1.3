@@ -1,11 +1,10 @@
 //this is where we want the classroom to start and janus to get us started!
-import { SystemUpdateTwoTone } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import { MicOutlined, MicOffOutlined } from '@material-ui/icons';
 import {React,useState, useEffect} from 'react'
 import Janus from '../Janus/janus.nojquery';
 import './AudioBridge.css';
-import { red } from '@material-ui/core/colors';
+
 
 let audioBridge = null;
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -18,7 +17,7 @@ let canvasMeterCtx = null;
 let drawVisual;
 
 
-function isRoom(room, username){
+function isRoom(room, username, role){
 	//first we conver the string of roomId to an integer
 	let roomId = parseInt(room)
 	//we are going to request to check if room exists
@@ -34,7 +33,11 @@ function isRoom(room, username){
 				joinRoom(roomId,username);
 			}
 			else{
-				createRoom(roomId, username);
+				console.log("Tutor hasn't launched the session yet")
+				if(role === 'tutor'){
+					createRoom(roomId, username);
+				}
+				
 			}
 		}
 	})
@@ -62,7 +65,7 @@ function createRoom(roomId, username){
 	})
 
 }
-
+//only called by tutor
 function destroyRoom(roomId){
 	let room = parseInt(roomId)
 	const destroyReq = {
@@ -156,7 +159,8 @@ function AudioBridge(props) {
 	const [isMute,setIsMute] = useState(false);
 	const roomId = props.sessionId;
 	const username = props.username;
-	const studentId = props.studentId;
+	const studentId = props.studentId; // there is no studentID
+	const role = props.role;
 
 	let webrtcUp = false;
 	useEffect(() => {
@@ -190,7 +194,7 @@ function AudioBridge(props) {
 														if not we create the room using createRoom(), if the room
 														exists we'll simply join the room
 														*/
-														isRoom(roomId, username)
+														isRoom(roomId, username, role)
 														
 
 												},
@@ -244,7 +248,7 @@ function AudioBridge(props) {
 																		});
 																}
 																//identifying when student has joined the room
-																if(msg["participants"]){
+																if(msg["participants"] && role === 'tutor'){
 																	let list = msg["participants"];
 																	for (let participant in list) {
 																		if(list[participant]["id"] === studentId){
@@ -340,13 +344,15 @@ function AudioBridge(props) {
 			} >
   			<p>CONNECTING</p>
 			</div>
-			<button
-			onClick = {
-				()=> destroyRoom(roomId)
+			{ role === 'tutor' &&
+				<button
+				onClick = {
+					()=> destroyRoom(roomId)
+				}
+				>
+				End Session
+				</button>
 			}
-			>
-			End Session
-			</button>
 		</div>
 	)
 }
