@@ -70,13 +70,16 @@ function Classroom(props) {
     const username = props.username;
     const sessionId = props.sessionId;
     const role = props.role;
-    
+    const studentId = props.studentId;
+
     if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
         return (
             <div>
                 <AudioBridge 
                 username = {username}
-                sessionId = {sessionId}/>
+                sessionId = {sessionId}
+                studentId = {studentId}
+                role = {role}/>
                 <div className = 'interaction-area'>
                     <div className = 'chatbox'>
                     <Chatbox
