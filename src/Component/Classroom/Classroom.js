@@ -102,9 +102,11 @@ function Classroom(props) {
     else if(role === "student" && socket !== undefined){
         return(
             <div>
-                <StudentAudioBridge
+                <AudioBridge
                 username = {username}
-                sessionId = {sessionId}/>
+                sessionId = {sessionId}
+                studentId = {studentId}
+                role = {role}/>
                 <div className = 'interaction-area'>
                     <div className = 'chatbox'>
                         <Chatbox
