@@ -26,9 +26,11 @@ const Whiteboard = (props) => {
   const [oldStartPoint, setOldStartPoint] = useState([0,0])
   const [keyStartPoint, setKeyStartPoint] = useState([0,0])
 
+  //only tutor side
   const count = useRef([]);
   const [selected, setSelected] = useState({active : '', title :''});
-  const [annotations, setAnnotations] = useState();
+  // const [annotations, setAnnotations] = useState();
+  const annotations = useRef();
 
 
   const [inputBox, setInputBox] = useState("hidden")
@@ -93,17 +95,19 @@ const Whiteboard = (props) => {
     socketRef.current.emit('join_room', props.sessionId);
     socketRef.current.on('drawing', onDrawingEvent);
     socketRef.current.on('text', onTextEvent);
+    socketRef.current.on('image', onImageEvent); //on STUDENT SIDE`
 
     //realtime listening for annotations and changes
     db.collection("Sessions").doc(props.sessionId)
     .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
-        setAnnotations(doc.data());
+        // setAnnotations(doc.data());
+        annotations.current = doc.data();
     });
   },[]);
 
 
-
+//only for TUTOR
   useEffect(() => {
     if (count.current.length !== 0) {
       //load image and annotations to page
