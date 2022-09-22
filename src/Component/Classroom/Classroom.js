@@ -7,10 +7,12 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import io from 'socket.io-client';
 import Chatbox from '../Chatbox/Chatbox';
 import './Classroom.css'
+import { LocalAtmRounded } from '@material-ui/icons';
 
 function Classroom(props) {
     const [socket, setSocket] = useState()
     const [slides, setSlides] = useState([])
+    const [loaded , setLoaded] = useState(false);
     
     useEffect(()=>{
         // setSocket(io('http://localhost:5000'))
@@ -29,6 +31,7 @@ function Classroom(props) {
                         LessonSlides.push(slidesArr);
                         if(LessonSlides.length === props.lessons.length){
                             setSlides(LessonSlides)
+                            setLoaded(true)
                         }
                         // console.log(LessonSlides);
                     } else {
@@ -62,6 +65,9 @@ function Classroom(props) {
             });
             
         }
+        else {
+            setLoaded(true);
+        }
         
     },[])
 
@@ -70,7 +76,7 @@ function Classroom(props) {
     const role = props.role;
     const studentId = props.studentId;
 
-    if(socket !== undefined && (slides.length === props.lessons.length || role === 'student')){
+    if(socket !== undefined && loaded){
         return (
             <div>
                 <AudioBridge
