@@ -109,7 +109,7 @@ const Whiteboard = (props) => {
 
 //only for TUTOR
   useEffect(() => {
-    if (count.current.length !== 0) {
+    if (count.current.length !== 0 && props.role === 'tutor') {
       //load image and annotations to page
       //loading the annotations
       if(annotations[props.lessonTitles[count.current[0]]][count.current[1]]!== undefined){
@@ -164,11 +164,11 @@ const onImageEvent = (data) => {
   }
   // contextRef2.current.drawImage(image, 0, 0, 800, 600)
   // contextRef.current.putImageData(data.annotation,0,0)
-  console.log(annotations.current)
-  if(annotations.current[data.title][data.page] !== undefined){
+  // console.log(annotations.current)
+  if(annotations[data.title][data.page] !== undefined){
     console.log(`We have annotations for this page: ${data.title} ${data.page}`)
     let image = document.createElement('img');
-    image.src = annotations.current[data.title][data.page];
+    image.src = annotations[data.title][data.page];
     image.onload = function () {
       contextRef.current.drawImage(image, 0, 0)
     }
@@ -189,7 +189,7 @@ const onImageEvent = (data) => {
    // ------------------------------- create the drawing ----------------------------
 
  const draw = (x0, y0, x1, y1, toolName, color, emit) => {
-   console.log(x0,y0,x1,y1)
+  //  console.log(x0,y0,x1,y1)
   contextRef3.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   contextRef.current.globalCompositeOperation = "source-over";
   contextRef.current.beginPath();
