@@ -1,8 +1,7 @@
 import {React,useEffect, useState} from 'react'
-import AudioBridge from '../Tutors/AudioBridge'
+import AudioBridge from '../AudioBridge/AudioBridge'
 import Whiteboard from '../Whiteboard/Whiteboard';
 import WhiteboardStudent from '../Whiteboard/WhiteboardStudent';
-import StudentAudioBridge from '../Students/AudioBridge'
 import db from '../Firebase/firebase.js'
 import firebase from 'firebase';
 import LinearProgress from '@material-ui/core/LinearProgress'
