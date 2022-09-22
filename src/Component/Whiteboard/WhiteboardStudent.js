@@ -88,7 +88,7 @@ const Whiteboard = (props) => {
     socketRef.current.emit('join_room', props.sessionId);
     socketRef.current.on('drawing', onDrawingEvent);
     socketRef.current.on('text', onTextEvent);
-    socketRef.current.on('image', onImageEvent);
+    socketRef.current.on('image', onImageEvent); //on STUDENT SIDE
 
     //realtime listening for annotations and changes
     db.collection("Sessions").doc(props.sessionId)

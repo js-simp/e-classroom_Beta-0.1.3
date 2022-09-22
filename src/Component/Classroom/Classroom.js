@@ -88,6 +88,7 @@ function Classroom(props) {
                     </div> 
                     <div className = 'whiteboard'>
                         <Whiteboard
+                        role = {role}
                         sessionId = {sessionId}
                         username = {username}
                         lessonSlides = {slides}
@@ -114,10 +115,13 @@ function Classroom(props) {
                             socket = {socket}/>
                     </div>
                     <div className = 'whiteboard'>
-                        <WhiteboardStudent
+                        <Whiteboard
+                        role = {role}
                         username = {username}
                         sessionId = {sessionId}
-                        socket = {socket}/>
+                        socket = {socket}
+                        lessonSlides = {role === "student" ? slides : undefined}
+                        lessonTitles = {role === "student" ? props.lessons : undefined}/>
                     </div>
                 </div>
             </div>
