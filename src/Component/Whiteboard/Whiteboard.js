@@ -512,7 +512,7 @@ if(event.key === "Enter" || blur === true){
        top:"600px", paddingTop:"10px"
     }} >
       <div className = 'slides-bar'>
-        {loadLessons()}
+        {props.role === 'tutor' && loadLessons()}
       </div>
       </div>
       
