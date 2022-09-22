@@ -41,7 +41,7 @@ function Classroom(props) {
             });
 
             //Getting the sessions doc, and checking whether annotations are available
-            db.collection('Sessions').get(`${props.sessionId}`).then((docSnapshot) => {
+            db.collection('Launched').get(`${props.sessionId}`).then((docSnapshot) => {
                 if (docSnapshot.exists) {
                     console.log(docSnapshot);
                 } else {
