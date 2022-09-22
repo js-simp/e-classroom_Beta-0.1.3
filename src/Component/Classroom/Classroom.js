@@ -91,8 +91,8 @@ function Classroom(props) {
                         username = {username}
                         sessionId = {sessionId}
                         socket = {socket}
-                        lessonSlides = {role === "student" ? slides : undefined}
-                        lessonTitles = {role === "student" ? props.lessons : undefined}/>
+                        lessonSlides = {role === "tutor" ? slides : undefined}
+                        lessonTitles = {role === "tutor" ? props.lessons : undefined}/>
                     </div>
                 </div>
             </div>
