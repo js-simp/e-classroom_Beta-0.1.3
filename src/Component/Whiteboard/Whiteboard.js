@@ -29,8 +29,8 @@ const Whiteboard = (props) => {
   //only tutor side
   const count = useRef([]);
   const [selected, setSelected] = useState({active : '', title :''});
-  // const [annotations, setAnnotations] = useState();
-  const annotations = useRef();
+  const [annotations, setAnnotations] = useState();
+  // const annotations = useRef();
 
 
   const [inputBox, setInputBox] = useState("hidden")
@@ -101,8 +101,8 @@ const Whiteboard = (props) => {
     db.collection("Sessions").doc(props.sessionId)
     .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
-        // setAnnotations(doc.data());
-        annotations.current = doc.data();
+        setAnnotations(doc.data());
+        // annotations.current = doc.data();
     });
   },[]);
 
