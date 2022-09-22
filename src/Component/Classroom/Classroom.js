@@ -114,10 +114,12 @@ function Classroom(props) {
                             socket = {socket}/>
                     </div>
                     <div className = 'whiteboard'>
-                        <WhiteboardStudent
+                        <Whiteboard
                         username = {username}
                         sessionId = {sessionId}
-                        socket = {socket}/>
+                        socket = {socket}
+                        lessonSlides = {role === "student" ? slides : undefined}
+                        lessonTitles = {role === "student" ? props.lessons : undefined}/>
                     </div>
                 </div>
             </div>
