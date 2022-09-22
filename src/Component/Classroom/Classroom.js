@@ -71,36 +71,8 @@ function Classroom(props) {
     const role = props.role;
     const studentId = props.studentId;
 
-    if(role === "tutor" && socket !== undefined && slides.length === props.lessons.length){
+    if(socket !== undefined && (slides.length === props.lessons.length || role === 'student')){
         return (
-            <div>
-                <AudioBridge 
-                username = {username}
-                sessionId = {sessionId}
-                studentId = {studentId}
-                role = {role}/>
-                <div className = 'interaction-area'>
-                    <div className = 'chatbox'>
-                    <Chatbox
-                        username = {username}
-                        sessionId = {sessionId}
-                        socket = {socket}/>
-                    </div> 
-                    <div className = 'whiteboard'>
-                        <Whiteboard
-                        role = {role}
-                        sessionId = {sessionId}
-                        username = {username}
-                        lessonSlides = {slides}
-                        lessonTitles = {props.lessons}
-                        socket = {socket}/>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-    else if(role === "student" && socket !== undefined){
-        return(
             <div>
                 <AudioBridge
                 username = {username}
