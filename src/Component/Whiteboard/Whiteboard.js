@@ -29,8 +29,8 @@ const Whiteboard = (props) => {
   //only tutor side
   const count = useRef([]);
   const [selected, setSelected] = useState({active : '', title :''});
-  const [annotations, setAnnotations] = useState();
-  // const annotations = useRef();
+  // const [annotations, setAnnotations] = useState();
+  let annotations = useRef({});
 
 
   const [inputBox, setInputBox] = useState("hidden")
@@ -101,8 +101,8 @@ const Whiteboard = (props) => {
     db.collection("Sessions").doc(props.sessionId)
     .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
-        setAnnotations(doc.data());
-        // annotations.current = doc.data();
+        // setAnnotations(doc.data());
+        annotations.current = doc.data();
     });
   },[]);
 
@@ -112,10 +112,10 @@ const Whiteboard = (props) => {
     if (count.current.length !== 0 && props.role === 'tutor') {
       //load image and annotations to page
       //loading the annotations
-      if(annotations[props.lessonTitles[count.current[0]]][count.current[1]]!== undefined){
+      if(annotations.current[props.lessonTitles[count.current[0]]][count.current[1]]!== undefined){
         console.log(`We have annotations for this page: ${count.current[0]} ${count.current[1]}`)
         let image = document.createElement('img');
-        image.src = annotations[props.lessonTitles[count.current[0]]][count.current[1]];
+        image.src = annotations.current[props.lessonTitles[count.current[0]]][count.current[1]];
         image.onload = function () {
           contextRef.current.drawImage(image, 0, 0)
         }
@@ -155,7 +155,7 @@ const onTextEvent = (data) => {
 }
 
 const onImageEvent = (data) => {
-  console.log('image event!')
+  // console.log('image event!')
   contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   let image = document.createElement('img');
   image.src = data.src;
@@ -165,10 +165,10 @@ const onImageEvent = (data) => {
   // contextRef2.current.drawImage(image, 0, 0, 800, 600)
   // contextRef.current.putImageData(data.annotation,0,0)
   // console.log(annotations.current)
-  if(annotations[data.title][data.page] !== undefined){
+  if(annotations.current[data.title][data.page] !== undefined){
     console.log(`We have annotations for this page: ${data.title} ${data.page}`)
     let image = document.createElement('img');
-    image.src = annotations[data.title][data.page];
+    image.src = annotations.current[data.title][data.page];
     image.onload = function () {
       contextRef.current.drawImage(image, 0, 0)
     }
