@@ -98,7 +98,7 @@ const Whiteboard = (props) => {
     socketRef.current.on('image', onImageEvent); //on STUDENT SIDE`
 
     //realtime listening for annotations and changes
-    db.collection("Sessions").doc(props.sessionId)
+    db.collection("Annotations").doc(props.sessionId)
     .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
         setAnnotations(doc.data());
