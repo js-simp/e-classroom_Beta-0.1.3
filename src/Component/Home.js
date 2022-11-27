@@ -16,6 +16,13 @@ const Home = (props) => {
       </div>
     )
   }
+  else if(props.role === "admin"){
+    return(
+      <div>
+        <p>Hi admin!</p>
+      </div>
+    )
+  }
   
 }
   
