@@ -1,5 +1,6 @@
 import Tutor from '../Component/Tutors/Home'
 import Student from '../Component/Students/Home'
+import Dashboard from '../Component/Admins/Dashboard'
 
 const Home = (props) => {
   if(props.role === "tutor"){
@@ -19,7 +20,7 @@ const Home = (props) => {
   else if(props.role === "admin"){
     return(
       <div>
-        <p>Hi admin!</p>
+        <Dashboard/>
       </div>
     )
   }
