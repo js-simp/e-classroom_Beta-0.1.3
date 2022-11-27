@@ -32,7 +32,7 @@ const Navigation = () => {
                     Registrationn
                 </Link>
 
-                <Link to="/add_lesson"  style={sty} >
+                <Link to="/create_sessions"  style={sty} >
                    Add Lesson
                 </Link>
               
