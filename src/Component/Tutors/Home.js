@@ -20,14 +20,11 @@ function Home(props) {
     const [launched, setLaunched] = useState();
     
     useEffect(() => {
-        let docRef = db.collection("Tutors").doc(`${userId}`);
-        //query the sessions that are on that particular day
-        docRef.get().then((doc) => {
+        let newRef = db.collection("Tutors").doc(`${userId}`);
+        newRef.get().then((doc) => {
             if (doc.exists) {
-                // console.log("Document data:", doc.data().Info);
-                const info = doc.data().Info;
-                setSessionsInfo(info.Sessions)
-                setName(info.Name);
+                // console.log("Document data:", doc.data());
+                setName(doc.data().Info.Name)
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -35,6 +32,21 @@ function Home(props) {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
+        
+        let docRef = db.collection("Sessions").where("TutorId", "==", `${userId}`);
+        //query the sessions that are on that particular day
+        let sessionInfo = [];
+        docRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                // console.log(doc.id, " => ", doc.data());
+                sessionInfo.push(doc)
+            })
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+        setSessionsInfo(sessionInfo);
+        
 
     },[])
 
@@ -46,11 +58,11 @@ function Home(props) {
                 {sessionsInfo.map( session => (
                     <Sessions 
                     setLaunched = {setLaunched}
-                    StudentId = {session.StudentId}
-                    Lessons = {session.Lesson}
-                    epoch = {session.epochTime}
-                    SessionId = {session.SessionId}
-                    Time = {session.Time} 
+                    StudentId = {session.data().StudentId}
+                    Lessons = {session.data().Lessons}
+                    epoch = {session.data().epochTime}
+                    SessionId = {session.id}
+                    Time = {session.data().Time} 
                     //-----------all student details below are obtained from Sessions.js using the StudentId-------------  
                     // SchoolId = {session.SchoolId}
                     // Name = {session.StudentName}
