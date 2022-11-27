@@ -24,26 +24,17 @@ const Navigation = () => {
                  Home
                 </Link>
                 
-                <Link to="/login" style={sty}>
-                    Login
+                <Link to="/live_sessions" style={sty}>
+                    Live Session Data
                 </Link>
 
                 <Link to="/registration" style={sty} >
                     Registrationn
                 </Link>
 
-                <Link to="/msg"  style={sty} >
-                   Message
+                <Link to="/add_lesson"  style={sty} >
+                   Add Lesson
                 </Link>
-
-                <Link to = "/meeting"  style={sty} >
-                 Meeting
-                </Link>
-
-                <Link to = "/whiteboard"  style={sty} >
-                   Whiteboard
-                </Link>
-
               
         </div>
     );
