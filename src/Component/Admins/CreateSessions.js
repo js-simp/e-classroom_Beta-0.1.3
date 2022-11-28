@@ -9,6 +9,7 @@ import setMinutes from "date-fns/setMinutes";
 function CreateSessions() {
     const [lessons, setLessons] = useState([])
     const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 9))
+    const [epoch, setEpoch] = useState()
 
     const filterPassedTime = (time) => {
       const currentDate = new Date();
@@ -39,11 +40,11 @@ function CreateSessions() {
       <MultipleSelect lessons = {lessons}/>
       <DatePicker
         selected={startDate}
-        onChange={(date) => setStartDate(date)}
+        onChange={(date) => {setStartDate(date); setEpoch(Math.floor(date.getTime()/ 1000))}}
         showTimeSelect
         filterTime={filterPassedTime}
         minDate = {new Date()}
-        dateFormat="dd/MM/yyyy, h:mm aa"
+        dateFormat="MM/dd/yyyy HH:mm"
       /> 
       </div>
     )
