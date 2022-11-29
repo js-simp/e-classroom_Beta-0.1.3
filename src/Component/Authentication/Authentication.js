@@ -33,7 +33,7 @@ userLoginFunction(username, password, logInStatus, setUser) {
 userCreationFunction(regInfo) {
   axios({
     method : 'post',
-    url : `${process.env.REACT_APP_AUTH_SERVER}/login`,
+    url : `${process.env.REACT_APP_AUTH_SERVER}/register`,
     data: {
       username : regInfo.user,
       password : regInfo.pass,
