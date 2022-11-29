@@ -35,7 +35,7 @@ function CreateSessions() {
         Status: 'Pending',
         epochTime: epoch,
         Lessons: lessonName,
-        studentId : studentId,
+        StudentId : studentId,
         TutorId : tutorId
       };
 

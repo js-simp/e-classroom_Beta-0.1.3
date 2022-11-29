@@ -42,10 +42,11 @@ function Home(props) {
                 // console.log(doc.id, " => ", doc.data());
                 sessionInfo.push(doc)
             })
+            setSessionsInfo(sessionInfo);
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-        setSessionsInfo(sessionInfo);
+        
         
 
     },[])
