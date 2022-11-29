@@ -29,11 +29,11 @@ const Navigation = () => {
                 </Link>
 
                 <Link to="/registration" style={sty} >
-                    Registrationn
+                    Registration
                 </Link>
 
                 <Link to="/create_sessions"  style={sty} >
-                   Add Lesson
+                   Create Session
                 </Link>
               
         </div>
