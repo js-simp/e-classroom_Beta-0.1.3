@@ -39,8 +39,8 @@ function CreateSessions() {
         TutorId : tutorId
       };
 
-      // const res = await db.collection('Sessions').doc(`${sessionId}`).set(sessionInfo);
-      console.log(sessionInfo)
+      const res = await db.collection('Sessions').doc(`${sessionId}`).set(sessionInfo);
+      // console.log(sessionInfo)
     }
 
     useEffect(()=>{
