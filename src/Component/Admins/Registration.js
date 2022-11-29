@@ -4,6 +4,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { EmailRounded } from '@material-ui/icons';
 import LockIcon from '@material-ui/icons/Lock';
+import { Fingerprint } from '@material-ui/icons';
 import { CardMembership } from '@material-ui/icons';
 import { Select, MenuItem } from '@material-ui/core';
 import AuthLogin from "../Authentication/Authentication";
@@ -61,7 +62,16 @@ function Registration() {
                     } type="text" className="form-control" id="exampleFormControlInput1" placeholder="Email" />
                 <p style={{color:"red"}}>{err}</p>
                 </div>
-                <div className = "wrapper wrapper-form" >
+                <div className="wrapper wrapper-form">
+                    <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                    <input onChange={ (e) => {
+                        setUserData({
+                            ...userData, id : e.target.value
+                         });}
+                    } type="text" className="form-control" id="exampleFormControlInput1" placeholder="User Id" />
+                <p style={{color:"red"}}>{err}</p>
+                </div>
+                <div className = "wrapper wrapper-form">
                 <CardMembership className = 'form-icon' style={{ fontSize: 30 }}/>
                 <Select
                     className="form-control"
@@ -76,8 +86,8 @@ function Registration() {
                     })}
                     }
                     >
-                    <MenuItem value={"Student"}>Student</MenuItem>
-                    <MenuItem value={"Tutor"}>Tutor</MenuItem>
+                    <MenuItem value={"student"}>Student</MenuItem>
+                    <MenuItem value={"tutor"}>Tutor</MenuItem>
                 </Select>
                 </div>
                 <div className="wrapper wrapper-form">
