@@ -31,12 +31,10 @@ function Registration() {
     const submitBtn=()=>{
         let lenUser = userData.user.length;
         let lenPass = userData.pass.length;
-        let username =  userData.user;
-        let password = userData.pass;
         if(lenUser !== 0 && lenPass!== 0)
         { 
         let obj =  new  AuthLogin();
-        obj.userLoginFunction(username,password, setLogged, setUser);
+        obj.userCreationFunction(userData);
     }else{
         setErr("Error !");  
     }
