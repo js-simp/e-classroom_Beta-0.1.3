@@ -31,6 +31,7 @@ userLoginFunction(username, password, logInStatus, setUser) {
 }
 
 userCreationFunction(regInfo) {
+  let result;
   axios({
     method : 'post',
     url : `${process.env.REACT_APP_AUTH_SERVER}/register`,
@@ -42,6 +43,10 @@ userCreationFunction(regInfo) {
       email : regInfo.email
     },
     withCredentials: true
+  })
+  .then(function (response) {
+    // console.log(response);
+    alert(response.data)
   })
 }
 
