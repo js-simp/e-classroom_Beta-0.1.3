@@ -18,17 +18,16 @@ const columns = [
     width: 160,
   },
   {
-    field: 'Date',
+    field: 'dateTime',
     headerName: 'Date',
-    type: 'date',
-    width: 160,
+    type: 'dateTime',
+    width: 180,
   },
   {
-    field: 'Time',
-    headerName: 'Time',
-    type: 'date',
-    width: 110,
-  },
+    field: 'Status',
+    headerName: 'Status',
+    width: 110
+  }
 ];
 
 function LiveSessions() {
@@ -38,21 +37,20 @@ function LiveSessions() {
 
     // colllect information about ongoing sessions
     useEffect(() => {
-      let allSessionsRef = db.collection("Sessions").where("epochTime", ">=", todayEpoch);
-            //query the sessions that are on that particular day
-            let sessionInfo = [];
-            allSessionsRef.get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    // console.log(doc.id, " => ", doc.data());
-                    let sessData = doc.data();
-                    sessData.id = doc.id;
-                    sessionInfo.push(sessData)
-                })
-                setRows(sessionInfo);
-            }).catch((error) => {
-                console.log("Error getting document:", error);
-            });
+        //query the sessions that are on that particular day
+        let sessionInfo = [];
+        db.collection("Sessions").where("epochTime", ">=", todayEpoch).onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(doc.id, " => ", doc.data());
+            let sessData = doc.data();
+            let dateTime = doc.data().Date + ', ' + doc.data().Time;
+            sessData.id = doc.id;
+            sessData.dateTime = dateTime;
+            sessionInfo = [...sessionInfo, sessData]
+            })
+            setRows(sessionInfo);
+        })
 
     },[])
 
