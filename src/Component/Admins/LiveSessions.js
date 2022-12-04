@@ -1,5 +1,7 @@
 import {React,useEffect, useState} from 'react';
 import { Box } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
+import { Cached } from '@material-ui/icons';
 import { DataGrid } from '@material-ui/data-grid';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
@@ -26,6 +28,12 @@ const columns = [
   {
     field: 'Status',
     headerName: 'Status',
+    renderCell: (params) => (
+      <Chip
+      icon = {<Cached/>} 
+      label={params.value}
+      color = "primary" />
+    ),
     width: 110
   }
 ];
