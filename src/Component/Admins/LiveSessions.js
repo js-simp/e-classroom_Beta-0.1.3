@@ -1,8 +1,7 @@
 import {React,useEffect, useState} from 'react';
 import { Box } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import { Cached } from '@material-ui/icons';
-import { LiveTv } from '@material-ui/icons';
+import { ErrorOutlined, DoneOutlineOutlined, FlashOnOutlined } from '@material-ui/icons';
 import { DataGrid } from '@material-ui/data-grid';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
@@ -32,17 +31,20 @@ const columns = [
     renderCell: (params) => (
       (params.value === "Pending") ? ( 
       <Chip
-        icon = {<Cached/>} 
+        icon = {<ErrorOutlined/>} 
         label={params.value}
-        color = "primary" />):  
+        variant = "outlined"
+        color = "warning" />):  
       (params.value === "Live")? ( <Chip
-        icon = {<LiveTv/>} 
+        icon = {<FlashOnOutlined/>} 
         label={params.value}
-        color = "secondary" />):
+        variant = "outlined"
+        color = "primary" />):
       ( <Chip
-        icon = {<Cached/>} 
+        icon = {<DoneOutlineOutlined/>} 
         label={params.value}
-        color = "secondary" 
+        variant = "outlined"
+        color = "success" 
         />
       )
     ),
