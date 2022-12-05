@@ -2,6 +2,7 @@ import {React,useEffect, useState} from 'react';
 import { Box } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import { Cached } from '@material-ui/icons';
+import { LiveTv } from '@material-ui/icons';
 import { DataGrid } from '@material-ui/data-grid';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
@@ -29,12 +30,23 @@ const columns = [
     field: 'Status',
     headerName: 'Status',
     renderCell: (params) => (
+      (params.value === "Pending") ? ( 
       <Chip
-      icon = {<Cached/>} 
-      label={params.value}
-      color = "primary" />
+        icon = {<Cached/>} 
+        label={params.value}
+        color = "primary" />):  
+      (params.value === "Live")? ( <Chip
+        icon = {<LiveTv/>} 
+        label={params.value}
+        color = "secondary" />):
+      ( <Chip
+        icon = {<Cached/>} 
+        label={params.value}
+        color = "secondary" 
+        />
+      )
     ),
-    width: 110
+    width: 160
   }
 ];
 
