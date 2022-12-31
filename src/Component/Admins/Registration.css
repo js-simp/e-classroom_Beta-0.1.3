@@ -1,0 +1,32 @@
+.registration-form-container{
+    margin-top : 5%;
+}
+
+.registration-form {
+    justify-items: center;
+}
+
+.select-wrapper {
+    width : 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+.menu-wrapper {
+    margin-bottom : 5%;
+}
+
+
+.simple-select {
+    width : 25%;
+    margin-left :  5%;
+    padding: 9px 15px 9px;
+    border: 2px solid #bac2c3;
+    border-radius: 8px;
+}
+
+.role-icon {
+    margin-left : 5%;
+}
