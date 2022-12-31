@@ -30,6 +30,26 @@ userLoginFunction(username, password, logInStatus, setUser) {
     });
 }
 
+userCreationFunction(regInfo) {
+  let result;
+  axios({
+    method : 'post',
+    url : `${process.env.REACT_APP_AUTH_SERVER}/register`,
+    data: {
+      username : regInfo.user,
+      password : regInfo.pass,
+      role : regInfo.role,
+      id : regInfo.id,
+      email : regInfo.email
+    },
+    withCredentials: true
+  })
+  .then(function (response) {
+    // console.log(response);
+    alert(response.data)
+  })
+}
+
 userGetFunction(logInStatus, setUser) {
   axios({
     method : 'get',

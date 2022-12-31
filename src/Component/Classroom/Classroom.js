@@ -51,7 +51,7 @@ function Classroom(props) {
                     console.log("Session not launched before!");
                     //initiating array for annotations
                     lessons.forEach(item => {
-                        db.collection("Sessions").doc(`${props.sessionId}`).update({
+                        db.collection("Annotations").doc(`${props.sessionId}`).update({
                             [item]: {}
                         });
                     });

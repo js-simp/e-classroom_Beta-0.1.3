@@ -26,7 +26,6 @@ function Home(props) {
             if (doc.exists) {
                 // console.log("Document data:", doc.data().Info);
                 const info = doc.data().Info;
-                setSessionsInfo(info.Sessions)
                 setName(info.Name);
                 setSchoolId(info.SchoolId);
             } else {
@@ -36,6 +35,20 @@ function Home(props) {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
+
+        let sessRef = db.collection("Sessions").where("StudentId", "==", `${userId}`);
+            //query the sessions that are on that particular day
+            let sessionInfo = [];
+            sessRef.get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    // console.log(doc.id, " => ", doc.data());
+                    sessionInfo.push(doc)
+                })
+                setSessionsInfo(sessionInfo);
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
 
     },[])
 
@@ -48,11 +61,11 @@ function Home(props) {
                     <Sessions
                     username = {name}
                     SchoolId = {schoolId}
-                    Date = {session.Date}
-                    Time = {session.Time}
+                    Date = {session.data().Date}
+                    Time = {session.data().Time}
                     setLaunched = {setLaunched}
-                    SessionId = {session.SessionId}
-                    StudentId = {session.StudentId} 
+                    SessionId = {session.id}
+                    StudentId = {session.data().StudentId} 
                     />
                 ))
                 }
