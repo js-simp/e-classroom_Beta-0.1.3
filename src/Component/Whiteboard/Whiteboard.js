@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SlidesBar from './SlidesBar';
-import db from '../Firebase/firebase';
+import {db} from '../Firebase/firebase';
+import { doc, onSnapshot } from "firebase/firestore"; 
 //icons for the whiteboard
 import IconButton from '@material-ui/core/IconButton';
 import TouchAppIcon from '@material-ui/icons/TouchApp';
@@ -50,7 +51,7 @@ const Whiteboard = (props) => {
 
   //const { useState, useRef, useEffect } = React;
 
-  useEffect(() => {
+  useEffect(async () => {
 
     //canvas define
     const canvas = canvasRef.current;
@@ -98,12 +99,11 @@ const Whiteboard = (props) => {
     socketRef.current.on('image', onImageEvent); //on STUDENT SIDE`
 
     //realtime listening for annotations and changes
-    db.collection("Annotations").doc(props.sessionId)
-    .onSnapshot((doc) => {
-        console.log("Current data: ", doc.data());
-        // setAnnotations(doc.data());
-        annotations.current = doc.data();
-    });
+    const unsub = onSnapshot(doc(db, "Annotations", props.sessionId), (doc) => {
+      console.log("Current data: ", doc.data());
+      // setAnnotations(doc.data());
+      annotations.current = doc.data();
+  });
   },[]);
 
 
