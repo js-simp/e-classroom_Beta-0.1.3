@@ -48,7 +48,7 @@ function Classroom(props) {
             } else {
                 console.log("Session not launched before!");
                 //initiating array for annotations
-                for(item of lessons) {
+                for(const item of lessons) {
                     const AnnotationsRef = doc(db, "Annotations", `${props.sessionId}`);
                     await updateDoc(AnnotationsRef, {
                         [item]: {}
