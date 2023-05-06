@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore} from "firebase/firestore";
 import {getAuth} from "firebase/auth";
+import {getFunctions} from "firebase/functions"
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,3 +23,4 @@ export const db = getFirestore(app);
 // Initialize Firebase auth and get a ref to the service 
 export const auth = getAuth(app);
 
+export const functions = getFunctions(app);

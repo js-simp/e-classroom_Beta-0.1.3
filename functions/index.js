@@ -34,3 +34,15 @@ exports.addRole = functions.https.onCall((data, context) => {
       return error;
     });
   });
+
+exports.createUser = functions.https.onCall((data,context) => {
+    return getAuth()
+    .createUser(data)
+    .then((userRecord) => {
+      // See the UserRecord reference doc for the contents of userRecord.
+      return userRecord
+    })
+    .catch((error) => {
+      console.log('Error creating new user:', error);
+    });
+})
