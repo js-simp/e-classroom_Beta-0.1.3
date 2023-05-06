@@ -1,7 +1,8 @@
 import React, { useEffect, useState , useRef } from 'react';
 import './Chatbox.css';
 import Button from '@material-ui/core/Button';
-import db from '../Firebase/firebase'
+import {db} from '../Firebase/firebase'
+import { doc, getDoc } from "firebase/firestore"; 
 
 
 /*
@@ -27,24 +28,21 @@ const Chatbox = (props) => {
         
     }, [messageArray])
 
-    useEffect(() => {
+    useEffect(async () => {
         // socket.current = io("http://localhost:5000",{ withCredentials: true, extraHeaders: { "my-custom-header": "abcd" }  });
         //we are importing socket from property in classroom
         //restoring previous message upon refresh by checking if old messages are there
-        let docRef = db.collection("Sessions").doc(props.sessionId);
-                docRef.get().then((doc) => {
-                    //if there is a messages doc created then retrieve the messages history
-                    if (doc.exists) {
-                        if(doc.data().Messages){
-                            setMessageArray(doc.data().Messages)
-                        };
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No such document!");
-                    }
-                }).catch((error) => {
-                    console.log("Error getting document:", error);
-                });
+        const docRef = doc(db, "Sessions", props.sessionId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+            if(docSnap.data().Messages){
+                setMessageArray(docSnap.data().Messages)
+            }
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+          }
     },[]);
 
 
