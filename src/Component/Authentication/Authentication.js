@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import {auth} from '../Firebase/firebase';
+import { getFunctions, httpsCallable } from "firebase/functions";
+import {auth, functions} from '../Firebase/firebase';
 
 export default class Authentication {
     //Compare credetials from Mongodb 
@@ -33,18 +34,38 @@ userCreationFunction(regInfo) {
   id : regInfo.id,
   email : regInfo.email
   */
-  createUserWithEmailAndPassword(auth, regInfo.email, regInfo.pass)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage);
-    // ..
-  });
+  const createUser = httpsCallable(functions, 'createUser');
+  const userData = {
+      uid: regInfo.id,
+      email: regInfo.email,
+      emailVerified: false,
+      password: regInfo.pass,
+      displayName: regInfo.user,
+      disabled: false,
+    
+  }
+    createUser(userData)
+    .then((user) => {
+      console.log(user.email);
+      // add the role student/tutor to the user
+      const addRole = httpsCallable(functions, 'addRole');
+      addRole({ email : regInfo.email, role: regInfo.role })
+        .then((result) => {
+          // Read result of the Cloud Function.
+          /** @type {any} */
+          console.log(result);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          // ..
+        });
+    })
+    .catch((error) => {
+      console.log(error.message)
+    })
+  
 }
 
 userGetFunction(logInStatus, setUser) {

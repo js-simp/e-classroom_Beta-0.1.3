@@ -17,7 +17,7 @@ const Home = (props) => {
       </div>
     )
   }
-  else if(props.role === "admin"){
+  else {
     return(
       <div>
         <Dashboard/>
