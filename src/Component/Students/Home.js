@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react'
-import db from '../Firebase/firebase.js'
+import {db} from '../Firebase/firebase.js';
+import { doc, getDoc, getDocs, query, where,collection } from "firebase/firestore"; 
 import Sessions from './Sessions'
 import './Home.css'
 import Classroom from '../Classroom/Classroom.js';
@@ -19,37 +20,31 @@ function Home(props) {
     const [launched, setLaunched] = useState();
 
     const userId = props.user;
-    useEffect(() => {
-        let docRef = db.collection("Students").doc(`${userId}`);
+    useEffect(async () => {
+        // let docRef = db.collection("Students").doc(`${userId}`);
+        const docRef = doc(db, "Students", `${userId}` )
+        const docSnap = await getDoc(docRef);
 
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                // console.log("Document data:", doc.data().Info);
-                const info = doc.data().Info;
-                setName(info.Name);
-                setSchoolId(info.SchoolId);
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
+        if(docSnap.exists){
+            // console.log("Document data:", docSnap.data().Info);
+            const info = docSnap.data().Info;
+            setName(info.Name);
+            setSchoolId(info.SchoolId);
+        }
+        else{
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+
+        const q = query(collection(db, "Sessions"), where("StudentId", "==", `${userId}`));
+        const querySnapshot = await getDocs(q);
+        let sessionInfo = [];
+        querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+            // console.log(doc.id, " => ", doc.data());
+            sessionInfo.push(doc)
         });
-
-        let sessRef = db.collection("Sessions").where("StudentId", "==", `${userId}`);
-            //query the sessions that are on that particular day
-            let sessionInfo = [];
-            sessRef.get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    // console.log(doc.id, " => ", doc.data());
-                    sessionInfo.push(doc)
-                })
-                setSessionsInfo(sessionInfo);
-            }).catch((error) => {
-                console.log("Error getting document:", error);
-            });
-
+        setSessionsInfo(sessionInfo);
     },[])
 
     // console.log(sessionsInfo.StudentId)
