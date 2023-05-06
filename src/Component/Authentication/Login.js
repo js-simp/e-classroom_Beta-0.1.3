@@ -4,6 +4,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import AuthLogin from "./Authentication";
+import {auth} from '../Firebase/firebase';
+import {onAuthStateChanged } from "firebase/auth";
 import Home from '../Home';
 import './Login.css'
 
