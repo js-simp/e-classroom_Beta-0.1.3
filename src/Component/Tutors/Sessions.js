@@ -1,6 +1,7 @@
 import { Button, LinearProgress } from '@material-ui/core';
 import {React, useState, useEffect} from 'react'
-import db from '../Firebase/firebase'
+import {db} from '../Firebase/firebase';
+import { doc, getDoc } from "firebase/firestore"; 
 import './Sessions.css';
 
 // the props will be:
@@ -17,20 +18,18 @@ function Sessions(props) {
     const [studentInfo, setStudentInfo] = useState();
 
 
-    useEffect(() => {
-        let docRef = db.collection('Students').doc(`${props.StudentId}`)
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                // console.log("Document data:", doc.data().Info);
-                const info = doc.data().Info;
-                setStudentInfo({'Name' : info.Name, 'SchoolId' : info.SchoolId, 'Year' : info.Year})
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
+    useEffect(async () => {
+        const docRef = doc(db, "Students", `${props.StudentId}`);
+        const docSnap = await getDoc(docRef)
+
+        if (docSnap.exists) {
+            // console.log("Document data:", doc.data().Info);
+            const info = docSnap.data().Info;
+            setStudentInfo({'Name' : info.Name, 'SchoolId' : info.SchoolId, 'Year' : info.Year})
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
 
     },[])
 
