@@ -9,18 +9,18 @@ export default class Authentication {
     /*   Flow of Authentication
           1- If true  login redirect to session page -- false redirect to login
     */
-userLoginFunction(email, password, logInStatus, setUser) {
+userLoginFunction(email, password) {
   signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    logInStatus({'loggedIn': true, 'role' : user.role, 'UserId' : user.uid})
-        setUser(user.email)
+    console.log(user.email);
     // ...
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(errorMessage);
   });
 }
 
