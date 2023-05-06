@@ -9,27 +9,19 @@ export default class Authentication {
     /*   Flow of Authentication
           1- If true  login redirect to session page -- false redirect to login
     */
-userLoginFunction(username, password, logInStatus, setUser) {
-  console.log(username, password)
-  axios({
-    method: 'post',
-    url: `${process.env.REACT_APP_AUTH_SERVER}/login`,
-    data: {
-      username: username,
-      password: password
-    },
-    withCredentials: true
+userLoginFunction(email, password, logInStatus, setUser) {
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    logInStatus({'loggedIn': true, 'role' : user.role, 'UserId' : user.uid})
+        setUser(user.email)
+    // ...
   })
-    .then(function (response) {
-      console.log(response)
-      alert(response.data.message)
-      //set logInStatus hook in App.js to true and render Summary page
-      if(response.data.success){
-        // props.logInStatus(true)
-        logInStatus({'loggedIn': true, 'role' : response.data.role, 'UserId' : response.data.userId})
-        setUser(username)
-      }
-    });
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
 }
 
 userCreationFunction(regInfo) {
