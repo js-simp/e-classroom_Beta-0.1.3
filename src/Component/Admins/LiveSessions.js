@@ -6,7 +6,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import {db} from '../Firebase/firebase.js';
-import { query, where,collection, onSnapshot, getDocs } from "firebase/firestore"; 
+import { query, where,collection, onSnapshot } from "firebase/firestore"; 
 
 const columns = [
   { field: 'id', headerName: 'Session ID', width: 150 },
