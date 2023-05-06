@@ -74,16 +74,13 @@ userGetFunction(logInStatus, setUser) {
 }
 
 userLogoutFunction(logInStatus) {
-  axios({
-    method : 'post',
-    url : `${process.env.REACT_APP_AUTH_SERVER}/logout`,
-    withCredentials : true
-  })
-  .then(function (response){
-    console.log('Successfully logged out');
+  signOut(auth).then(() => {
+    // Sign-out successful.
     logInStatus({'loggedIn' : false});
     window.location.reload()
-  })
+  }).catch((error) => {
+    // An error happened.
+  });
 }
 
 }
