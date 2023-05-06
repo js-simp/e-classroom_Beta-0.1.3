@@ -5,7 +5,8 @@ import { ErrorOutlined, DoneOutlineOutlined, FlashOnOutlined } from '@material-u
 import { DataGrid } from '@material-ui/data-grid';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import db from '../Firebase/firebase.js';
+import {db} from '../Firebase/firebase.js';
+import { query, where,collection, onSnapshot, getDocs } from "firebase/firestore"; 
 
 const columns = [
   { field: 'id', headerName: 'Session ID', width: 150 },
@@ -58,20 +59,19 @@ function LiveSessions() {
     const todayEpoch = Math.floor(todayDate.getTime()/ 1000);
 
     // colllect information about ongoing sessions
-    useEffect(() => {
+    useEffect(async () => {
         //query the sessions that are on that particular day
         let sessionInfo = [];
-        db.collection("Sessions").where("epochTime", ">=", todayEpoch).onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, " => ", doc.data());
+        const q = query(collection(db, "Sessions"), where("epochTime", ">=", todayEpoch));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
             let sessData = doc.data();
             let dateTime = doc.data().Date + ', ' + doc.data().Time;
             sessData.id = doc.id;
             sessData.dateTime = dateTime;
             sessionInfo = [...sessionInfo, sessData]
-            })
-            setRows(sessionInfo);
+          })
+          setRows(sessionInfo);
         })
 
     },[])
