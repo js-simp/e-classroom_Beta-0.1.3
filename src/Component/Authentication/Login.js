@@ -27,7 +27,18 @@ const Login = () => {
               // User is signed in, see docs for a list of available properties
               // https://firebase.google.com/docs/reference/js/firebase.User
               const uid = user.uid;
-              setLogged({'loggedIn': true, 'role' : user.role, 'UserId' : user.uid})
+              let role;
+              user.getIdTokenResult()
+                .then((idTokenResult) => {
+                    role = idTokenResult.claims.role
+                    console.log(role)
+                    setLogged({'loggedIn': true, 'role' : role, 'UserId' : user.uid})
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setLogged({'loggedIn': true, 'role' : '', 'UserId' : user.uid})
+                });
+              
               setUser(user.email)
               // ...
             } else {
