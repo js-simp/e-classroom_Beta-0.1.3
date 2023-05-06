@@ -1,8 +1,8 @@
 import {React,useEffect, useState} from 'react'
 import AudioBridge from '../AudioBridge/AudioBridge'
 import Whiteboard from '../Whiteboard/Whiteboard';
-import db from '../Firebase/firebase.js'
-import firebase from 'firebase';
+import {db} from '../Firebase/firebase.js';
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore"; 
 import LinearProgress from '@material-ui/core/LinearProgress'
 import io from 'socket.io-client';
 import Chatbox from '../Chatbox/Chatbox';
@@ -14,55 +14,51 @@ function Classroom(props) {
     const [slides, setSlides] = useState([])
     const [loaded , setLoaded] = useState(false);
     
-    useEffect(()=>{
+    useEffect(async ()=>{
         // setSocket(io('http://localhost:5000'))
         // setSocket(io('https://bcend.herokuapp.com'))
         setSocket(io(process.env.REACT_APP_SOCKET_SERVER))
         if(props.role === 'tutor'){
             let LessonSlides = []
             let lessons = props.lessons;
-            lessons.forEach(item => {
-                let docRef = db.collection("Lessons").doc(`${item}`);
-                docRef.get().then((doc) => {
-                    if (doc.exists) {
-                        // console.log("Document data:", doc.data().Slides[0]);
-                        const slidesArr = doc.data().Slides;
+            for(const item of lessons){
+                const docRef = doc(db, "Lessons", `${item}`);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    // console.log("Document data:", docSnap.data().Slides[0]);
+                    const slidesArr = docSnap.data().Slides;
                         // console.log("Sessions:", slidesArr)
                         LessonSlides.push(slidesArr);
                         if(LessonSlides.length === props.lessons.length){
                             setSlides(LessonSlides)
                             setLoaded(true)
                         }
-                        // console.log(LessonSlides);
-                    } else {
-                        // doc.data() will be undefined in this case
-                        console.log("No such document!");
-                    }
-                }).catch((error) => {
-                    console.log("Error getting document:", error);
-                });
-            });
+                  } else {
+                    // docSnap.data() will be undefined in this case
+                    console.log("No such document!");
+                  }
+            }
 
             //Getting the sessions doc, and checking whether annotations are available
-            db.collection('Launched').doc(`${props.sessionId}`).get().then((docSnapshot) => {
-                if (docSnapshot.exists) {
-                    console.log(docSnapshot);
-                } else {
-                    console.log("Session not launched before!");
-                    //initiating array for annotations
-                    lessons.forEach(item => {
-                        db.collection("Annotations").doc(`${props.sessionId}`).update({
-                            [item]: {}
-                        });
-                    });
-                    //adding session to launched
-                    const res = db.collection('Launched').doc(`${props.sessionId}`).set({
-                        Launched: true,
+            const docLaunched = doc(db, "Launched", `${props.sessionId}`);
+            const docSnapshot = await getDoc(docLaunched);
+            if (docSnapshot.exists) {
+                console.log(docSnapshot);
+            } else {
+                console.log("Session not launched before!");
+                //initiating array for annotations
+                for(item of lessons) {
+                    const AnnotationsRef = doc(db, "Annotations", `${props.sessionId}`);
+                    await updateDoc(AnnotationsRef, {
+                        [item]: {}
                       });
                 }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
+                //adding session to launched
+                await setDoc(doc(db, "Launched", `${props.sessionId}`), {
+                    Launched: true,
+                  });
+            }
             
         }
         else {
