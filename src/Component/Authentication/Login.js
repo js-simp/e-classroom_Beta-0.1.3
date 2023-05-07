@@ -4,6 +4,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import AuthLogin from "./Authentication";
+import {auth} from '../Firebase/firebase';
+import {onAuthStateChanged } from "firebase/auth";
 import Home from '../Home';
 import './Login.css'
 
@@ -16,12 +18,36 @@ const Login = () => {
     const [err, setErr] = useState("");
    
     const [loginData, setLoginData] = useState({
-    user :"",pass:""
+    email :"",pass:""
     });
 
     useEffect(()=> {
-        let sess = new AuthLogin();
-        sess.userGetFunction(setLogged, setUser);
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              // https://firebase.google.com/docs/reference/js/firebase.User
+              const uid = user.uid;
+              let role;
+              user.getIdTokenResult()
+                .then((idTokenResult) => {
+                    role = idTokenResult.claims.role
+                    console.log(role)
+                    setLogged({'loggedIn': true, 'role' : role, 'UserId' : user.uid})
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setLogged({'loggedIn': true, 'role' : '', 'UserId' : user.uid})
+                });
+              
+              setUser(user.email)
+              // ...
+            } else {
+              // User is signed out
+              setLogged({'loggedIn': false})
+              // ...
+            }
+          });
+          
     }, [])
    
     const showPassword = (e) => {
@@ -34,15 +60,15 @@ const Login = () => {
     }
 
     const submitBtn=()=>{
-        let lenUser = loginData.user.length;
+        let lenUser = loginData.email.length;
         let lenPass = loginData.pass.length;
-        let username =  loginData.user;
+        let email =  loginData.email;
         let password = loginData.pass;
        // console.log("isgmail",isgmail);
         if(lenUser !== 0 && lenPass!== 0)
         { 
         let obj =  new  AuthLogin();
-        obj.userLoginFunction(username,password, setLogged, setUser);
+        obj.userLoginFunction(email,password);
     }else{
         setErr("Error !");  
     }
@@ -70,9 +96,9 @@ const Login = () => {
                         <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
                         <input onChange={ (e) => {
                             setLoginData({
-                                ...loginData, user : e.target.value
+                                ...loginData, email : e.target.value
                             });}
-                        } type="text" className="form-control" id="exampleFormControlInput1" placeholder="Username" />
+                        } type="text" className="form-control" id="exampleFormControlInput1" placeholder="david@gmail.com" />
                 <p style={{color:"red"}}>{err}</p>
                     </div>
                     <div className="wrapper wrapper-form">
