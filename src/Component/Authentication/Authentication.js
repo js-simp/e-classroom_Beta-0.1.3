@@ -1,4 +1,7 @@
 import axios from 'axios'
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import {auth, functions} from '../Firebase/firebase';
 
 export default class Authentication {
     //Compare credetials from Mongodb 
@@ -7,47 +10,62 @@ export default class Authentication {
     /*   Flow of Authentication
           1- If true  login redirect to session page -- false redirect to login
     */
-userLoginFunction(username, password, logInStatus, setUser) {
-  console.log(username, password)
-  axios({
-    method: 'post',
-    url: `${process.env.REACT_APP_AUTH_SERVER}/login`,
-    data: {
-      username: username,
-      password: password
-    },
-    withCredentials: true
+userLoginFunction(email, password) {
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user.email);
+    // ...
   })
-    .then(function (response) {
-      console.log(response)
-      alert(response.data.message)
-      //set logInStatus hook in App.js to true and render Summary page
-      if(response.data.success){
-        // props.logInStatus(true)
-        logInStatus({'loggedIn': true, 'role' : response.data.role, 'UserId' : response.data.userId})
-        setUser(username)
-      }
-    });
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage);
+  });
 }
 
 userCreationFunction(regInfo) {
-  let result;
-  axios({
-    method : 'post',
-    url : `${process.env.REACT_APP_AUTH_SERVER}/register`,
-    data: {
-      username : regInfo.user,
-      password : regInfo.pass,
-      role : regInfo.role,
-      id : regInfo.id,
-      email : regInfo.email
-    },
-    withCredentials: true
-  })
-  .then(function (response) {
-    // console.log(response);
-    alert(response.data)
-  })
+  //available data
+  /*
+  username : regInfo.user
+  password : regInfo.pass
+  role : regInfo.role
+  id : regInfo.id,
+  email : regInfo.email
+  */
+  const createUser = httpsCallable(functions, 'createUser');
+  const userData = {
+      uid: regInfo.id,
+      email: regInfo.email,
+      emailVerified: false,
+      password: regInfo.pass,
+      displayName: regInfo.user,
+      disabled: false,
+    
+  }
+    createUser(userData)
+    .then((user) => {
+      console.log(user.email);
+      // add the role student/tutor to the user
+      const addRole = httpsCallable(functions, 'addRole');
+      addRole({ email : regInfo.email, role: regInfo.role })
+        .then((result) => {
+          // Read result of the Cloud Function.
+          /** @type {any} */
+          console.log(result);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          // ..
+        });
+    })
+    .catch((error) => {
+      console.log(error.message)
+    })
+  
 }
 
 userGetFunction(logInStatus, setUser) {
@@ -69,16 +87,13 @@ userGetFunction(logInStatus, setUser) {
 }
 
 userLogoutFunction(logInStatus) {
-  axios({
-    method : 'post',
-    url : `${process.env.REACT_APP_AUTH_SERVER}/logout`,
-    withCredentials : true
-  })
-  .then(function (response){
-    console.log('Successfully logged out');
+  signOut(auth).then(() => {
+    // Sign-out successful.
     logInStatus({'loggedIn' : false});
     window.location.reload()
-  })
+  }).catch((error) => {
+    // An error happened.
+  });
 }
 
 }
