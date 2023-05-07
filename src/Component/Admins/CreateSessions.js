@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react';
-import db from '../Firebase/firebase.js';
+import {db} from '../Firebase/firebase.js';
+import { doc, setDoc, collection, getDocs } from "firebase/firestore"; 
 import MultipleSelect from './MultipleSelect.js';
 import SingleSelect from './SingleSelect.js';
 import DatePicker from "react-datepicker";
@@ -39,39 +40,34 @@ function CreateSessions() {
         TutorId : tutorId
       };
 
-      const res = await db.collection('Sessions').doc(`${sessionId}`).set(sessionInfo);
+      const res = await setDoc(doc(db, 'Sessions',`${sessionId}`), sessionInfo);
       // console.log(sessionInfo)
     }
 
-    useEffect(()=>{
+    useEffect(async ()=>{
         
-        db.collection("Lessons").get().then((querySnapshot) => {
-            let lesson_titles = [];
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                lesson_titles.push(doc.id)
-            });
-            setLessons(lesson_titles)
+        const allLessons = await getDocs(collection(db, "Lessons"));
+        let lesson_titles = [];
+        allLessons.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          lesson_titles.push(doc.id)
         });
+        setLessons(lesson_titles)
+          
         // console.log(lesson_titles)
-       
-        db.collection("Students").get().then((students) => {
-          let student_list = [];
-          students.forEach((student) => {
-            student_list.push(student.id)
-          });
-          setStudents(student_list);
-        }
-        );
-
-        db.collection("Tutors").get().then((tutors) => {
-          let tutor_list = [];
-          tutors.forEach((tutor) => {
-            tutor_list.push(tutor.id)
-          });
-          setTutors(tutor_list);
-        }
-        );
+        const allStudents = await getDocs(collection(db, "Students"));
+        let student_list = [];
+        allStudents.forEach((student) => {
+          student_list.push(student.id)
+        });
+        setStudents(student_list);
+        
+        const allTutors = await getDocs(collection(db, "Tutors"));
+        let tutor_list = [];
+        allTutors.forEach((tutor) => {
+          tutor_list.push(tutor.id)
+        })
+        setTutors(tutor_list);
         
     },[])
     
