@@ -22,14 +22,16 @@
 }
 
 .create-sessions-form input[type="submit"] {
-  background-color: #4caf50;
+  background-color: #283593;
+  opacity : 90%;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
 .create-sessions-form input[type="submit"]:hover {
-  background-color: #388e3c;
+  background-color: #283593;
+  opacity : 100%;
 }
 
 .SingleSelect {
