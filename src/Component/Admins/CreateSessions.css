@@ -1,0 +1,40 @@
+.create-sessions-form {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.create-sessions-form input,
+.create-sessions-form select {
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.create-sessions-form input[type="submit"] {
+  background-color: #283593;
+  opacity : 90%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.create-sessions-form input[type="submit"]:hover {
+  background-color: #283593;
+  opacity : 100%;
+}
+
+.SingleSelect {
+  min-width: 150px; /* Set default width */
+  width: auto; /* Allow width to adjust automatically */
+}
