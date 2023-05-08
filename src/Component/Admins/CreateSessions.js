@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import './CreateSessions.css'
 
 function CreateSessions() {
     const [lessons, setLessons] = useState([])
@@ -73,7 +74,7 @@ function CreateSessions() {
     
   if(lessons.length != 0 && students.length != 0) {
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="create-sessions-form">
         <MultipleSelect  lessons = {lessons} selectLesson = {setLessonName}/>
         <DatePicker
           selected={startDate}
