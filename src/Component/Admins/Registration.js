@@ -47,7 +47,7 @@ function Registration() {
         <div className = 'registration-form-container'>
             <form className = 'registration-form' onSubmit={(e)=>{e.preventDefault();}}>
                 <div className="wrapper wrapper-form">
-                    <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                    <AccountCircleIcon className = 'form-icon'/>
                     <input onChange={ (e) => {
                         setUserData({
                             ...userData, user : e.target.value
@@ -56,7 +56,7 @@ function Registration() {
                 <p style={{color:"red"}}>{err}</p>
                 </div>
                 <div className="wrapper wrapper-form">
-                    <EmailRounded className = 'form-icon' style={{ fontSize: 30 }}/>
+                    <EmailRounded className = 'form-icon'/>
                     <input onChange={ (e) => {
                         setUserData({
                             ...userData, email : e.target.value
@@ -65,7 +65,7 @@ function Registration() {
                 <p style={{color:"red"}}>{err}</p>
                 </div>
                 <div className="wrapper wrapper-form">
-                    <Fingerprint className = 'form-icon' style={{ fontSize: 30 }}/>
+                    <Fingerprint className = 'form-icon'/>
                     <input onChange={ (e) => {
                         setUserData({
                             ...userData, id : e.target.value
@@ -73,8 +73,8 @@ function Registration() {
                     } type="text" className="form-control" id="exampleFormControlInput1" placeholder="User Id" />
                 <p style={{color:"red"}}>{err}</p>
                 </div>
-                <div className = "wrapper select-wrapper menu-wrapper">
-                <CardMembership className = 'role-icon' style={{ fontSize: 30 }}/>
+                <div className = "wrapper wrapper-form">
+                <CardMembership className = 'form-icon'/>
                 <Select
                     className="simple-select"
                     labelId="demo-simple-select-label"
@@ -92,14 +92,14 @@ function Registration() {
                 </div>
                 <div className="wrapper wrapper-form">
                     {/* <label  className="form-label">Password</label> */}
-                    <LockIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                    <LockIcon className = 'form-icon'/>
                     <input onChange={ (e) => {
                         setUserData({
                             ...userData, pass : e.target.value
                         });
                     }
                     }  type={type} className="form-control" id="inputPassword" placeholder = 'Password'/>
-                    <p style={{color:"red"}}>{err}</p>
+                    <p>{err}</p>
                 </div>
                 <div className = 'wrapper wrapper-form'>
                      <Checkbox onChange={showPassword}>
@@ -107,7 +107,7 @@ function Registration() {
                     <p>Show password</p>
                 </div>
                 <div className = 'wrapper wrapper-form'>
-                    <Button id = "submit-button" onClick={submitBtn} type="submit" style={{ color: "white", backgroundColor: '#1a237e' }} >Create User</Button>
+                    <Button id = "submit-button" onClick={submitBtn} type="submit" >Create User</Button>
                 </div>
             </form>
         </div>
