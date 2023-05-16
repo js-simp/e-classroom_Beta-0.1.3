@@ -10,9 +10,11 @@ function Home(props) {
     const feature = props.feature;
     const userId = props.user;
 
-
+    // console.log(userId)
     return(
         <Classroom
+            studentId = {userId}
+            lessons = {['Ordering Fractions']}
             sessionId = {testSessionId}
             username = {name}
             role = 'test'

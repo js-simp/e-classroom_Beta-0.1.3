@@ -2,8 +2,6 @@ import Tutor from '../Component/Tutors/Home'
 import Student from '../Component/Students/Home'
 import Test from '../Component/Test/Home'
 import Dashboard from '../Component/Admins/Dashboard'
-import { KeyboardReturnOutlined } from '@material-ui/icons'
-import Classroom from './Classroom/Classroom'
 
 const Home = (props) => {
   if(props.role === "tutor"){
@@ -22,7 +20,7 @@ const Home = (props) => {
   }
   else if(props.role === "test"){
     return(
-    <Test feature = {props.feature}/>
+    <Test user = {props.userId} feature = {props.feature}/>
     )
   }
   else {

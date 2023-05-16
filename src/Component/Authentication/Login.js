@@ -79,7 +79,6 @@ const Login = () => {
         //go to test page
         let feature = {'wb' : false, 'chat' : false, 'call' : false};
         feature[`${e.currentTarget.id}`] = true;
-        console.log(e)
         setLogged({'loggedIn': true, 'role' : 'test', 'feature' : feature , 'UserId' : '007'})
     }
 
@@ -96,13 +95,17 @@ const Login = () => {
                     <p style={{textAlign  : 'center'}}>Haven't registered yet? <br></br>Have a look at the whiteboard, chatbox, and live audio calls work!</p>
                     <div className = "wrapper wrapper-form">
                         <Button id = "wb" onClick={testRun} 
-                        style={{ color: "white", backgroundColor: '#1a237e' }}>Whiteboard
+                        style={{ color: "white", backgroundColor: '#1a237e' }}> Whiteboard
                         </Button>
+                    </div>
+                    <div className = "wrapper wrapper-form">
                         <Button id = "chat" onClick={testRun} 
-                        style={{ color: "white", backgroundColor: '#1a237e' }}>Chatroom
+                        style={{ color: "white", backgroundColor: '#1a237e' }}>Socket Chatroom
                         </Button>
+                    </div>
+                    <div className = "wrapper wrapper-form">
                         <Button id = "call" onClick={testRun} 
-                        style={{ color: "white", backgroundColor: '#1a237e' }}>Call
+                        style={{ color: "white", backgroundColor: '#1a237e' }}>WebRTC Audio Call
                         </Button>
                     </div>
                 </div>

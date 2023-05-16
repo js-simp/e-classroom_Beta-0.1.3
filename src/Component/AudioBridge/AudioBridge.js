@@ -34,7 +34,7 @@ function isRoom(room, username, role){
 			}
 			else{
 				console.log("Tutor hasn't launched the session yet")
-				if(role === 'tutor'){
+				if(role === 'tutor' || role === 'test'){
 					createRoom(roomId, username);
 				}
 				
