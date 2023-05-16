@@ -81,46 +81,56 @@ const Login = () => {
 
     if(!logged.loggedIn){
     return (
-        <div className = 'container'>
-            <div className = 'card-block'>
-                <div className= 'logo-container'>
-                    <img className = 'icon-logo' src ="" alt='logo'></img>
+        <div className = 'split-containers'>
+            <div className = 'test-container'>
+                <div>
+                    <p style={{textAlign  : 'center'}}>Haven't registered yet? <br></br>Have a look at the whiteboard, chatbox, and live audio calls work!</p>
+                    <div className = "wrapper wrapper-form">
+                        <Button id = "submit-button"style={{ color: "white", backgroundColor: '#1a237e' }}>Check out App!</Button>
+                    </div>
                 </div>
-                <hr className = 'hr-line'></hr>
-                <div className = 'wrapper'>
-                    <p className = 'welcome-text'>Welcome to Cloud LearnX</p>
+            </div>
+            <div className = 'container'>
+                <div className = 'card-block'>
+                    <div className= 'logo-container'>
+                        <img className = 'icon-logo' src ="" alt='logo'></img>
+                    </div>
+                    <hr className = 'hr-line'></hr>
+                    <div className = 'wrapper'>
+                        <p className = 'welcome-text'>Welcome to Cloud LearnX</p>
+                    </div>
+                    <form onSubmit={(e)=>{e.preventDefault();}}>
+                        <div className="wrapper wrapper-form">
+                            {/* <label  className="form-label">Username</label> */}
+                            <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                            <input onChange={ (e) => {
+                                setLoginData({
+                                    ...loginData, email : e.target.value
+                                });}
+                            } type="text" className="form-control" id="exampleFormControlInput1" placeholder="david@gmail.com" />
+                    <p style={{color:"red"}}>{err}</p>
+                        </div>
+                        <div className="wrapper wrapper-form">
+                            {/* <label  className="form-label">Password</label> */}
+                            <LockIcon className = 'form-icon' style={{ fontSize: 30 }}/>
+                            <input onChange={ (e) => {
+                                setLoginData({
+                                    ...loginData, pass : e.target.value
+                                });
+                            }
+                            }  type={type} className="form-control" id="inputPassword" placeholder = 'Password'/>
+                            <p style={{color:"red"}}>{err}</p>
+                        </div>
+                        <div className = 'wrapper wrapper-form'>
+                            <Checkbox onChange={showPassword}>
+                            </Checkbox> 
+                            <p>Show password</p>
+                        </div>
+                        <div className = 'wrapper wrapper-form'>
+                            <Button id = "submit-button" onClick={submitBtn} type="submit" style={{ color: "white", backgroundColor: '#1a237e' }} >Login</Button>
+                        </div>
+                    </form>
                 </div>
-                <form onSubmit={(e)=>{e.preventDefault();}}>
-                    <div className="wrapper wrapper-form">
-                        {/* <label  className="form-label">Username</label> */}
-                        <AccountCircleIcon className = 'form-icon' style={{ fontSize: 30 }}/>
-                        <input onChange={ (e) => {
-                            setLoginData({
-                                ...loginData, email : e.target.value
-                            });}
-                        } type="text" className="form-control" id="exampleFormControlInput1" placeholder="david@gmail.com" />
-                <p style={{color:"red"}}>{err}</p>
-                    </div>
-                    <div className="wrapper wrapper-form">
-                        {/* <label  className="form-label">Password</label> */}
-                        <LockIcon className = 'form-icon' style={{ fontSize: 30 }}/>
-                        <input onChange={ (e) => {
-                            setLoginData({
-                                ...loginData, pass : e.target.value
-                            });
-                        }
-                        }  type={type} className="form-control" id="inputPassword" placeholder = 'Password'/>
-                        <p style={{color:"red"}}>{err}</p>
-                    </div>
-                    <div className = 'wrapper wrapper-form'>
-                        <Checkbox onChange={showPassword}>
-                        </Checkbox> 
-                        <p>Show password</p>
-                    </div>
-                    <div className = 'wrapper wrapper-form'>
-                        <Button id = "submit-button" onClick={submitBtn} type="submit" style={{ color: "white", backgroundColor: '#1a237e' }} >Login</Button>
-                    </div>
-                </form>
             </div>
         </div>
     );

@@ -1,11 +1,30 @@
+.split-containers {
+  margin : 5%;
+  display : flex;
+  flex-direction :row;
+  align-items:center;
+  justify-content: center;
+}
+
+.test-container{
+  display :flex;
+  width : 25%;
+  flex-direction : column;
+  margin-left : 2%;
+  margin-right : 2%;
+  margin-top : auto;
+  margin-bottom : auto;
+}
+
 .container {
+  align-items:center;
+  justify-content: center;
   margin-right: auto;
   margin-left: auto;
   padding-top: 5%;
   padding-left: 15px;
   padding-right: 15px;
   width: 40%;
-  height: 153px;
 }
 
 .card-block {
@@ -74,7 +93,7 @@ p {
 }
 
 #submit-button {
-  width: 25%;
+  width: auto;
 }
 
 div {
