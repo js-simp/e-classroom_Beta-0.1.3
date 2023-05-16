@@ -71,32 +71,43 @@ function Classroom(props) {
     const sessionId = props.sessionId;
     const role = props.role;
     const studentId = props.studentId;
+    const features = props.features;
 
     if(socket !== undefined && loaded){
         return (
             <div>
+                {features.call == true && 
                 <AudioBridge
                 username = {username}
                 sessionId = {sessionId}
                 studentId = {studentId}
                 role = {role}/>
+                }
+                {(features.wb == true || features.chat == true) &&
                 <div className = 'interaction-area'>
-                    <div className = 'chatbox'>
-                        <Chatbox
-                            username = {username}
-                            sessionId = {sessionId}
-                            socket = {socket}/>
-                    </div>
-                    <div className = 'whiteboard'>
-                        <Whiteboard
-                        role = {role}
-                        username = {username}
-                        sessionId = {sessionId}
-                        socket = {socket}
-                        lessonSlides = {role === "tutor" ? slides : undefined}
-                        lessonTitles = {role === "tutor" ? props.lessons : undefined}/>
-                    </div>
+                {props.features.chat == true && 
+                <div className = 'chatbox'>
+                <Chatbox
+                    username = {username}
+                    sessionId = {sessionId}
+                    socket = {socket}/>
                 </div>
+                }
+                {features.wb == true && 
+                <div className = 'whiteboard'>
+                <Whiteboard
+                role = {role}
+                username = {username}
+                sessionId = {sessionId}
+                socket = {socket}
+                lessonSlides = {role === "tutor" ? slides : undefined}
+                lessonTitles = {role === "tutor" ? props.lessons : undefined}/>
+                </div>
+                }
+                
+            </div>
+                }
+                
             </div>
         )
     }

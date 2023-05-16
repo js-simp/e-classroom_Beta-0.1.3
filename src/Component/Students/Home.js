@@ -84,6 +84,7 @@ function Home(props) {
             sessionId = {launched.sessionId}
             username = {name}
             role = 'student'
+            features = {{'wb' : true, 'chat' : true, 'call' : true}}
         />
         )
     }    

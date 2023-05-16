@@ -69,9 +69,15 @@ const Login = () => {
         { 
         let obj =  new  AuthLogin();
         obj.userLoginFunction(email,password);
-    }else{
+        }
+        else{
         setErr("Error !");  
+        }
     }
+
+    const testRun = ()=>{
+        //go to test page
+        setLogged({'loggedIn': true, 'role' : 'test', 'UserId' : '007'})
     }
 
     const logOut=()=>{
@@ -86,7 +92,7 @@ const Login = () => {
                 <div>
                     <p style={{textAlign  : 'center'}}>Haven't registered yet? <br></br>Have a look at the whiteboard, chatbox, and live audio calls work!</p>
                     <div className = "wrapper wrapper-form">
-                        <Button id = "submit-button"style={{ color: "white", backgroundColor: '#1a237e' }}>Check out App!</Button>
+                        <Button id = "submit-button" onClick={testRun} style={{ color: "white", backgroundColor: '#1a237e' }}>Check out App!</Button>
                     </div>
                 </div>
             </div>

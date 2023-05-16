@@ -79,6 +79,7 @@ function Home(props) {
             username = {name}
             epoch = {launched.startTime}
             role = 'tutor'
+            features = {{'wb' : true, 'chat' : true, 'call' : true}}
         />
         )
         
