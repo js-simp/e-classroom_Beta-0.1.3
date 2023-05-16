@@ -75,9 +75,12 @@ const Login = () => {
         }
     }
 
-    const testRun = ()=>{
+    const testRun = (e)=>{
         //go to test page
-        setLogged({'loggedIn': true, 'role' : 'test', 'UserId' : '007'})
+        let feature = {'wb' : false, 'chat' : false, 'call' : false};
+        feature[`${e.currentTarget.id}`] = true;
+        console.log(e)
+        setLogged({'loggedIn': true, 'role' : 'test', 'feature' : feature , 'UserId' : '007'})
     }
 
     const logOut=()=>{
@@ -92,7 +95,15 @@ const Login = () => {
                 <div>
                     <p style={{textAlign  : 'center'}}>Haven't registered yet? <br></br>Have a look at the whiteboard, chatbox, and live audio calls work!</p>
                     <div className = "wrapper wrapper-form">
-                        <Button id = "submit-button" onClick={testRun} style={{ color: "white", backgroundColor: '#1a237e' }}>Check out App!</Button>
+                        <Button id = "wb" onClick={testRun} 
+                        style={{ color: "white", backgroundColor: '#1a237e' }}>Whiteboard
+                        </Button>
+                        <Button id = "chat" onClick={testRun} 
+                        style={{ color: "white", backgroundColor: '#1a237e' }}>Chatroom
+                        </Button>
+                        <Button id = "call" onClick={testRun} 
+                        style={{ color: "white", backgroundColor: '#1a237e' }}>Call
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -148,6 +159,7 @@ const Login = () => {
                  <Home
                     role = {logged.role}
                     userId = {logged.UserId}
+                    feature = {logged.feature}
                 />
             </div>
             

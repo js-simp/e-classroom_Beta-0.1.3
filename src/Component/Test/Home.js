@@ -7,8 +7,7 @@ function Home(props) {
     const name = 'testUser';
     const testSessionId = 100100;
     const [launched, setLaunched] = useState();
-    // const testFeatures = {'wb' : false, 'chat' : false, 'call' : false};
-
+    const feature = props.feature;
     const userId = props.user;
 
 
@@ -17,7 +16,7 @@ function Home(props) {
             sessionId = {testSessionId}
             username = {name}
             role = 'test'
-            features = {{'wb' : true, 'chat' : false, 'call' : false}}
+            features = {feature}
         />
     )
     

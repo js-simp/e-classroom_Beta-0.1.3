@@ -22,7 +22,7 @@ const Home = (props) => {
   }
   else if(props.role === "test"){
     return(
-    <Test/>
+    <Test feature = {props.feature}/>
     )
   }
   else {
