@@ -293,6 +293,7 @@ function AudioBridge(props) {
 							},
 							error: function(cause) {
 									// Error, can't go on...
+									console.log(cause);
 									alert('Could not create session, please try reloading the page')
 									window.location.reload();
 							},
