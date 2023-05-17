@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import {auth, functions} from '../Firebase/firebase';
@@ -66,24 +65,6 @@ userCreationFunction(regInfo) {
       console.log(error.message)
     })
   
-}
-
-userGetFunction(logInStatus, setUser) {
-  axios({
-    method : 'get',
-    url : `${process.env.REACT_APP_AUTH_SERVER}/getuser`,
-    withCredentials: true
-  })
-    .then(function (response){
-      if(response.data){
-        console.log(response.data);
-      logInStatus({'loggedIn' : true, 'role' : response.data.role, 'UserId' : response.data.userId})
-      setUser(response.data.username)
-      }
-      else{
-      logInStatus({'loggedIn' : false})
-      }
-    })
 }
 
 userLogoutFunction(logInStatus) {
