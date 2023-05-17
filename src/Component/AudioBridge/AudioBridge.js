@@ -345,7 +345,7 @@ function AudioBridge(props) {
 			} >
   			<p>CONNECTING</p>
 			</div>
-			{ role === 'tutor' &&
+			{ (role === 'tutor' || role === 'test') &&
 				<button
 				onClick = {
 					()=> destroyRoom(roomId)
